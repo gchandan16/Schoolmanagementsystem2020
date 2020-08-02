@@ -32,6 +32,7 @@ namespace WEB.Controllers
         //Commented By Manish
         //comment again
         // Comment by chandan 02082020
+        //kkkkk
         //ChannelFactory<ICommonSrv> CF = new ChannelFactory<ICommonSrv>("COMMON");
         //ICommonSrv CSvc;
         string ConStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
