@@ -1,0 +1,128 @@
+﻿.field-validation-error {
+    color: rgb(252, 11, 11);
+    font-size: 12px;
+    clear: both;
+}
+
+.alert-success {
+    margin-top: 2% !important;
+    margin-bottom: -3% !important;
+}
+.tabulerdesign {
+    
+    font-size: 12px;
+    
+}
+
+.tabulerdesignhea {
+    font-size: 15px;
+    color:brown;
+} 
+.alert-info {
+    margin-top: 2% !important;
+    margin-bottom: -3% !important;
+}
+
+.alert-danger {
+    margin-top: 2% !important;
+    margin-bottom: -3% !important;
+}
+
+.alert-warning {
+    margin-top: 2% !important;
+    margin-bottom: -3% !important;
+}
+
+.redlabel {
+    color: #000000;
+}
+
+.chosen-container {
+    font-size: 12px !important;
+}
+
+.chosen-drop {
+    width: 450px !important;
+    float: left !important;
+}
+
+.iconspace {
+    width: 37px;
+}
+
+.bg_red {
+    margin-left: 10px;
+}
+
+.disablecolor {
+    background-color: #e9ecef !important;
+}
+
+.marginsm {
+    margin-left: 10px;
+}
+
+.clabelleft label {
+    float: left;
+}
+
+.chosen-results {
+    text-align: left;
+}
+
+.chosen-single {
+    text-align: left;
+}
+
+.chosen-disabled a {
+    background-color: #e9ecef !important;
+}
+
+.table td .chosen-single {
+    width: 230px !important;
+}
+
+.scroll_btt {
+    white-space: nowrap !important;
+    width: 100% !important;
+    overflow-y: hidden !important;
+}
+
+.DashboardForm .card {
+    margin-bottom: 0rem;
+}
+
+
+
+.formtemp2  {
+    line-height:33px;
+    padding-left:10px;
+    padding-right:10px;
+}
+#chart_segmentbudgetid text {
+    font-size: 11px !important;
+}
+
+input[type=checkbox] {
+    height: 16px;
+    width: 20px;
+}
+
+.height400 {
+    height: 400px !important;
+}
+
+.table-responsive
+{
+    overflow-y:scroll !important;
+}
+
+.my-custom-scrollbar {
+    position: relative;
+    /*height: 200px;*/
+    overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+    display: block;
+}

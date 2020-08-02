@@ -1,0 +1,24 @@
+﻿@model SHARED.BaseModel
+<div class="content-heading">
+    <div class="left_heing">
+        <ul>
+            @if (Model != null && Model.BaseUserInfo != null)
+            {
+                if (!string.IsNullOrEmpty(@Model.BaseUserInfo.USERNAME))
+                {
+                    <li>UserName : <b>@Model.BaseUserInfo.USERNAME </b></li>
+                }
+
+                if (!string.IsNullOrEmpty(@Model.BaseUserInfo.CurrentDate))
+                {
+                    <li>Date : <b>@Model.BaseUserInfo.CurrentDate </b></li>
+                }
+            }
+            else
+            {
+
+            }
+        </ul>
+    </div>
+</div>
+@{Html.RenderPartial("_Message", @Model);}

@@ -1,0 +1,82 @@
+﻿@model SHARED.BaseModel
+@using WEB.AppCode
+<style type="text/css">
+    .sidebar-nav > li.activeMain > a {
+        background: #e3192e !important;
+        border-bottom: 1px solid #fff !important;
+        border-top: 1px solid #fff !important;
+        color: #fff !important;
+    }
+
+    .activeMain {
+        background: #e3192e !important;
+        border-bottom: 1px solid #fff !important;
+        border-top: 1px solid #fff !important;
+        color: #fff !important;
+    }
+
+    .sidebar-nav > li > a:hover {
+        background: #e3192e !important;
+    }
+
+    .activeChild {
+        background: #3c3c5c !important;
+    }
+        /*.caret {
+        margin-top: 3% !important;
+    }*/
+        .activeChild a {
+            color: white !important;
+        }
+</style>
+<aside class="aside-container aside_fix">
+    <div class="aside-inner" id="hdrdiv">
+        <nav class="sidebar" data-sidebar-anyclick-close="">
+            <ul class="sidebar-nav">
+                @Html.Raw(Model.usermenu)
+            </ul>
+        </nav>
+    </div>
+</aside>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        // debugger;
+        var foundparent = false;
+        var url = window.location.pathname,
+            urlRegExp = new RegExp(url.replace(/\/$/, '') + "$"); // create regexp to match current url pathname and remove trailing slash if present as it could collide with the link in navigation in case trailing slash wasn't present there
+        // now grab every link from the navigation
+        $('.sidebar-nav a').each(function () {
+            // and test its normalized href against the url pathname regexp
+            if (urlRegExp.test(this.href.replace(/\/$/, ''))) {
+                $(this).parent().addClass('active');
+                $(this).parent().addClass('activeChild');
+                $(this).parent().parent().parent().addClass('activeMain');
+                foundparent = true;
+            }
+
+
+        });
+        if (!foundparent) {
+            var activehash = window.location.hash;
+
+            $('.sidebar-nav a').each(function (no, anchor) {
+                var anchorhash = anchor.hash;
+                // and test its normalized href against the url pathname regexp
+                if (activehash != "") {
+                    if (anchorhash == activehash) {
+                        $(anchor).addClass('active');
+                        $(anchor).parent().addClass('activeMain');
+
+                        foundparent = true;
+                    }
+                }
+
+
+            });
+        }
+
+    });
+
+</script>

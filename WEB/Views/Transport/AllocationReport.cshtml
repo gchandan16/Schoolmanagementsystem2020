@@ -1,0 +1,172 @@
+﻿@using SHARED
+@{
+    ViewBag.Title = "Allocation Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<section class="content-header">
+    <h4>
+        Allocation Report
+
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">
+            Allocation Report
+        </li>
+    </ol>
+</section>
+@using (Html.BeginForm("AllocationReport", "Transport", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="col-lg-2">
+                                    Search by:
+                                </div>
+                                <div class="col-lg-2">
+                                    <select id="ddlSearchBy" onchange="return displaySearchOption(this);" class="form-control">
+                                        <option value="">Select</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Route">Route</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row divStudent" style="display:none;">
+                            <div class="col-lg-12">
+                                <div class="col-lg-2">
+                                    Class:
+                                </div>
+                                <div class="col-lg-2">
+                                    <select id="ddlClassList" onchange="return GetSectionList(this,'All');" class="form-control"></select>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    Section:
+                                </div>
+                                <div class="col-lg-2">
+                                    <select id="ddlSectionList" class="form-control"></select>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    Admission Number:
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" id="txtAdmissionNumber" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row divRoute" style="display:none;">
+                            <div class="col-lg-12">
+                                <div class="col-lg-2">
+                                    Route:
+                                </div>
+                                <div class="col-lg-2">
+                                    <select id="ddlRouteList" onchange="return GetRouteList(this);" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divSubmit" style="display:none;">
+                            <hr />
+                            <div class="row pull-right ">
+                                <div class="col-md-12">
+                                    <input class="btn btn-success" type="button" id="Search" value="Search" onclick="return SearchAllocationRepost();" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12 divBox">
+               
+            </div>
+        </div>
+    </section>
+}
+
+<script src="~/Scripts/Transport/transport.js"></script>
+<script>
+    //$(document).ready(function () {
+    //    $('#StudentTbl').DataTable({
+    //        "ordering": false
+    //    });
+    //});
+    function displaySearchOption(d) {
+
+        if ($("#" + d.id).val() == "Student") {
+            $(".divStudent").show();
+            $(".divRoute").hide();
+            $(".divSubmit").show();
+        }
+        else if ($("#" + d.id).val() == "Route") {
+            $(".divStudent").hide();
+            $(".divRoute").show();
+            $(".divSubmit").show();
+        }
+        else {
+            $(".divStudent").hide();
+            $(".divRoute").hide();
+            $(".divSubmit").hide();
+            $(".divBox").empty();
+        }
+    }
+    $(document).ready(function () {
+        $("#ddlClassList").empty().append('<option value="0">All Class</option>');
+        $("#ddlSectionList").empty().append('<option value="0">All Section</option>');
+        $("#ddlRouteList").empty().append('<option value="0">All Route</option>');
+        BlockUI();
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: '@Url.Action("GetClassList", "Transport")',
+            dataType: "json",
+            success: function (data) {
+                if (data.length > 0) {
+                    for (var l = 0; l < data.length; l++) {
+                        $("#ddlClassList").append('<option value="' + data[l].CMid + '">' + data[l].ClassName + '</option>');
+                    }
+
+                }
+                $.unblockUI();
+            },
+            error: function (data) {
+                $.unblockUI();
+            }
+        });
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: '@Url.Action("GetRouteList", "Transport")',
+            dataType: "json",
+            success: function (data) {
+                if (data.length > 0) {
+                    for (var l = 0; l < data.length; l++) {
+                        if ($("#ddlRouteList option[text='" + data[l].RouteName + "']").length == 0) {
+                            $("#ddlRouteList").append('<option value="' + data[l].RouteID + '" text="' + data[l].RouteName + '">' + data[l].RouteName + '</option>');
+                        }
+                    }
+                }
+                $.unblockUI();
+            },
+            error: function (data) {
+                $.unblockUI();
+            }
+        });
+    });
+</script>

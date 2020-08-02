@@ -1,0 +1,164 @@
+﻿@model SHARED.RouteDetails
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Route";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+    <h4 class="box-title">
+        Add Route
+    </h4>
+    }
+    else
+    {
+    <h4 class="box-title">
+        Update Route
+    </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Transport/RouteMaster">Route Master</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+        <li class="active">Add Route</li>
+        }
+        else
+        {
+        <li class="active">Update Route</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("AddRoute", "Transport", FormMethod.Post, new { id = "frmAddRoute" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.RouteID)
+    <input type="hidden" id="TotalPoint" value="@Model.PickDropPointLst.Count" />
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Select Vehicle:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @{
+                                    var VehicleList = (IEnumerable<SelectListItem>)TempData["ListVehicles"];
+                                }
+                                @Html.DropDownListFor(a => a.VehicleID, new SelectList(VehicleList, "Value", "Text"), "--Select--", new { @class = "form-control mandate", @msg = "Please select Vehicle.", @onchange = "return GetVehicleDetails(this);" })
+                                <br />
+                                <label id="LblDriveName"></label>&nbsp;<label id="LblVehicleSpec"></label>&nbsp;<label id="LblTotalSeats"></label>
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Route Name:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m => m.RouteName, new { @class = "form-control mandate", @msg = "Please enter Route Name.", @placeholder = "Route Name", @autocomplete = "off" })
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    Pickup And Drop Point Name
+                                </div>
+                                <div class="col-lg-2">
+                                    Pickup Time (24 Hr)
+                                </div>
+                                <div class="col-lg-2">
+                                    Drop Time (24 Hr)
+                                </div>
+                                <div class="col-lg-2">
+                                    Amount
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divPickDropDetails">
+                            @for (int RC = 0; RC < Model.PickDropPointLst.Count; RC++)
+                            {
+                                var id = "cnt" + @RC;
+
+                                <div class="row" id="@id">
+                                    <div class="col-lg-4">
+                                        @Html.HiddenFor(m => m.PickDropPointLst[@RC].PickDropID)
+                                        @Html.TextBoxFor(m => m.PickDropPointLst[@RC].PickDropPointName, new { @class = "form-control mandate", @maxlength = "100", @msg = "Please enter pickup point.", @onkeypress = "return isKeyValid(event,\'32,65-90,97-122\');", @pat = "^[A-Za-z ]*$", @placeholder = "Pickup Point" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.TextBoxFor(m => m.PickDropPointLst[@RC].PickupTime, new { @class = "form-control mandate txtTimePicker", @msg = "Please enter pickup time.", @maxlength = "10"})
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.TextBoxFor(m => m.PickDropPointLst[@RC].DropTime, new { @class = "form-control mandate txtTimePicker", @msg = "Please enter drop time.", @maxlength = "10" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.TextBoxFor(m => m.PickDropPointLst[@RC].Fee, new { @class = "form-control mandate", @msg = "Please enter fee.", @onkeypress = "return isKeyValid(event,\'32,48-57\');", @pat = "^[0-9]*$", @placeholder = "Fee" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label for="pwd" class="redlabel"><span onclick="return AddPickDropPoint();" style="cursor:pointer;">+</span></label>
+                                        @if (RC > 0)
+                                        {
+                                            <label for="pwd" class="redlabel"><span onclick="return RemovePickDropPoint('@id');" style="cursor:pointer;">&nbsp;&nbsp;-</span></label>
+                                        }
+                                    </div>
+                                    <div class="col-lg-12"><br /></div>
+                                </div>
+
+                            }
+                        </div>
+                        <hr />
+                        <div class="row pull-right">
+                            <div class="col-md-12">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Save" id="AddPickupPoint" class="btn btn-success" onclick="return inputValidation();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="UpdateVehicle" onclick="return inputValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+                                    }
+
+<script>
+    $(document).ready(function () {
+        $('#frmAddRoute').on('focus', ".txtTimePicker", function () {
+            $(this).timepicker();
+        });
+        $(document).ready(function () {
+            $('#roletbl1').DataTable({
+                "order": []
+            });
+        });
+        $('#DOB').datepicker({
+            format: 'dd/M/yyyy',
+            autoclose: true,
+            endDate: new Date()
+        });
+
+    });
+
+</script>
+<script src="~/Scripts/Transport/transport.js"></script>

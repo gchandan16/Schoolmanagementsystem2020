@@ -1,0 +1,51 @@
+
+
+
+
+.black_overlay {
+    display: none;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 1001;
+    -moz-opacity: 0.8;
+    opacity: .8;
+    filter: alpha(opacity=80);
+}
+
+.white_content {
+    display: none;
+    position: absolute;
+    top: 15%;
+    z-index: 1002;
+}
+
+.white_contentblock {
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    z-index: 1002;
+}
+
+
+
+@media screen and (max-width:1024px) and (max-height:768px) {
+    .white_content {
+        left: 9% !important;
+    }
+}
+
+
+@media screen and (max-width:1280px) and (max-height:1024px) {
+    .white_content {
+        left: 17%;
+    }
+
+    .white_contentblock {
+        left: 50%;
+    }
+}

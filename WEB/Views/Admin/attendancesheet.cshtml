@@ -1,0 +1,262 @@
+﻿@model WEB.Models.DailyattendanceModel
+@using WEB.AppCode
+@using System.Data;
+@using SHARED
+@{
+    ViewBag.Title = "Attendance Sheet ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
+}
+@section CSS
+{
+    
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Generate Attendance Sheet
+
+    </h1>
+    <ol class="breadcrumb" style="font-size:16px">
+        <li><a href="#"><i class="fa fa-users"></i> Student List</a> </li>
+        <li><a href="#"><i class="fa fa-print"></i> </a> </li>
+        <li><a href="#"><i class="fa fa-home"></i> Home</a> </li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        @using (Html.BeginForm("attendancesheet", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data", @role = "form" }))
+        {
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title"> Attendance Sheet </h3>
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+                    <div class="box-body">
+                        <div class="form-group">
+
+                            <table id="example2" class="table table-bordered table-hover">
+                                <tr>
+
+                                    <td>
+                                        <div class="form-group">
+                                            <label>Class   </label>
+                                            @Html.DropDownListFor(m => m.SelectClassId, new SelectList(Model.ClassList, "CMid", "ClassName"), "-- Select--", new { @class = "form-control chosen-select", @onchange = "return Getsectionbaseonclass(this)" })
+                                            @Html.ValidationMessageFor(m => m.SelectClassId)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <label> Section   </label>
+                                            @Html.DropDownListFor(m => m.SelectSectionId, new SelectList(Model.ClassSectionList, "Secmid", "SectionName"), "-- Select--", new { @class = "form-control chosen-select" })
+                                            @Html.ValidationMessageFor(m => m.SelectSectionId)
+                                        </div>
+                                    </td>
+                                    <td>
+
+                                        <div class="form-group">
+                                            <label for="Attendanc Date">Attendanc Date </label>
+                                            <div class="input-group date fromdatepicker">
+                                                @Html.TextBoxFor(@model => model.Attendancedate, new { @class = "form-control datepicker", @onchange = "return CheckValidate();", @readonly = "readonly" })
+                                                <span class="input-group-append input-group-addon ">
+                                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="form-group">
+                                            <input type="submit" value="Search" name="btntype" class="btn btn-primary" />
+
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+                <!-- Form Element sizes -->
+
+
+
+            </div><!--/.col (left) -->
+        }
+        <!-- right column -->
+        <div class="col-md-12">
+            <!-- general form elements disabled -->
+            <div class="box box-warning">
+                <div class="box-header">
+
+                    <h3> Attendance Sheet for : @(Model.DisplaymonthYear)</h3>
+
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    @if (@Model.Attendancesheetlist != null)
+                    {
+                        <table id="attendancesheettbllist" class="table table-bordered table-hover" border="2" style="border-color:#333333;width: 100%">
+                            <thead>
+                                <tr>
+                                    @foreach (var column in @Model.Attendancesheetlist.Columns)
+                                    {
+                                        <th style="text-align: center">
+                                            @column
+                                        </th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (DataRow rows in @Model.Attendancesheetlist.Rows)
+                                {
+                                    <tr>
+                                        @foreach (DataColumn column in @Model.Attendancesheetlist.Columns)
+                                        {
+                                            <td style="text-align: center">
+                                                @rows[@column]
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div> <!-- /.box-body -->
+
+
+
+    </div> <!-- /.box -->
+
+</section> <!-- /.content -->
+
+
+@section JS
+{
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/jszip.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/pdfmake.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/vfs_fonts.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.print.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/tblPrintPdfexceljscss/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/tblPrintPdfexceljscss/buttons.dataTables.min.css">
+
+    <script type="text/javascript">
+        var _attendancetitle = 'Attendance Sheet for : @(Model.DisplaymonthYear)';
+        $(document).ready(function () {
+            $('#attendancesheettbllist').DataTable({
+                "scrollX": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return _attendancetitle;
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A0',
+                        text: '<i class="fa fa-file-pdf-o"> PDF</i>',
+                        titleAttr: 'PDF'
+                    },
+                    {
+                        extend: 'excel',
+                        title: function () {
+                             return _attendancetitle;
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Excel</i>',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: function () {
+                             return _attendancetitle;
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Print</i>',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        },
+                        customize: function (win) {
+                            $(win.document.body)
+                                .css('font-size', '8pt')
+                                .prepend(
+                                    '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                                );
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+        });
+
+        $(document).ready(function () {
+            // $('#studentattendancetbl').DataTable();
+            $('.datepicker').datepicker({
+                format: 'MM/yyyy',
+                orientation: "bottom auto", autoclose: true,
+            });
+            $('#Attendancedate').val(formatDate($('#Attendancedate').val()));
+        });
+
+         /*------------------End Application No----------------------*/
+         function Getsectionbaseonclass(obj) {
+            debugger;
+            var classId = obj.value;
+            var checkUrl = '@Url.Action("GetsectionbaseonclassId", "Admin")';
+            $.ajax({
+                url: checkUrl,
+                type: "GET",
+                dataType: "JSON",
+                data: { classId: classId },
+                success: GetsectionbaseonclassIdSuccess,
+                error: GetsectionbaseonclassIdFail
+            });
+
+        }
+
+        function GetsectionbaseonclassIdSuccess(result) {
+            FillSectionList(result.seclst);
+            $("#SelectSectionId").val('').trigger("chosen:updated");
+        }
+
+        function GetsectionbaseonclassIdFail() {
+
+        }
+
+        function FillSectionList(SectionList) {
+            var v = "<option>--Select--</option>";
+            $.each(SectionList, function (i, sec) {
+
+                v += "<option value=" + sec.Secmid + ">" + sec.SectionName + "</option>";
+            });
+            $("#SelectSectionId").html(v);
+        }
+        /*------------------End Application No----------------------*/
+
+    </script>
+}
+

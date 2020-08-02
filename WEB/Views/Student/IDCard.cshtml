@@ -1,0 +1,61 @@
+﻿@model SHARED.IDCard
+@{
+    Layout = null;
+}
+
+
+<link href="~/Content/CSS/IDCard.css" rel="stylesheet" type="text/css"  />
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <div id="printDiv">
+        <div class="panel-body">
+            @foreach (var StudentDetails in @Model.StudentDetailsList)
+            {
+                if (@Model.CardType == "H")
+                {
+                    <div class="col-sm-6 col-lg-6">
+                        <div id="new1">
+                            <div id="holder1">
+                                <div class="box1">
+                                    <div class="tie1">
+
+                                        <img src="@Model.OragnisationDetails.OrgImage">
+                                        <h1>@Model.OragnisationDetails.Oname</h1>
+                                    </div>
+                                    <h1 class="id"><b>STUDENT ID CARD</b></h1>
+                                    <img src="@StudentDetails.studentimage">
+                                    <p class="rname">NAME:@StudentDetails.Firstname &nbsp;&nbsp;</p>
+                                    <p class="postitle">COURSE:@StudentDetails.ClassName @StudentDetails.SectionName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                    <p class="postitle">DOB:@Convert.ToDateTime(StudentDetails.Bd_dob).ToString("dd/MMM/yyyy")</p><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-4 col-lg-4">
+                        <div id="new">
+                            <div id="holder">
+                                <div class="box">
+                                    <div class="tie">
+                                        <h1>@Model.OragnisationDetails.Oname</h1>
+                                        <img src="@Model.OragnisationDetails.OrgImage">
+                                    </div>
+                                    <h1 class="id"><b>STUDENT ID CARD</b></h1><img src="@StudentDetails.studentimage"><h1 class="rname">NAME:@StudentDetails.Firstname</h1>
+                                    <h1 class="postitle">COURSE:@StudentDetails.ClassName @StudentDetails.SectionName</h1>
+                                    <h1 class="postitle">DOB:@Convert.ToDateTime(StudentDetails.Bd_dob).ToString("dd/MMM/yyyy")</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</body>
+</html>

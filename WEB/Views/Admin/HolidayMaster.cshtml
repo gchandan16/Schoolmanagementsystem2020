@@ -1,0 +1,106 @@
+﻿@model SHARED.HolidayMaster
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Holiday Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        HOLIDAY MASTER
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
+        <li class="active">HOLIDAY MASTER</li>
+    </ol>
+</section>
+
+
+<!-- Main content -->
+<script src="~/Scripts/Fee/Fee.js"></script>
+@using (Html.BeginForm("HolidayMaster", "Admin", FormMethod.Post, new { }))
+{
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+
+                        <div class="card card-default">
+                            <div class="card-header card_bg">
+                                <div class="card-title card_tittle2">
+                                    @if (Model.ActionName == Constants.BTN_CREATE)
+                                    {
+                                        <span>Create Holiday</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.HiddenFor(model => model.Hid)
+                                        <span>Update Holiday</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <label for="pwd" class="redlabel">
+                                            Holiday Date:
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @if (Model.ActionName == Constants.BTN_CREATE)
+                                        {
+                                            @Html.TextBoxFor(m => m.HolidayDate, new { @class = "form-control datepicker mandate", @placeholder = "Date", @msg = "Please select date.", @autocomplete = "off" })
+                                        }
+                                        else
+                                        {
+                                            @Html.HiddenFor(m => m.HolidayDate)
+                                            @Html.DisplayFor(m => m.HolidayDate, new { @class = "form-control mandate" })
+                                        }
+
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label for="pwd" class="redlabel">
+                                            Student:
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.CheckBoxFor(m => m.Student)
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label for="pwd">
+                                            Staff:
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.CheckBoxFor(m => m.Staff)
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="col-sm-12 col-md-12 right_bottom">
+                                        @if (Model.ActionName == Constants.BTN_CREATE)
+                                        {
+                                            <input type="submit" value="Save" name="btntype" class="btn btn-primary pull-right" id="SaveHoliday" onclick="return inputValidation();" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" value="Update" name="btntype" class="btn btn-primary pull-right" id="UpdateHoliday" />
+                                            <a href="/Admin/HolidayMaster" class="btn btn_font" title="Reset">Reset</a>
+                                        }
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+

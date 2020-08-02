@@ -1,0 +1,234 @@
+﻿@model WEB.Models.AssignheadtoemployeeModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Salary Head Assign";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+<section class="content-header">
+    <h4 class="box-title">
+        Salary Head Assign
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/EmployeeList">Salary Head Assign</a></li>
+        <li class="active">Salary Head Assign</li>
+    </ol>
+</section>
+@using (Html.BeginForm("Salaryheadassign", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-body">
+
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Choose Employee</label>
+                            @Html.DropDownListFor(m => m.EMP_ID, new SelectList(Model.EmployeeList, "EMP_ID", "FullName"), "--Select--", new { @class = "form-control chosen-select mandate", @msg = "Please choose Employee."})
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Is PF</label>
+
+                            <table>
+                                <tr>
+                                    <td>
+                                        @Html.DropDownListFor(model => model.IsPF, new List<SelectListItem> {
+                                                           new SelectListItem{Text="Yes",Value="Yes" },
+                                                           new SelectListItem{Text="No",Value="No" },
+                                                       }, new { @class = "form-control chosen-select mandate" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(model => model.IsPFType, new List<SelectListItem> {
+                                                           new SelectListItem{Text="Fixed",Value="Fixed" },
+                                                           new SelectListItem{Text="Percentage",Value="Percentage" },
+                                                       }, new { @class = "form-control chosen-select mandate" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.PFEmployeeamt, new { @class = "form-control mandate", @msg = "Enter Employee Amount", @placeholder = "Enter Employee Amount", @value = "0.00" })
+
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.PFEmployeramt, new { @class = "form-control mandate", @msg = "Enter Employer Amount", @placeholder = "Enter Employer Amount", @value = "0.00" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Is ESI</label>
+
+                            <table>
+                                <tr>
+                                    <td>
+                                        @Html.DropDownListFor(model => model.IsESI, new List<SelectListItem> {
+                                                           new SelectListItem{Text="Yes",Value="Yes" },
+                                                           new SelectListItem{Text="No",Value="No" },
+                                                       }, new { @class = "form-control chosen-select mandate" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(model => model.IsESIType, new List<SelectListItem> {
+                                                           new SelectListItem{Text="Fixed",Value="Fixed" },
+                                                           new SelectListItem{Text="Percentage",Value="Percentage" },
+                                                       }, new { @class = "form-control chosen-select mandate" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.ESIEmployeeamt, new { @class = "form-control mandate", @msg = "Enter Employee Amount", @placeholder = "Enter Employee Amount", @value = "0.00" })
+
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.ESIEmployeramt, new { @class = "form-control mandate", @msg = "Enter Employer Amount", @placeholder = "Enter Employer Amount", @value = "0.00" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Is TDS</label>
+
+                            <table>
+                                <tr>
+                                    <td>
+                                        @Html.DropDownListFor(model => model.IsTDS, new List<SelectListItem> {
+                                                           new SelectListItem{Text="Yes",Value="Yes" },
+                                                           new SelectListItem{Text="No",Value="No" },
+                                                       }, new { @class = "form-control chosen-select mandate" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(model => model.Taxcategory, new List<SelectListItem> {
+                                                           new SelectListItem{Text="Man",Value="Man" },
+                                                            new SelectListItem{Text="Woman",Value="Woman" },
+                                                             new SelectListItem{Text="Senior Citizen Man",Value="Senior Citizen Man" },
+                                                             new SelectListItem{Text="Senior Citizen Woman",Value="Senior Citizen Woman" },
+                                                       }, new { @class = "form-control chosen-select mandate" })
+
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(m => m.Shfittype, new SelectList(Model.Shiftlist, "Shiftmid", "ShiftName"), "--Select--", new { @class = "form-control chosen-select mandate", @msg = "Please choose Shift." })
+                                      
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <input type="button" name="btntype" value="View Salary Head" id="btnadd" class="btn btn-success" onclick="return viewsalaryhead();" />
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+                <!-- Form Element sizes -->
+
+            </div><!--/.col (left) -->
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        @{
+                            var i = 1;
+                        }
+                        <input type="hidden" id="loopcount" name="loopcount" value="@(Model.Salaryheadlist.Count)" />
+                        @foreach (var _item in Model.Salaryheadlist)
+                        {
+                            <div class="form-group">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label for="@_item.Headname">@_item.Headname</label>
+                                            <input type="hidden" id="@("salheadid_"+i.ToString())" name="@("salheadid_"+i.ToString())" value="@(_item.Shmid)" />
+                                            <input type="text" msg="Enter " @_item.Headname class="form-control mandate" id="salaryhead_@i" name="salaryhead_@i" value="@(_item.Defaultvalue)" />
+                                        </td>
+                                        <td style="width:50px;">
+                                            <span style="width:50px;"></span>
+                                        </td>
+                                        <td>
+                                            <label for="Apply For">Apply For</label>
+                                            <div class="input-group date fromdatepicker">
+                                                <input type="text" msg="Choose Date " class="form-control datepicker mandate" id="Applyfrom_@i" name="Applyfrom_@i" value=" " />
+                                                <span class="input-group-append input-group-addon ">
+                                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            i = i + 1;
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.box-body -->
+        <div class="row">
+            <input type="submit" name="btntype" value="Save" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+
+        </div>
+    </section><!-- /.content -->
+
+}
+@section JS
+{
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/M/yyyy',
+                orientation: "bottom auto", autoclose: true,
+            });
+        });
+         function CloseEnqueryFormDiv() {
+            $("#SalaryheadDiv").empty();
+            $("#popupDiv").hide();
+        }
+
+        function viewsalaryhead() {
+
+            var _selectedemp = $("#EMP_ID").val();
+           
+            if (_selectedemp > 0 && _selectedemp.length > 0) {
+
+                  BlockUI();
+
+                $.ajax({
+                    url: '@Url.Action("Employeesalaryhead")',
+                    contentType: 'application/json; charset=utf-8',
+                    type: 'POST',
+                    cache: false,
+                    data: '{"employeeid":"' + _selectedemp + '"}',
+                    success: function (response) {
+                        $.unblockUI();
+                       // alert(response);
+                        $("#SalaryheadDiv").html(response);
+                        $("#popupDiv").show();
+
+                    },
+                    failure: function (response) {
+                        alert('Unable to perform event. Please try again.');
+                        $.unblockUI();
+                    },
+                });
+
+            }
+            else {
+                alert('Choose the Employee !');
+            }
+
+            }
+
+    </script>
+
+
+
+}
+
+<div id="popupDiv" style="display: none; position: fixed; top: 65px; z-index: 1005; left: 350px;background: rgb(1, 1, 1);">
+    <div id="SalaryheadDiv"></div>
+</div>

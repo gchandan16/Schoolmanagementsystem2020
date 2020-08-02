@@ -1,0 +1,209 @@
+﻿@model WEB.Models.RoleModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Add Role
+        </h4>
+    }
+    else
+    {
+        <h4 class="box-title">
+            Update Role
+        </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/RoleList">Role Master</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+            <li class="active">Add Role</li>
+        }
+        else
+        {
+            <li class="active">Update Role</li>
+        }
+    </ol>
+</section>
+
+@using (Html.BeginForm("CreateRole", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.role_id)
+    @Html.AntiForgeryToken()
+    @Html.Hidden("hdnleafmenu")
+    @Html.Hidden("hdnmenuper")
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Role Name:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.RoleName, new
+                           {
+                               @class = "form-control mandate",
+                               @msg = "Please enter gender name.",
+                               @pat = "^[A-Za-z]*$",
+                               @onkeypress = "return isKeyValid(event,'32,65-90,97-122');",
+                               @autocomplete = "off",
+                               id = "txtusercode",
+                               onblur = "return ValidateRoleNameExist(this)"
+                           })
+                                @Html.ValidationMessageFor(model => model.RoleName)
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Role Description:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.RoleDescription, new { @class = "form-control", id = "txtusername" })
+                                @Html.ValidationMessageFor(model => model.RoleDescription)
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-md-12">
+                            <div id="divjstree">
+                                <!-- in this example the tree is populated from inline HTML -->
+                                @Html.Raw(Model.MenuList);
+                            </div>
+                            <hr />
+                            <div class="row pull-right">
+
+                                <div class="col-md-12">
+                                    @if (Model.ActionName == Constants.BTN_CREATE)
+                                    {
+                                        <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return CheckValidation();" />
+                                        <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                    }
+                                    else if (Model.ActionName == Constants.BTN_EDIT)
+                                    {
+
+                                        <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return CheckValidation();" />
+                                        <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@section JS
+{
+    <script src="/Content/JsTree/dist/jstree.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            var data = '@Html.Raw(Json.Encode(Model.selectedMenuPermission))';
+            var jsonObject = $.parseJSON(data);
+            if (data != null && data.length > 0) {
+
+                $.each(jsonObject, function (i, n) {
+                    debugger;
+                    if (n.PERMISSION_ID != null && n.PERMISSION_ID != 0) {
+                        $('#divjstree').jstree(true).select_node("per_" + n.MENU_ID + "," + n.PERMISSION_ID);
+                    }
+                    else {
+                        $('#divjstree').jstree(true).select_node("menu_" + n.MENU_ID);
+                    }
+                });
+                //$("#divjstree").trigger("loaded.jstree");
+
+            }
+
+        });
+        var menuper = [];
+        var leafmenu = [];
+        $('#divjstree').on('changed.jstree', function (e, data) {
+            debugger;
+            var i, j;
+            menuper = [];
+            leafmenu = [];
+            for (i = 0, j = data.selected.length; i < j; i++) {
+                var dataobj = data.selected[i];
+                if (dataobj.indexOf('_') != -1) {
+
+                    if (dataobj.indexOf(',') != -1) {
+                        menuper.push({ Menu_PermissionString: dataobj });
+                    } else {
+                        leafmenu.push({ LeafMenuString: dataobj });
+                    }
+                }
+            }
+
+        }).jstree({
+            "plugins": ["wholerow", "checkbox"]
+        });
+
+        function CheckValidation() {
+            var valid = true;
+            debugger;
+            if (menuper.length == 0) {
+                alert("Please select atleast one permission");
+                valid = false;
+            }
+            console.log(menuper);
+            $('#hdnmenuper').val(JSON.stringify(menuper));
+            $('#hdnleafmenu').val(JSON.stringify(leafmenu));
+            return valid;
+        }
+
+        function ValidateRoleNameExist(element) {
+            var rolename = $(element).val();
+            var roleid = $('#role_id').val();
+            if (rolename.length > 0) {
+                BlockUI();
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: '@Url.Action("CheckIsRoleNameExist", "Admin")',
+                    data: JSON.stringify({ roleName: rolename, roleId: roleid }),
+                    dataType: "json",
+                    success: function (data) {
+                        $.unblockUI();
+                        if (data == true) {
+                            alert("Role Name already exists");
+                            $('#txtusercode').val('');
+                            $('#txtusercode').focus();
+                        }
+                    },
+                    error: function (data) {
+                        $.unblockUI();
+                    }
+
+                });
+            }
+        }
+
+        function Clear()
+        {
+            $('input[type="text"]').attr('value', '');
+            $('#IsActive').attr('checked', false);
+            $('#divjstree').jstree(false).deselect_all();
+            $('#divjstree').jstree('close_all');
+        }
+    </script>
+}

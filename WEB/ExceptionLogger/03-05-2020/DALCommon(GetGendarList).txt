@@ -1,0 +1,5 @@
+Message:Ambiguous column name 'CreatedBy'.
+Ambiguous column name 'Modifieddate'.
+Ambiguous column name 'Modifiedby'.
+Ambiguous column name 'IsActive'.
+Line NO:2633

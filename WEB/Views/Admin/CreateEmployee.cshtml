@@ -1,0 +1,437 @@
+﻿@model WEB.Models.EmployeeModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+<section class="content-header">
+    <h4 class="box-title">
+        Add Employee
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/EmployeeList">Manage Employee</a></li>
+        <li class="active">Add Employee</li>
+    </ol>
+</section>
+@using (Html.BeginForm("CreateEmployee", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.EMP_ID)
+    @Html.AntiForgeryToken()
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Employee Details</h3>
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-group">
+
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Employee Code</label>
+                                @Html.TextBoxFor(model => model.EMPCODE, new { @class = "form-control mandate", @placeholder = "Enter Employee Code" })
+                                @Html.ValidationMessageFor(model => model.EMPCODE)
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Department Name</label>
+                                @Html.DropDownListFor(m => m.DEPARTMENT_ID, new SelectList(Model.DepartmentList, "DEPARTMENT_ID", "DEPARTMENTNAME"), "-- Select--", new { @class = "form-control chosen-select mandate" })
+                                @Html.ValidationMessageFor(model => model.DEPARTMENT_ID)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Designation Name</label>
+                            @Html.DropDownListFor(m => m.DESIGNATION_ID, new SelectList(Model.DesignationList, "DESIGNATION_ID", "DESIGNATIONNAME"), "-- Select--", new { @class = "form-control chosen-select mandate" })
+                            @Html.ValidationMessageFor(model => model.DESIGNATION_ID)
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Contact Title</label>
+                            @Html.DropDownListFor(m => m.CONTACTTITLE, new SelectList(Model.ContactList, "CTmid", "ContactName"), "--select--", new { @class = "form-control chosen-selectmandate" })
+                            @Html.ValidationMessageFor(model => model.CONTACTTITLE)
+                        </div>
+
+                        <div class="form-group">
+                            <label>First Name</label>
+                            @Html.TextBoxFor(model => model.FIRSTNAME, new { @class = "form-control mandate", @msg = "Please enter first name.", @pat = "^[A-Za-z ]*$", @onkeypress = "return isKeyValid(event,'32,65-90,97-122');", @autocomplete = "off"})
+                            @Html.ValidationMessageFor(model => model.FIRSTNAME)
+                        </div>
+                        <div class="form-group">
+                            <label>Middle Name</label>
+                            @Html.TextBoxFor(model => model.MIDDLENAME, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            @Html.TextBoxFor(model => model.LASTNAME, new { @class = "form-control mandate", @msg = "Please enter last name.", @pat = "^[A-Za-z ]*$", @onkeypress = "return isKeyValid(event,'32,65-90,97-122');", @autocomplete = "off" })
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            @Html.TextBoxFor(model => model.MOBILENUMBER, new { @class = "form-control mandate", @msg = "Please enter mobile number.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @minlength = "10" })
+                            @Html.ValidationMessageFor(model => model.MOBILENUMBER)
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            @Html.TextBoxFor(model => model.EMAIL, new { @class = "form-control mandate", onblur = "return ValidateEmpEmailExist(this)" })
+                            @Html.ValidationMessageFor(model => model.EMAIL)
+                        </div>
+                        <div class="form-group">
+                            <label>Birth Date</label>
+                            <div class="input-group date fromdatepicker">
+                                @Html.TextBoxFor(@model => model.BIRTHDATE, new { @class = "form-control datepicker", @readonly = "readonly" })
+                                <span class="input-group-append input-group-addon ">
+                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            @Html.DropDownListFor(m => m.GENDER, new SelectList(Model.GenderList, "GMid", "GName"), "--select--", new { @class = "form-control mandate" })
+                            @Html.ValidationMessageFor(m => m.GENDER)
+                        </div>
+                        <div class="form-group">
+                            <label>Blood Group</label>
+                            @Html.DropDownListFor(m => m.BLOODGROUP, new SelectList(Model.BloodGroupList, "Bdmid", "BloodGroupName"), "--select--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.BLOODGROUP)
+                        </div>
+                        <div class="form-group">
+                            <label>Marital Status</label>
+                            @Html.DropDownListFor(m => m.MARITALSTATUS, new SelectList(Model.MaritalStatusList, "Mrmid", "StatusName"), "--select--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.MARITALSTATUS)
+                        </div>
+                        <div class="form-group">
+                            <label>Reporting Manager</label>
+                            @Html.DropDownListFor(m => m.SelectedRManagerId, new SelectList(Model.ReportingManagerList, "Emp_Id", "FIRSTNAME"), "-- Select--", new { @class = "form-control chosen-select" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>Father</label>
+                            @Html.TextBoxFor(model => model.FATHER_SPOUSE, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>Qualification 1</label>
+                            @Html.TextBoxFor(model => model.QUALIFICATION1, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.QUALIFICATION1)
+                        </div>
+                        <div class="form-group">
+                            <label>Qualification 2</label>
+                            @Html.TextBoxFor(model => model.QUALIFICATION2, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Joining Date">Joining Date</label>
+                            <div class="input-group date fromdatepicker">
+                                @Html.TextBoxFor(@model => model.JOININGDATE, new { @class = "form-control datepicker mandate", @readonly = "readonly" })
+                                <span class="input-group-append input-group-addon ">
+                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Joining Date">Confirmation Date</label>
+                            <div class="input-group date fromdatepicker">
+                                @Html.TextBoxFor(@model => model.CONFIRMATIONDATE, new { @class = "form-control datepicker", @readonly = "readonly" })
+                                <span class="input-group-append input-group-addon ">
+                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Joining Date">Leaving Date</label>
+                            <div class="input-group date fromdatepicker">
+                                @Html.TextBoxFor(@model => model.LEAVINGDATE, new { @class = "form-control datepicker", @readonly = "readonly" })
+                                <span class="input-group-append input-group-addon ">
+                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Spouse</label>
+                            @Html.TextBoxFor(model => model.SPOUSE, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-6">
+                                <label for="Upload Pan Card">Upload Pan Card&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                <input type="file" id="pancardimge" name="pancardimge" style="display:none;">
+                                <a onclick="$('#pancardimge').click();">
+                                    @if (Model.PANIMGPATH != null)
+                                    {
+                                        <img id="pancardimgepreview" src="@Model.PANIMGPATH" style="width:75px;height:75px;" />
+
+                                    }
+                                    else
+                                    {
+                                        <img id="pancardimgepreview" src="~/Content/Images/dummypancard.jpg" style="width:50px;height:50px;" />
+                                    }
+
+                                </a>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="Upload Employee Photo">Upload Employee Photo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                <input type="file" id="employeephotoimge" name="employeephotoimge" style="display:none;">
+                                <a onclick="$('#employeephotoimge').click();">
+                                    @if (Model.EMPIMGPATH != null)
+                                    {
+                                        <img id="employeephotoimgepreview" src="@Model.EMPIMGPATH" style="width:75px;height:75px;" />
+
+                                    }
+                                    else
+                                    {
+                                        <img id="employeephotoimgepreview" src="~/Content/Images/dummyemployee.png" style="width:50px;height:50px;" />
+                                    }
+
+                                </a>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+                <!-- Form Element sizes -->
+
+            </div><!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+                <!-- general form elements disabled -->
+                <div class="box box-warning">
+                    <div class="box-header">
+                        <h3 class="box-title">Account Details</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Bank Account No.   </label>
+                            @Html.TextBoxFor(model => model.BANKACNO, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Bank Name">Bank Name </label>
+                            @Html.TextBoxFor(model => model.BANKNAME, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>Bank Branch  </label>
+                            @Html.TextBoxFor(model => model.BANKBRANCH, new { @class = "form-control" })
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>PF No.  </label>
+                            @Html.TextBoxFor(model => model.PFNO, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>PAN No.  </label>
+                            @Html.TextBoxFor(model => model.PANNO, new { @class = "form-control", onblur = "return ValidateEmpPANNoExist(this)" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Remarks </label>
+                            @Html.TextBoxFor(model => model.REMARKS, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for=" PF ESTD Code"> PF ESTD Code </label>
+                            @Html.TextBoxFor(model => model.PF_ESTD_CODE, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for=" PF ESTD Code"> PF UAN </label>
+                            @Html.TextBoxFor(model => model.PF_UAN, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for=" PF ESTD Code"> VPF Contb. Rate </label>
+                            @Html.TextBoxFor(model => model.VPF_CONTB_RATE, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for=" PF ESTD Code"> IFSC Code </label>
+                            @Html.TextBoxFor(model => model.IFSC_CODE, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for=" PF ESTD Code"> Leave PL entitled </label>
+                            @Html.TextBoxFor(model => model.LEAVE_PL_ENTITLED, new { @class = "form-control" })
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for=" PF ESTD Code"> Leave CL entitled </label>
+                            @Html.TextBoxFor(model => model.LEAVE_CL_ENTITLED, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for=" PF ESTD Code"> Leave SL entitled </label>
+                            @Html.TextBoxFor(model => model.LEAVE_SL_ENTITLED, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Gross Basic"> Gross Basic </label>
+                            @Html.TextBoxFor(model => model.GROSS_BASIC, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Gross HRA ">Gross HRA </label>
+                            @Html.TextBoxFor(model => model.GROSS_HRA, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Gross Conveyance">Gross Conveyance </label>
+                            @Html.TextBoxFor(model => model.GROSS_CONVEYANCE, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for=" Gross Childern Edu">Gross Childern Edu </label>
+                            @Html.TextBoxFor(model => model.GROSS_CHILDREN_EDUCATION, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for=" Gross Uniform Maint">Gross Uniform Maint </label>
+                            @Html.TextBoxFor(model => model.GROSS_UNIFORM_MAINTENANCE, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for=" Gross Uniform Maint">Gross Car Amount </label>
+                            @Html.TextBoxFor(model => model.GROSS_CAR_AMOUNT, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for=" Gross Uniform Maint"> Gross SPL Allowance </label>
+                            @Html.TextBoxFor(model => model.GROSS_SPECIAL_ALLOWANCE, new { @class = "form-control" })
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for=" Gross Uniform Maint">Gross Salary </label>
+                            @Html.TextBoxFor(model => model.GROSS_SALARY, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for=" Gross Uniform Maint">Emergency Cont Prs </label>
+                            @Html.TextBoxFor(model => model.EMERGENCY_CONT_PRS, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for=" Gross Uniform Maint">Emergency Cont no </label>
+                            @Html.TextBoxFor(model => model.EMERGENCY_CONT_NO, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Active">Active Status </label>
+                            @Html.CheckBoxFor(model => model.ISACTIVE)
+                        </div>
+
+                        <!-- checkbox -->
+                        @if (Model.ActionName == Constants.BTN_CREATE)
+                        {
+                            <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+                            <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                        }
+                        else if (Model.ActionName == Constants.BTN_EDIT)
+                        {
+
+                            <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return inputValidation();" />
+                            <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- /.box-body -->
+
+    </section><!-- /.content -->
+
+}
+@section JS
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/M/yyyy',
+                orientation: "bottom auto", autoclose: true,
+            });
+
+            $('#BIRTHDATE').val(formatDate($('#BIRTHDATE').val()));
+            $('#CONFIRMATIONDATE').val(formatDate($('#CONFIRMATIONDATE').val()));
+            $('#JOININGDATE').val(formatDate($('#JOININGDATE').val()));
+            $('#LEAVINGDATE').val(formatDate($('#LEAVINGDATE').val()));
+
+            /*---------------For Student Image-------------*/
+            var p1 = $("#employeephotoimgepreview");
+            $("#employeephotoimge").change(function () {
+                var imgPath = document.getElementById("employeephotoimge").files[0].name;
+                var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                if (extn == "png" || extn == "jpg" || extn == "jpeg") {
+                    p1.fadeOut();
+                    var Freader = new FileReader();
+                    Freader.readAsDataURL(document.getElementById("employeephotoimge").files[0]);
+                    Freader.onload = function (oFREvent) {
+                        var scrll = oFREvent.target.result;
+                        p1.attr('src', oFREvent.target.result).fadeIn();
+                    }
+                }
+                else {
+                    $("#employeephotoimge").val('');
+                    alert("Please upload image file only having extension png, jpg, jpeg.")
+                }
+            });
+
+            /*--------------End For Student Image---------------*/
+            /*---------------For Father Image-------------*/
+            var p2 = $("#pancardimgepreview");
+            $("#pancardimge").change(function () {
+                var imgPath = document.getElementById("pancardimge").files[0].name;
+                var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                if (extn == "png" || extn == "jpg" || extn == "jpeg") {
+                    p2.fadeOut();
+                    var Freader = new FileReader();
+                    Freader.readAsDataURL(document.getElementById("pancardimge").files[0]);
+                    Freader.onload = function (oFREvent) {
+                        var scrll = oFREvent.target.result;
+                        p2.attr('src', oFREvent.target.result).fadeIn();
+                    }
+                }
+                else {
+                    $("#pancardimge").val('');
+                    alert("Please upload image file only having extension png, jpg, jpeg.")
+                }
+            });
+
+            /*--------------End For Father Image---------------*/
+
+
+        });
+
+        function ValidateEmpEmailExist(element) {
+            var emailid = $.trim($(element).val());
+            var id = element.id;
+            if (emailid != "") {
+                BlockUI();
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: '@Url.Action("ValidateEmpEmailExist", "Admin")',
+                        data: JSON.stringify({ EmailID: emailid }),
+                        dataType: "json",
+                        success: function (data) {
+                            $.unblockUI();
+                            if (data == true) {
+                                alert("Email ID is already registered.");
+                                $('#' + id).val('');
+                                $('#' + id).focus();
+                            }
+                        },
+                        error: function (data) {
+                            $.unblockUI();
+                        }
+                    });
+                }
+        }
+
+    </script>
+}

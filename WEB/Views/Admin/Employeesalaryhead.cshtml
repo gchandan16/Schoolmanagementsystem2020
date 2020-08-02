@@ -1,0 +1,95 @@
+﻿@model WEB.Models.AssignheadtoemployeeModel
+@using SHARED
+
+@{
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" onclick="CloseEnqueryFormDiv();">
+            ×
+        </button>
+        <h4 class="modal-title">Eployee Salary Head Details</h4>
+        <input type="button" id="print" class="btn btn-default" value="Print" onclick="return printDiv('divToPrint');">
+    </div>
+    <div class="modal-body" style="height:700px; overflow:scroll;">
+
+        <div id="divToPrint" style="display: block;">
+           
+            <table style="width:100%;  font-family:'Times New Roman', Times, serif; font-size:12px;">
+                <tr>
+                    <td>
+
+                        <table style="width:100%; ">
+                            <tr>
+                                <td rowspan="4"> <img src="@(Model.OragnisationMaster.OrgImage)" style="width:100px; height: 50px;" />  </td>
+                                <td style="font-size:26px; font-family:Geneva, Arial, Helvetica, sans-serif; font-weight:bold; text-align:center; ">@(Model.OragnisationMaster.Oname)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:20px;text-align:center; ">@(Model.OragnisationMaster.BOAddress) @(Model.OragnisationMaster.BOAddress2) @(Model.OragnisationMaster.BOPincode)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:16px;text-align:center; ">@(Model.OragnisationMaster.LWebsite), Email id:-@(Model.OragnisationMaster.LEmailId), Mobile No:-@(Model.OragnisationMaster.LMobile), @(Model.OragnisationMaster.LPhone) </td>
+                            </tr>
+
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="width:100%;">
+                            <tr>
+                                <td>Salary Head </td>
+                                <td>Head Type</td>
+                                <td>Amount(INR)</td>
+                            </tr>
+                            @foreach (var _singleitem in Model.Salaryheadlist)
+                            {
+
+                                <tr>
+                                    <td>
+                                        @(_singleitem.Headname)
+                                    </td>
+                                    <td>
+                                        @(_singleitem.Headtype)
+                                    </td>
+                                    <td>
+                                        @(_singleitem.Defaultvalue)
+                                    </td>
+                                    @*<td>
+                        @(_singleitem.Leavededucation)
+                    </td>
+                    <td>
+                        @(_singleitem.Esiapplicable)
+                    </td>
+                    <td>
+                        @(_singleitem.Epfapplicable)
+                    </td>
+                    <td>
+                        @(_singleitem.Calculationtype)
+                    </td>*@
+                                </tr>
+
+                            }
+                        </table>
+
+                    </td>
+
+                        </tr>
+
+                    </table>
+                
+         
+
+        </div>
+    </div>
+    <div class="modal-footer">
+
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="CloseEnqueryFormDiv();">
+            Close
+        </button>
+    </div>
+</div>

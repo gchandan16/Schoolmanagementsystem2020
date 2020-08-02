@@ -1,0 +1,348 @@
+﻿@model WEB.Models.SignupModel
+@{
+    ViewBag.Title = "Create Organization";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<style>
+    .frombottom {
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="card card_ps">
+    <div class="header_ps">
+        <span>CREATE NEW ORGANIZATION</span>
+    </div>
+    <div id="dv_displaydetail" class="card-body" style="padding-top: 20px;">
+        @{Html.RenderPartial("_Message", Model);}
+        @using (Html.BeginForm("Create", "Account", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+        {
+        <div class="row frombottom">
+            <div class="col-lg-2 col-xs-12">
+                <label for="pwd" class="redlabel">
+                    Name of Organization:
+                </label>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+                @Html.TextBoxFor(model => model.Oname, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Oname)
+            </div>
+            <div class="col-lg-2 col-xs-12">
+                <label for="pwd" class="redlabel">
+                    Pin Code:
+                </label>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+                @Html.TextBoxFor(model => model.BOPincode, new { @class = "form-control", @onblur = "return getGeoDetails(this);" })
+                @Html.ValidationMessageFor(model => model.BOPincode)
+            </div>
+
+            <div class="col-lg-2 col-xs-12">
+                <label for="pwd" class="redlabel">
+                    Address 1:
+                </label>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+                @Html.TextBoxFor(model => model.BOAddress, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BOAddress)
+            </div>
+
+
+           
+
+        </div>
+
+        <div class="row frombottom">
+
+            <div class="col-lg-2 col-xs-12">
+                <label for="pwd" class="redlabel">
+                    Address 2:
+                </label>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+                @Html.TextBoxFor(model => model.BOAddress2, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BOAddress2)
+            </div>
+
+            <div class="col-lg-2 col-xs-12">
+                <label for="pwd" class="redlabel">
+                    City:
+                </label>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+
+                @Html.DropDownListFor(m => m.CITY_ID, new List<SelectListItem> { new SelectListItem { Text = "--Select--", Value = "" } }, new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.CITY_ID)
+            </div>
+            <div class="col-lg-2 col-xs-12">
+                <label for="pwd" class="redlabel">
+                    District:
+                </label>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+                @Html.DropDownListFor(m => m.LDistict, new List<SelectListItem> { new SelectListItem { Text = "--Select--", Value = "" } }, new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.LDistict)
+            </div>
+
+        </div>
+            <div class="row frombottom">
+
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        State:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.DropDownListFor(m => m.STATE_ID, new List<SelectListItem> { new SelectListItem { Text = "--Select--", Value = "" } }, new { @class = "form-control chosen-select" })
+                    @Html.ValidationMessageFor(model => model.STATE_ID)
+                </div>
+
+
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Country:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.DropDownListFor(m => m.COUNTRY_ID, new List<SelectListItem> { new SelectListItem { Text = "--Select--", Value = "" } }, new { @class = "form-control chosen-select" })
+                    @Html.ValidationMessageFor(model => model.COUNTRY_ID)
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Area:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.TextBoxFor(model => model.LArea, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LArea)
+                </div>
+            </div>
+            <div class="row frombottom">
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Phone:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.TextBoxFor(model => model.LPhone, new { @class = "form-control", @onkeypress = "return isNumber(event);", @maxLength = "10" })
+                    @Html.ValidationMessageFor(model => model.LPhone)
+                </div>
+
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Mobile:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.TextBoxFor(model => model.LMobile, new { @class = "form-control", @onkeypress = "return isNumber(event);", @maxLength = "10" })
+                    @Html.ValidationMessageFor(model => model.LMobile)
+                </div>
+
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Email:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.TextBoxFor(model => model.LEmailId, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LEmailId)
+                </div>
+
+            </div>
+
+            <div class="row frombottom">
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        WebSite:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.TextBoxFor(model => model.LWebsite, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LWebsite)
+                </div>
+
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Affiliated With:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.TextBoxFor(model => model.OAfficilate, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.OAfficilate)
+                </div>
+
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Lic No:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.TextBoxFor(model => model.OlicNo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.OlicNo)
+                </div>
+
+            </div>
+            <div class="row frombottom">
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Tax No:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.TextBoxFor(model => model.OTaxNo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.OTaxNo)
+                </div>
+
+
+
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Contact Person:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    @Html.TextBoxFor(model => model.OContactNo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.OContactNo)
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    <label for="pwd" class="redlabel">
+                        Logo:
+                    </label>
+                </div>
+                <div class="col-lg-2 col-xs-12">
+                    <input type="file" id="emppathimage" name="emppathimage" style="display:none;">
+                    <a onclick="$('#emppathimage').click();">
+                        <img id="uploademppreview" src="~/Content/Images/schooldummylogo.png" width="50%" />
+                    </a>
+                    <br>
+                </div>
+
+            </div>
+
+
+            <hr />
+            <div class="row" style="margin-top: -4px !important;">
+                <div class="col-lg-12 text-right margin_lf">
+
+                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn_font" />
+                    <input type="button" class="btn btn_font" name="btntype" value="Clear" onclick="return Clear();" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var p = $("#uploademppreview");
+        $("#emppathimage").change(function () {
+            var imgPath = document.getElementById("emppathimage").files[0].name;
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            if (extn == "png" || extn == "jpg" || extn == "jpeg") {
+                p.fadeOut();
+                var Freader = new FileReader();
+                Freader.readAsDataURL(document.getElementById("emppathimage").files[0]);
+                Freader.onload = function (oFREvent) {
+                    var scrll = oFREvent.target.result;
+                    p.attr('src', oFREvent.target.result).fadeIn();
+                }
+            }
+            else {
+                $("#emppathimage").val('');
+                alert("Please upload image file only having extension png, jpg, jpeg.")
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $(".chosen-select").chosen();
+    });
+
+    $.validator.setDefaults({
+        ignore: []
+    });
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode > 43 && charCode > 45) {
+            return false;
+        }
+        return true;
+    }
+    function getGeoDetails(d) {
+        if ($.trim($("#" + d.id).val()) != "" && $.trim($("#" + d.id).val()).length != 6) {
+            alert("Please enter valid 6 digit Pin Code number.");
+            $("#" + d.id).val('');
+            $("#" + d.id).focus();
+            return false;
+        }
+        else if ($.trim($("#" + d.id).val()).length == 6) {
+            var CityList = $("#CITY_ID");
+            var District = $("#LDistict");
+            var StateList = $("#STATE_ID");
+            var CountryList = $("#COUNTRY_ID");
+
+            CityList.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>').trigger("chosen:updated");
+            District.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>').trigger("chosen:updated");
+            StateList.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>').trigger("chosen:updated");
+            CountryList.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>').trigger("chosen:updated");
+
+            $.ajax({
+                url: window.location.origin + '/Account/GetGeoDetails/',
+                contentType: 'application/json; charset=utf-8',
+                type: 'POST',
+                cache: false,
+                data: '{"PinCode":"' + $("#" + d.id).val() + '"}',
+                success: function (response) {
+                    if (response._CityList != null && response._StateList != null && response._DistrictList != null && response._CountryList != null && response._CityList.length > 0 && response._StateList.length > 0 && response._DistrictList.length > 0 && response._CountryList.length > 0) {
+                        CityList.empty();
+                        District.empty();
+                        StateList.empty();
+                        CountryList.empty();
+                        if (response._CityList.length > 1)
+                            CityList.append("<option value=''>--Select--</option>");
+                        if (response._DistrictList.length > 1)
+                            District.append("<option value=''>--Select--</option>");
+                        if (response._StateList.length > 1)
+                            StateList.append("<option value=''>--Select--</option>");
+                        if (response._CountryList.length > 1)
+                            CountryList.append("<option value=''>--Select--</option>");
+                        $.each(response._CityList, function () {
+                            CityList.append("<option value='" + this.CITY_ID + "'>" + this.CITYNAME + "</option>");
+                        });
+                        CityList.trigger("chosen:updated");
+                        $.each(response._DistrictList, function () {
+                            District.append("<option value='" + this.DistrictCode + "'>" + this.DistrictName + "</option>");
+                        });
+                        District.trigger("chosen:updated");
+                        $.each(response._StateList, function () {
+                            StateList.append("<option value='" + this.STATE_ID + "'>" + this.STATENAME + "</option>");
+                        });
+                        StateList.trigger("chosen:updated");
+                        $.each(response._CountryList, function () {
+                            CountryList.append("<option value='" + this.COUNTRY_ID + "'>" + this.COUNTRYNAME + "</option>");
+                        });
+                        CountryList.trigger("chosen:updated");
+                    }
+                    else {
+                        alert("Sorry, Currently we are not providing service in your area.")
+                        $("#" + d.id).val('');
+                        CityList.empty().append('<option value="">--Select--</option>').trigger("chosen:updated");
+                        District.empty().append('<option value="">--Select--</option>').trigger("chosen:updated");
+                        StateList.empty().append('<option value="">--Select--</option>').trigger("chosen:updated");
+                        CountryList.empty().append('<option value="">--Select--</option>').trigger("chosen:updated");
+
+                        $("#" + d.id).focus();
+                    }
+                },
+                failure: function (response) {
+                    alert('Unable to perform event. Please try again.');
+                    $.unblockUI();
+                },
+            })
+        }
+
+    }
+</script>

@@ -1,0 +1,24 @@
+Message:Conversion failed when converting date and/or time from character string.
+Line NO:956
+Message:Conversion failed when converting date and/or time from character string.
+Line NO:956
+Message:Incorrect syntax near 'Modifiedby'.
+UPDATE MST_Student SET RollNo = '100' Modifiedby = 'manish.kalpi@gmail.com' WHERE Smid='5'
+Line NO:956
+Message:Incorrect syntax near '1'.
+UPDATE MST_Student SET 1 = 1, RollNo = '100', Modifiedby = 'manish.kalpi@gmail.com' WHERE Smid='5'
+Line NO:956
+Message:Conversion failed when converting date and/or time from character string.
+Line NO:956
+Message:Conversion failed when converting date and/or time from character string.
+Line NO:955
+Message:Conversion failed when converting date and/or time from character string.
+Line NO:955
+Message:Conversion failed when converting date and/or time from character string.
+Line NO:955
+Message:Conversion failed when converting date and/or time from character string.
+Line NO:955
+Message:The column name 'Modifieddate' is specified more than once in the SET clause or column list of an INSERT. A column cannot be assigned more than one value in the same clause. Modify the clause to make sure that a column is updated only once. If this statement updates or inserts columns into a view, column aliasing can conceal the duplication in your code.
+Line NO:955
+Message:The column name 'Modifieddate' is specified more than once in the SET clause or column list of an INSERT. A column cannot be assigned more than one value in the same clause. Modify the clause to make sure that a column is updated only once. If this statement updates or inserts columns into a view, column aliasing can conceal the duplication in your code.
+Line NO:955

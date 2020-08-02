@@ -1,0 +1,187 @@
+﻿@model SHARED.DriverDetails
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Driver";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Add Driver
+        </h4>
+    }
+    else
+    {
+        <h4 class="box-title">
+            Update Driver
+        </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Transport/DriverMaster">Driver Master</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+            <li class="active">Add Driver</li>
+        }
+        else
+        {
+            <li class="active">Update Driver</li>
+        }
+    </ol>
+</section>
+
+@using (Html.BeginForm("AddDriver", "Transport", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.DriverID)
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Select Vehicle:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @{
+                                    var VehicleList = (IEnumerable<SelectListItem>)TempData["VehicleList"];
+                                }
+                                @Html.DropDownListFor(a => a.VehicleID, new SelectList(VehicleList, "Value", "Text"), "--Select--", new { @class = "form-control mandate", @msg = "Please select Vehicle." })
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Is Employee:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(a => a.IsEmployee, new List<SelectListItem>
+{
+new SelectListItem{ Text="Yes", Value = "true" },
+new SelectListItem{ Text="No", Value = "false" },
+} , "--Select--", new { @class = "form-control mandate", @msg = "Please select Employee type.", @onchange="return display(this);" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Name:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @*<input type="Text" class="form-control EmployeeNameAuto" style="display:none;" placeholder="Search By Employee Name">*@
+                                @Html.HiddenFor(m => m.EmployeeID)
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control mandate EmployeeNameAutoDyn", @msg = "Please enter Employee Name.", @placeholder = "Employee Name", @autocomplete = "off", @onfocus = "return DynamicAuto(this);" })
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    DOB:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m => m.DOB, new { @class = "form-control datepicker mandate", @msg = "Please enter date of Birth.", @placeholder = "Date Of Birth", @autocomplete = "off" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Present Address:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m => m.PresentAddress, new { @class = "form-control mandate", @msg = "Please enter present address.", @placeholder = "Present Address", @autocomplete = "off" })
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Permanent Address:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m => m.PermanentAddress, new { @class = "form-control mandate", @msg = "Please enter permanent address.", placeholder = "Permanent Address", @autocomplete = "off" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Phone:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control mandate", @placeholder = "Phone Number", @msg = "Please enter phone no.", @pat = "^[0-9]*$", @maxlength = "12", @onkeypress = "return isKeyValid(event,'48-57');", @autocomplete = "off" })
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    License No:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m => m.LicenseNo, new { @class = "form-control mandate", @placeholder = "License No", @msg = "Please enter license no.", @pat = "^[A-Za-z 0-9]*$", @maxlength = "100", @onkeypress = "return isKeyValid(event,'32,48-57,65-90,97-122');", @autocomplete = "off" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Is Active:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(a => a.IsActive, new List<SelectListItem>
+                       {
+                       new SelectListItem{ Text="Yes", Value = "true" },
+                       new SelectListItem{ Text="No", Value = "false" },
+                       }, new { @class = "form-control mandate", @msg = "Please select." })
+                            </div>
+
+                        </div>
+
+                        <hr />
+                        <div class="row pull-right">
+                            <div class="col-md-12">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Save" id="SaveVehicle" class="btn btn-success" onclick="return addDriverValidation();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="UpdateVehicle" onclick="return addDriverValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+}
+<script src="~/Scripts/Transport/transport.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#roletbl1').DataTable({
+                "order": []
+            });
+        });
+        $('#DOB').datepicker({
+            format: 'dd/M/yyyy',
+            autoclose: true,
+            endDate: new Date()
+        });
+        //EmployeeNameAuto
+    });
+</script>

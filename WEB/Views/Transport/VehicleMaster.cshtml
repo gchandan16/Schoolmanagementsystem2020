@@ -1,0 +1,172 @@
+﻿@model SHARED.Vehicle
+@using WEB.AppCode
+@using SHARED
+
+@{
+    ViewBag.Title = "Vehicle List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h4>
+        Vehicle List
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Transport</a></li>
+        <li class="active">Vehicle List</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <a class="mb-1 btn btn-success pull-right" href="/Transport/AddVehicle?@Constants.HASH_ADMIN">Create New</a>
+                    }
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="roletbl" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                        <thead class="thead-lights">
+                            <tr>
+                                <th>
+                                    SNo.
+                                </th>
+                                <th>
+                                    Vehicle No
+                                </th>
+                                <th>
+                                    Total Seats
+                                </th>
+                                <th>
+                                    Allowed Seats
+                                </th>
+                                <th>
+                                    Ownership Type
+                                </th>
+                                <th>
+                                    Insurance Expiry
+                                </th>
+                                <th>
+                                    Pollution Expiry
+                                </th>
+                                <th>
+                                    GPS
+                                </th>
+                                <th>
+                                    CCTV
+                                </th>
+                                <th>
+                                    Vehicle Specification
+                                </th>
+                                <th>
+                                    Active
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int SNo = 1;}
+                            @foreach (var item in Model.VehicleDetailList)
+                            {
+                            <tr>
+                                <td>
+                                    @SNo
+                                </td>
+                                <td>
+                                    @item.State <b>-</b> @item.Sequential <b>-</b> @item.RTO <b>-</b> @item.UniqueNo
+                                </td>
+                                <td>
+                                    @item.TotalSeats
+                                </td>
+                                <td>
+                                    @item.AllowedSeats
+                                </td>
+                                @if (Convert.ToBoolean(item.OwnershipType))
+                                {
+                                    <td>
+                                        Yes
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        No
+                                    </td>
+                                }
+                                <td>
+                                    @item.InsuranceExpiry
+                                </td>
+                                <td>
+                                    @item.PollutionExpiry
+                                </td>
+                                @if (Convert.ToBoolean(item.GPS))
+                                {
+                                    <td>
+                                        Yes
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        No
+                                    </td>
+                                }
+
+                                @if (Convert.ToBoolean(item.CCTV))
+                                {
+                                    <td>
+                                        Yes
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        No
+                                    </td>
+                                }
+                                <td>
+                                    @item.VehicleSpecification
+                                </td>
+                                @if (Convert.ToBoolean(item.IsActive))
+                                {
+                                    <td>
+                                        Yes
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        No
+                                    </td>
+                                }
+                                <td>
+                                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.EDIT))
+                                    {
+                                        <a href="/Transport/AddVehicle?VehicleID=@item.VehicleID&ActionName=edit" title="Edit"><i class="fa fa-pencil"></i></a>
+                                    }
+                                </td>
+                            </tr>
+                                SNo = SNo + 1;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#roletbl').DataTable({
+                "order": []
+            });
+        });
+    });
+</script>

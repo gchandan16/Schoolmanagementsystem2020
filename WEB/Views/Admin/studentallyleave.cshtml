@@ -1,0 +1,191 @@
+﻿@model WEB.Models.StudentleaveModel
+@using WEB.AppCode
+@using SHARED
+@using System.Data
+@{
+    ViewBag.Title = "Student Apply Leave";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h4>
+        Student Apply Leave
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="">Student Apply Leave</li>
+    </ol>
+</section>
+
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        @using (Html.BeginForm("studentallyleave", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                        {
+                            @Html.HiddenFor(m => m.Slmid)
+                            @Html.AntiForgeryToken()
+                            <table id="example2" class="table table-bordered ">
+
+                                <tr>
+                                    <td colspan="2">
+                                        @Html.DropDownListFor(m => m.Smid, new SelectList(Model.Studentdetaillist, "Smid", "Studentfulldetail"), "--Select--", new { @class = "form-control chosen-select mandate",@msg = "Please choose Student.", onChange = "return Choosestudent(this.value);" })
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td><div id="Studentdetail"></div></td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">Start Date   </label>
+                                            <div class="input-group date fromdatepicker">
+                                                @Html.TextBoxFor(@model => model.Leavestartdate, new { @class = "form-control datepicker mandate",@placeholder = "From Date", @msg = "Please choose To Date.", @readonly = "readonly" })
+                                                <span class="input-group-append input-group-addon ">
+                                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">End Date   </label>
+                                            <div class="input-group date fromdatepicker">
+                                                @Html.TextBoxFor(@model => model.Leaveenddate, new { @class = "form-control datepicker mandate", @placeholder = "To Date", @msg = "Please choose To Date.", @readonly = "readonly" })
+                                                <span class="input-group-append input-group-addon "> 
+                                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>
+
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">Application for Leave Reason Note </label>
+
+                                            @Html.TextAreaFor(@model => model.LeaveRreason, new { @class = "form-control mandate", @msg = "Please enter Leave Reason.", @rows = "3", @placeholder = "Enter Extra Note" })
+                                        </div>
+                                    </td>
+
+                                    <td>
+
+
+                                        <div class="form-group">
+                                            <label for="exampleInputFile">Document</label>
+                                            <input type="file" id="leavedocumentimge" name="leavedocumentimge" style="display:none;">
+                                            <a onclick="$('#leavedocumentimge').click();">
+                                                @if (Model.Leavedocument != null)
+                                                {
+                                                    <img id="leavedocumentimgepreview" src="@Model.Leavedocument" style="width:75px;height:75px;" />
+
+                                                }
+                                                else
+                                                {
+                                                    <img id="leavedocumentimgepreview" src="~/Content/Images/dummypancard.jpg" style="width:50px;height:50px;" />
+                                                }
+
+                                            </a>
+
+                                        </div>
+
+
+
+
+                                    </td>
+
+                                </tr>
+
+
+
+
+                                <tr>
+                                    <td colspan="12">
+                                        <div class="form-group" style="text-align:center;">
+
+                                            <button type="submit" name="btntype" class="btn btn-primary" onclick="return inputValidation();">Submit</button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                            </table>
+
+
+                        }
+                        </div>   <!-- /.row -->
+
+                </section><!-- /.content -->
+
+            </div><!-- /.box -->
+
+
+        </div>
+    </div>
+</section>
+
+
+@section JS
+{
+
+
+    <script>
+        $(".chosen-select").chosen({ width: '100%' });
+        function Choosestudent(obj) {
+            BlockUI();
+            $("#Studentdetail").html('');
+                $.ajax({
+                    url: '@Url.Action("Getstudentrecordsresult")',
+                    contentType: 'application/json; charset=utf-8',
+                    type: 'POST',
+                    cache: false,
+                    data: '{"_studentid":"' + obj + '"}',
+                    success: function (response) {
+                        $.unblockUI();
+                        $("#Studentdetail").html(response);
+                    },
+                    failure: function (response) {
+                        $("#Studentdetail").html('<p>No Record is Available</p>')
+                        alert('Unable to perform event. Please try again.');
+                        $.unblockUI();
+                    },
+                });
+            
+        }
+
+          var p2 = $("#leavedocumentimgepreview");
+            $("#leavedocumentimge").change(function () {
+                var imgPath = document.getElementById("leavedocumentimge").files[0].name;
+                var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                if (extn == "png" || extn == "jpg" || extn == "jpeg") {
+                    p2.fadeOut();
+                    var Freader = new FileReader();
+                    Freader.readAsDataURL(document.getElementById("leavedocumentimge").files[0]);
+                    Freader.onload = function (oFREvent) {
+                        var scrll = oFREvent.target.result;
+                        p2.attr('src', oFREvent.target.result).fadeIn();
+                    }
+                }
+                else {
+                    $("#leavedocumentimge").val('');
+                    alert("Please upload image file only having extension png, jpg, jpeg.")
+                }
+            });
+
+            /*--------------End For Father Image---------------*/
+    </script>
+    }

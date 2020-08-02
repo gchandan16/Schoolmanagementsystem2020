@@ -1,0 +1,101 @@
+﻿@using SHARED
+@{
+    ViewBag.Title = "Student ID Card";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<section class="content-header">
+    <h4>
+        Student ID Card
+
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">
+            Student ID Card
+        </li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-2">
+                                Class:
+                            </div>
+                            <div class="col-lg-2">
+                                <select id="ddlClassList" onchange="return GetSectionList(this,'All');" class="form-control"></select>
+                            </div>
+
+                            <div class="col-lg-2">
+                                Section:
+                            </div>
+                            <div class="col-lg-2">
+                                <select id="ddlSectionList" class="form-control"></select>
+                            </div>
+
+                            <div class="col-lg-2">
+                               ID Card Type:
+                            </div>
+                            <div class="col-lg-2">
+                                <select id="ddlCardType" class="form-control">
+                                    <option value="0">Select ID Template</option>
+                                    <option value="H">Horizontal</option>
+                                    <option value="V">Vertical</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <hr />
+                        <div class="row pull-right ">
+                            <div class="col-md-12">
+                                <input class="btn btn-success" type="button" id="btnGenerateIDCard" value="Generate ID Card" onclick="return GenerateIDCard();" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12 divBox">
+
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/Student/Student.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#ddlClassList").empty().append('<option value="0">All Class</option>');
+        $("#ddlSectionList").empty().append('<option value="0">All Section</option>');
+        BlockUI();
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: '@Url.Action("GetClassList", "Student")',
+            dataType: "json",
+            success: function (data) {
+                if (data.length > 0) {
+                    for (var l = 0; l < data.length; l++) {
+                        $("#ddlClassList").append('<option value="' + data[l].CMid + '">' + data[l].ClassName + '</option>');
+                    }
+
+                }
+                $.unblockUI();
+            },
+            error: function (data) {
+                $.unblockUI();
+            }
+        });
+    });
+</script>

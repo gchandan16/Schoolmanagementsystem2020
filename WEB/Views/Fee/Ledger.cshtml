@@ -1,0 +1,181 @@
+﻿@model SHARED.Ledger
+@using SHARED
+@{
+    ViewBag.Title = "Ledger";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<section class="content-header">
+    <h4>
+        Ledger
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Ledger</li>
+    </ol>
+</section>
+
+@using (Html.BeginForm("Ledger", "Fee", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Description:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Type:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.DropDownListFor(m => m.DescriptionType, new List<SelectListItem>() { new SelectListItem { Text = "Salary", Value = "Salary" }, new SelectListItem { Text = "FeeDeposit", Value = "FeeDeposit" }, new SelectListItem { Text = "Other", Value = "Other" } }, "--All--", new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd">
+                                    EffectiveDate:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(a => a.EffectiveDate, new { @class = "form-control datepicker" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Start Date:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control StartDate mandate", @placeholder = "Start Date", @msg = "Please select start date.", @autocomplete = "off" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    End Date:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control EndDate mandate", @placeholder = "End Date", @msg = "Please select end date.", @autocomplete = "off" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-sm-12 col-md-12 right_bottom">
+                            <input type="submit" value="Search" name="btnSearch" class="btn btn-primary pull-right" id="btnSearch" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <span class="mb-1 pull-left text-bold">
+                        Total Debit: INR @Model.LedgerList.Sum(x => x.Debit)
+                        <br />
+                        Total Credit: INR @Model.LedgerList.Sum(x => x.Credit)
+                    </span>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="roletbl1" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                        <thead class="thead-lights">
+                            <tr>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th>
+                                    Debit (INR)
+                                </th>
+                                <th>
+                                    Credit (INR)
+                                </th>
+                                <th>
+                                    Effective Date
+                                </th>
+                                <th>
+                                    Created Date
+                                </th>
+                                <th>
+                                    Created By
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.LedgerList)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Description
+                                    </td>
+                                    <td>
+                                        @item.DescriptionType
+                                    </td>
+                                    <td>
+                                        @item.Debit
+                                    </td>
+                                    <td>
+                                        @item.Credit
+                                    </td>
+                                    <td>
+                                        @item.EffectiveDate
+                                    </td>
+                                    <td>
+                                        @item.CreatedDate
+                                    </td>
+                                    <td>
+                                        @item.CreatedBy
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/Fee/Fee.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#roletbl1').DataTable();
+        });
+        $('.StartDate').datepicker({
+            format: 'dd/M/yyyy',
+            autoclose: true,
+            endDate: new Date()
+        }).on('changeDate', function (selected) {
+            var minDate = new Date(selected.date.valueOf());
+            $('.EndDate').datepicker('setStartDate', minDate);
+        });
+        $('.EndDate').datepicker({
+            format: 'dd/M/yyyy',
+            autoclose: true,
+            endDate: new Date()
+        }).on('changeDate', function (selected) {
+            var maxDate = new Date(selected.date.valueOf());
+            $('.StartDate').datepicker('setEndDate', maxDate);
+        });
+
+
+    });
+</script>

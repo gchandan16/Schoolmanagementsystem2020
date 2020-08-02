@@ -1,0 +1,107 @@
+﻿@model WEB.Models.MartialStatusModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Religion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Add Marital Status
+        </h4>
+    }
+    else
+    {
+        <h4 class="box-title">
+            Update Marital Status
+        </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/MaritalList">Marital Status Master</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+        <li class="active">Add Marital Status</li>
+        }
+        else
+        {
+        <li class="active">Update Marital Status</li>
+        }
+    </ol>
+</section>
+        @using (Html.BeginForm("CreateMarital", "Admin", FormMethod.Post, new { }))
+        {
+            @Html.HiddenFor(m => m.Mrmid)
+            @Html.AntiForgeryToken()
+        
+
+<section class="content">
+    <div class="row">
+
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="pwd" class="redlabel">
+                                Marital Status Name:
+                            </label>
+                        </div>
+                        <div class="col-lg-2">
+                            @Html.TextBoxFor(model => model.StatusName, new
+                       {
+                           @class = "form-control mandate",
+                           @msg = "Please enter gender name.",
+                           @pat = "^[A-Za-z]*$",
+                           @onkeypress = "return isKeyValid(event,'32,65-90,97-122');",
+                           @autocomplete = "off",
+                       })
+                            @Html.ValidationMessageFor(model => model.StatusName)
+                        </div>
+
+                    </div>
+                    <hr />
+                    <div class="row pull-right">
+
+                        <div class="col-md-12">
+                            @if (Model.ActionName == Constants.BTN_CREATE)
+                            {
+                                <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+                                <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                            }
+                            else if (Model.ActionName == Constants.BTN_EDIT)
+                            {
+
+                                <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return inputValidation();" />
+                                <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    }
+    @section JS
+{
+
+        <script type="text/javascript">
+
+            function Clear() {
+                $('input[type="text"]').attr('value', '');
+
+            }
+        </script>
+    }

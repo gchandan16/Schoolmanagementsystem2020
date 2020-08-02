@@ -1,0 +1,400 @@
+﻿@model WEB.Models.BellSystemModel
+@using WEB.AppCode
+@using SHARED
+@using System.Data
+@{
+    ViewBag.Title = "Due Fee List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h4>
+        Due Fee List
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="">Due Fee List</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <form role="form">
+                            <!-- left column -->
+                            <div class="col-md-3">
+                                <!-- general form elements -->
+                                <!-- form start -->
+
+                                <div class="box-body">
+                                    <div class="form-group">
+
+
+                                        <div class="form-group">
+
+                                            <label for="exampleInputPassword1"> Class  </label>
+                                            <select class="form-control">
+                                                <option>Select Class </option>
+                                                <option>LKG </option>
+                                                <option>UKG</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+
+
+                                            <label for="exampleInputPassword1">Section   </label>
+                                            <select class="form-control">
+                                                <option>Select Section </option>
+                                                <option>A </option>
+                                                <option>B</option>
+                                                <option>C</option>
+                                                <option>D</option>
+                                                <option>E</option>
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+
+
+
+                                </div><!-- /.box-body -->
+
+
+                            </div><!--/.col (left) -->
+                            <!-- right column -->
+
+
+
+                            <div class="col-md-3">
+
+                                <div class="box-body">
+                                    <div class="form-group">
+
+                                        <div class="form-group">
+
+                                            <label for="exampleInputPassword1"> From Date  </label>
+                                            <input type="Text" class="form-control" id="exampleInputPassword1" placeholder="Search By From Date">
+                                        </div>
+
+
+                                        <div class="form-group">
+
+                                            <label for="exampleInputPassword1"> To Date  </label>
+                                            <input type="Text" class="form-control" id="exampleInputPassword1" placeholder="Search By From Date">
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div><!--/.col (left) -->
+                            <!-- right column -->
+
+
+                            <div class="col-md-3">
+
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Report Type   </label>
+                                        <select class="form-control">
+                                            <option>
+                                                Gendar Wise
+                                            </option>
+
+
+                                        </select>
+
+                                    </div>
+                                </div><!-- /.box-body -->
+
+                            </div><!--/.col (left) -->
+                            <!-- right column -->
+
+
+                            <div class="col-md-3">
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Search</button>
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div><!--/.col (left) -->
+                            <!-- right column -->
+
+                        </form>
+                    </div>   <!-- /.row -->
+
+                </section><!-- /.content -->
+
+            </div><!-- /.box -->
+
+
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-body">
+
+                    <table id="collectiontbllist" class="table table-striped table-bordered dt-responsive display  nowrap" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>S.N.</th>
+                                <th></th>
+                                <th>Admission No</th>
+                                <th>Roll no</th>
+                                <th>Student Name</th>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Father Name</th>
+                                <th>Contact N.</th>
+                                <th>Address</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="checkbox" /> </td>
+                                <td>100</td>
+                                <td>1235</td>
+                                <td>Yogesh Singh</td>
+                                <td>12 </td>
+                                <td>A </td>
+                                <td>Ganga Singh </td>
+                                <td> 8173847510 </td>
+                                <th>Vill post gaura</th>
+
+
+                            </tr>
+
+
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div><!-- /.box -->
+
+
+        </div>
+    </div>
+
+
+</section>
+
+
+
+
+@section JS {
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/jszip.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/pdfmake.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/vfs_fonts.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.print.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/tblPrintPdfexceljscss/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/tblPrintPdfexceljscss/buttons.dataTables.min.css">
+
+    <script type="text/javascript">
+
+
+        var _lecturetitle = 'Promote Sheet';
+        $(document).ready(function () {
+            $('#collectiontbllist').DataTable({
+                "scrollX": true,
+                dom: 'Bfrtip',
+                buttons: [
+
+                    {
+                        extend: 'excel',
+                        title: function () {
+                            return _lecturetitle;
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Excel</i>',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        }
+                    },
+
+                ]
+
+            });
+        });
+    </script>
+}

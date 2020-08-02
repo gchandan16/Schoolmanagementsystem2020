@@ -1,0 +1,57 @@
+﻿@model SHARED.BulkStudentImport
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Student";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+<section class="content-header">
+    <h4 class="box-title">
+        Add Bulk Student
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Add Bulk Student</li>
+    </ol>
+</section>
+
+@using (Html.BeginForm("BulkImport", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    <div class="box-body">
+                        <input type="file" id="fileUpload" class="btn btn-primary" name="FileUpload" /><br />
+                        <input type="submit" class="btn btn-primary" name="btnSearch" id="fileUploadExcel" value="Upload" />
+                        <input type="submit" value="Download Excel sheet" name="btnSearch" class="btn btn-primary pull-right" id="btnDownload" />
+                    </div><!-- /.box-body -->
+
+
+
+                </div><!-- /.box -->
+                <!-- Form Element sizes -->
+                <!-- /.box -->
+
+
+
+            </div><!--/.col (left) -->
+            <!-- right column -->
+            <!-- /.box-body -->
+        </div><!-- /.box -->
+    </section><!-- /.content -->
+
+}

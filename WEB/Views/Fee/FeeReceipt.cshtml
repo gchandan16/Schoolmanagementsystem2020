@@ -1,0 +1,623 @@
+﻿@model SHARED.FeeReciept
+@{
+    Layout = null;
+}
+
+
+@{
+    Dictionary<string, decimal> FeeList = new Dictionary<string, decimal>();
+    decimal TotalAmount = 0;
+    decimal TotalConcession = 0;
+    decimal TotalFine = 0;
+    NumToWord.NumberToWord objNumToWord = new NumToWord.NumberToWord();
+    for (int i = 0; i < @Model.FeeDetails.TotalFeesBreakUp.Split(';').Count(); i++)
+    {
+        var FeeData = Model.FeeDetails.TotalFeesBreakUp.Split(';')[i].Split(':')[1].Split('_');
+        for (int l = 0; l < FeeData.Count(); l++)
+        {
+            if (!FeeList.ContainsKey(FeeData[l].Split('#')[0]))
+            {
+                FeeList.Add(FeeData[l].Split('#')[0], Convert.ToDecimal(FeeData[l].Split('#')[1]));
+            }
+            else
+            {
+                FeeList[FeeData[l].Split('#')[0]] = Convert.ToDecimal(FeeList[FeeData[l].Split('#')[0]]) + Convert.ToDecimal(FeeData[l].Split('#')[1]);
+            }
+        }
+    }
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" onclick="CloseReceiptDiv();">
+            ×
+        </button>
+        <h4 class="modal-title">Fee Receipt</h4>
+    </div>
+    <div class="modal-body">
+        
+        <div id="divToPrint" style="display: block;">
+
+
+            <title></title>
+
+
+            <table style="margin-left: 20px;" width="1020px;" border="0" cellpadding="0" cellspacing="5">
+                <tbody>
+                    <tr>
+                        <td colspan="3">
+                            <div style="width: 47%; float: left; border: 1px solid black; padding: 1px;">
+                                <table cellspacing="4" style="width: 100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="3" style="width: 100px;">
+                                                <img class="logo" alt="logo" height="70px" width="90px" src="@Model.OragnisationDetails.OrgImage">
+                                            </td>
+                                            <td>
+                                                <table width="100%" cellspacing="2">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="school_name" style="font-size: 17px; text-align: center;" align="center">
+                                                                @Model.OragnisationDetails.Oname
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 13px;" class="school_address" align="center">
+                                                                @Model.OragnisationDetails.BOAddress  @Model.OragnisationDetails.BOAddress2 @Model.OragnisationDetails.BOCity
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 13px;" class="mobile_email" align="center">
+                                                                @Model.OragnisationDetails.LMobile -  @Model.OragnisationDetails.LEmailId
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="height: auto; border: 1px; border-color: Gray; border-style: solid;">
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr style="background-color: #CCCCCC;">
+                                                <td style="height: 20px; border-bottom: 1px solid gray; font-size: 16px;" align="center">
+                                                    <b>Fee Receipt</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" align="center">
+                                                    <table style="height: auto; margin-left: 0px;" border="0" cellpadding="0" cellspacing="5">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="font-size: 13px; width: 40%; font-weight: bold; padding-left: 5px;" align="left">
+                                                                    Receipt No:
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_recno" style="font-size: 13px; padding-right: 5px; width: 49%;" align="left">
+                                                                    @Model.FeeDetails.ReceiptNo
+                                                                </td>
+                                                                <td style="font-size: 13px; width: 40%; font-weight: bold;" align="left">
+                                                                    Date
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_recdate" style="font-size: 13px; padding-right: 5px; width: 49%;" align="left">
+                                                                    @Model.FeeDetails.DepositDate
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-size: 13px; width: 105px; font-weight: bold; padding-left: 5px;" valign="top" align="left">
+                                                                    Adm No.
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_admission" style="font-size: 13px; padding-right: 5px; width: 245px;" valign="top" align="left">
+                                                                    @Model.FeeDetails.AdmissionNo
+                                                                </td>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 50%;" align="left">
+                                                                    Session
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_academicyr" style="font-size: 13px; padding-right: 5px; width: 49%;" align="left">
+                                                                    2020-21
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 105px; padding-left: 5px; white-space: nowrap;" valign="top" align="left">
+                                                                    Student's Name
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_name" style="font-size: 13px; padding-right: 5px; width: 245px;
+                                                            padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.StudentDetails.Firstname
+                                                                </td>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 46px;" valign="top" align="left">
+                                                                    Class
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_class" style="font-size: 13px; padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.StudentDetails.ClassName - @Model.StudentDetails.SectionName
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 105px; padding-left: 5px; white-space: nowrap;" valign="top" align="left">
+                                                                    Father's Name
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_father" style="font-size: 13px; padding-right: 5px; width: 245px;
+                                                            padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.StudentDetails.Bd_fathername
+                                                                </td>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 46px;" valign="top" align="left">
+                                                                    Contact
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_father_mobile" style="font-size: 13px; padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.StudentDetails.Bd_contactno
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 105px; padding-left: 5px; white-space: nowrap;" valign="top" align="left">
+                                                                    Installment
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_installment" style="font-size: 13px; padding-right: 5px; width: 240px;
+                                                            padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.FeeDetails.months
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <table id="Table1" class="feesHead" style="margin-top: 5px; width: 100%;" border="0" cellpadding="0" cellspacing="5">
+                                    <tbody>
+                                        <tr style="background-color: #CCCCCC; border: 1px; border-style: solid; border-color: Gray;font-weight: bold;" align="center"><th>Head Name</th><th>Amount</th></tr>
+
+                                        @foreach (var FL in FeeList.Where(x => Convert.ToDouble(x.Value) > 0).ToList())
+                                        {
+                                            if (@FL.Key != "Transport" && @FL.Key != "Concession")
+                                            {
+                                                TotalAmount += @FL.Value;
+                                                <tr style="border-bottom: solid 1px #CCCCCC; border-top: solid 1px Gray;"><td>@FL.Key</td>   <td>@FL.Value</td></tr>
+                                            }
+                                        }
+                                        @foreach (var FL in FeeList.Where(x => Convert.ToDouble(x.Value) > 0).ToList())
+                                        {
+                                            if (@FL.Key == "Transport")
+                                            {
+                                                TotalAmount += @FL.Value;
+                                                <tr style="border-bottom: solid 1px #CCCCCC; border-top: solid 1px Gray;"><td>@FL.Key</td>   <td>@FL.Value</td></tr>
+                                            }
+                                        }
+                                        
+                                        @if (Convert.ToDecimal(Model.FeeDetails.Arrears) > 0)
+                                        {
+                                            TotalAmount += Convert.ToDecimal(Model.FeeDetails.Arrears);
+                                            <tr style="border-bottom: solid 1px #CCCCCC; border-top: solid 1px Gray;"><td>Arrears</td>   <td>@Model.FeeDetails.Arrears</td></tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <br>
+                                <div style="border: 1px; border-color: Gray; border-style: solid;">
+                                    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                        <tbody>
+                                            <tr style="background-color: #CCCCCC;">
+                                                <td style="height: 20px; border-bottom: 1px solid gray; font-size: 16px;" align="center">
+                                                    <b>Payment Information</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" align="center">
+                                                    <table style="margin-left: 0px; width: 100%;" border="0" cellpadding="0" cellspacing="5">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="font-size: 13px; padding-left: 5px;" align="left">
+                                                                    Paymode
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_paymode" align="right" style="font-size: 13px; padding-right: 5px;">
+                                                                    @Model.FeeDetails.MOP
+                                                                </td>
+                                                            </tr>
+                                                            @if (Convert.ToDecimal(Model.FeeDetails.Concession) > 0)
+                                                            {
+                                                                TotalAmount -= Convert.ToDecimal(Model.FeeDetails.Concession);
+                                                                <tr>
+                                                                    <td style="font-size: 13px; padding-left: 5px;" align="left">
+                                                                        Concession
+                                                                    </td>
+                                                                    <td>
+                                                                        :
+                                                                    </td>
+                                                                    <td class="student_amount" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                        (-)@Model.FeeDetails.Concession 
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                            @if (Convert.ToDecimal(Model.FeeDetails.Fine) > 0)
+                                                            {
+                                                                TotalAmount += Convert.ToDecimal(Model.FeeDetails.Fine);
+                                                                <tr>
+                                                                    <td style="font-size: 13px; padding-left: 5px;" align="left">
+                                                                        Fine
+                                                                    </td>
+                                                                    <td>
+                                                                        :
+                                                                    </td>
+                                                                    <td class="student_amount" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                        (+)@Model.FeeDetails.Fine
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                            <tr>
+                                                                <td style="font-size: 13px; padding-left: 5px;" align="left">
+                                                                    Total Amount
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_amount" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                    @TotalAmount
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            
+
+                                                            <tr>
+                                                                <td style="font-size: 13px; padding-left: 5px;" valign="top" align="left">
+                                                                    Paid Amount
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_amt_recd" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                    @Model.FeeDetails.Payment
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="white-space: nowrap; font-size: 13px; padding-left: 5px;" valign="top" align="left">
+                                                                    Balance Amount
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_fees_bal" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                    @Model.FeeDetails.Balance
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <div>
+                                    <div style="float: left;">
+                                        <span style="font-weight: bold;">Amount in Words: </span>
+                                        <br>
+                                        <span class="amtinwords">@objNumToWord.AmtInWord(TotalAmount)</span>
+                                    </div>
+                                    <div style="float: right; padding-right: 5px;">
+                                        <h6>
+                                            Fees Clerk
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 3%;"></div>
+                            <div style="width: 47%; float: left; border: 1px solid black; padding: 1px;">
+                                <table cellspacing="4" style="width: 100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="3" style="width: 100px;">
+                                                <img class="logo" alt="logo" height="70px" width="90px" src="@Model.OragnisationDetails.OrgImage">
+                                            </td>
+                                            <td>
+                                                <table width="100%" cellspacing="2">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="school_name" style="font-size: 17px; text-align: center;" align="center">
+                                                                @Model.OragnisationDetails.Oname
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 13px;" class="school_address" align="center">
+                                                                @Model.OragnisationDetails.BOAddress  @Model.OragnisationDetails.BOAddress2 @Model.OragnisationDetails.BOCity
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 13px;" class="mobile_email" align="center">
+                                                                @Model.OragnisationDetails.LMobile -  @Model.OragnisationDetails.LEmailId
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="height: auto; border: 1px; border-color: Gray; border-style: solid;">
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr style="background-color: #CCCCCC;">
+                                                <td style="height: 20px; border-bottom: 1px solid gray; font-size: 16px;" align="center">
+                                                    <b>Fee Receipt</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" align="center">
+                                                    <table style="height: auto; margin-left: 0px;" border="0" cellpadding="0" cellspacing="5">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="font-size: 13px; width: 40%; font-weight: bold; padding-left: 5px;" align="left">
+                                                                    Receipt No:
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_recno" style="font-size: 13px; padding-right: 5px; width: 49%;" align="left">
+                                                                    @Model.FeeDetails.ReceiptNo
+                                                                </td>
+                                                                <td style="font-size: 13px; width: 40%; font-weight: bold;" align="left">
+                                                                    Date
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_recdate" style="font-size: 13px; padding-right: 5px; width: 49%;" align="left">
+                                                                    @Model.FeeDetails.DepositDate
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-size: 13px; width: 105px; font-weight: bold; padding-left: 5px;" valign="top" align="left">
+                                                                    Adm No.
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_admission" style="font-size: 13px; padding-right: 5px; width: 245px;" valign="top" align="left">
+                                                                    @Model.FeeDetails.AdmissionNo
+                                                                </td>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 50%;" align="left">
+                                                                    Session
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_academicyr" style="font-size: 13px; padding-right: 5px; width: 49%;" align="left">
+                                                                    2020-21
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 105px; padding-left: 5px; white-space: nowrap;" valign="top" align="left">
+                                                                    Student's Name
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_name" style="font-size: 13px; padding-right: 5px; width: 245px;
+                                                            padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.StudentDetails.Firstname
+                                                                </td>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 46px;" valign="top" align="left">
+                                                                    Class
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_class" style="font-size: 13px; padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.StudentDetails.ClassName - @Model.StudentDetails.SectionName
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 105px; padding-left: 5px; white-space: nowrap;" valign="top" align="left">
+                                                                    Father's Name
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_father" style="font-size: 13px; padding-right: 5px; width: 245px;
+                                                            padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.StudentDetails.Bd_fathername
+                                                                </td>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 46px;" valign="top" align="left">
+                                                                    Contact
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_father_mobile" style="font-size: 13px; padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.StudentDetails.Bd_contactno
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-size: 13px; font-weight: bold; width: 105px; padding-left: 5px; white-space: nowrap;" valign="top" align="left">
+                                                                    Installment
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_installment" style="font-size: 13px; padding-right: 5px; width: 240px;
+                                                            padding-right: 5px;" valign="top" align="left">
+                                                                    @Model.FeeDetails.months
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <table id="Table1" class="feesHead" style="margin-top: 5px; width: 100%;" border="0" cellpadding="0" cellspacing="5">
+                                    <tbody>
+                                        <tr style="background-color: #CCCCCC; border: 1px; border-style: solid; border-color: Gray;font-weight: bold;" align="center"><th>Head Name</th><th>Amount</th></tr>
+                                        @foreach (var FL in FeeList.Where(x => Convert.ToDouble(x.Value) > 0).ToList())
+                                        {
+                                            if (@FL.Key != "Transport" && @FL.Key != "Concession")
+                                            {
+                                                <tr style="border-bottom: solid 1px #CCCCCC; border-top: solid 1px Gray;"><td>@FL.Key</td>   <td>@FL.Value</td></tr>
+                                            }
+                                        }
+                                        @foreach (var FL in FeeList.Where(x => Convert.ToDouble(x.Value) > 0).ToList())
+                                        {
+                                            if (@FL.Key == "Transport")
+                                            {
+                                                <tr style="border-bottom: solid 1px #CCCCCC; border-top: solid 1px Gray;"><td>@FL.Key</td>   <td>@FL.Value</td></tr>
+                                            }
+                                        }
+                                      
+                                       
+                                        @if (Convert.ToDecimal(Model.FeeDetails.Arrears) > 0)
+                                        {
+                                            <tr style="border-bottom: solid 1px #CCCCCC; border-top: solid 1px Gray;"><td>Arrears</td>   <td>@Model.FeeDetails.Arrears</td></tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <br>
+                                <div style="border: 1px; border-color: Gray; border-style: solid;">
+                                    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                        <tbody>
+                                            <tr style="background-color: #CCCCCC;">
+                                                <td style="height: 20px; border-bottom: 1px solid gray; font-size: 16px;" align="center">
+                                                    <b>Payment Information</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" align="center">
+                                                    <table style="margin-left: 0px; width: 100%;" border="0" cellpadding="0" cellspacing="5">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="font-size: 13px; padding-left: 5px;" align="left">
+                                                                    Paymode
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_paymode" align="right" style="font-size: 13px; padding-right: 5px;">
+                                                                    @Model.FeeDetails.MOP
+                                                                </td>
+                                                            </tr>
+                                                            @if (Convert.ToDecimal(Model.FeeDetails.Concession) > 0)
+                                                            {
+                                                                <tr>
+                                                                    <td style="font-size: 13px; padding-left: 5px;" align="left">
+                                                                        Concession
+                                                                    </td>
+                                                                    <td>
+                                                                        :
+                                                                    </td>
+                                                                    <td class="student_amount" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                         (-)@Model.FeeDetails.Concession
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                            @if (Convert.ToDecimal(Model.FeeDetails.Fine) > 0)
+                                                            {
+                                                                <tr>
+                                                                    <td style="font-size: 13px; padding-left: 5px;" align="left">
+                                                                        Fine
+                                                                    </td>
+                                                                    <td>
+                                                                        :
+                                                                    </td>
+                                                                    <td class="student_amount" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                        (+)@Model.FeeDetails.Fine
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                            <tr>
+                                                                <td style="font-size: 13px; padding-left: 5px;" align="left">
+                                                                    Total Amount
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_amount" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                    @TotalAmount
+                                                                </td>
+                                                            </tr>
+                                                           
+                                                            <tr>
+                                                                <td style="font-size: 13px; padding-left: 5px;" valign="top" align="left">
+                                                                    Paid Amount
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_amt_recd" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                    @Model.FeeDetails.Payment
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="white-space: nowrap; font-size: 13px; padding-left: 5px;" valign="top" align="left">
+                                                                    Balance Amount
+                                                                </td>
+                                                                <td>
+                                                                    :
+                                                                </td>
+                                                                <td class="student_fees_bal" style="font-size: 13px; padding-right: 5px;" align="right">
+                                                                    @Model.FeeDetails.Balance
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <div>
+                                    <div style="float: left;">
+                                        <span style="font-weight: bold;">Amount in Words: </span>
+                                        <br>
+                                        <span class="amtinwords">@objNumToWord.AmtInWord(TotalAmount)</span>
+                                    </div>
+                                    <div style="float: right; padding-right: 5px;">
+                                        <h6>
+                                            Fees Clerk
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="CloseReceiptDiv()">
+            Close
+        </button>
+<input type="button" class="btn btn-default" id="print" value="Print" onclick="return printDiv('divToPrint');">
+    </div>
+</div>
+

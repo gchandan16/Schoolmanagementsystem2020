@@ -1,0 +1,127 @@
+﻿@model WEB.Models.DepartmentModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Add Department
+        </h4>
+    }
+    else
+    {
+        <h4 class="box-title">
+            Update Department
+        </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/departmentlist">Department Master</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+            <li class="active">Add Department</li>
+        }
+        else
+        {
+            <li class="active">Update Department</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("CreateDepartment", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.Department_id)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Department Name:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.DepartmentName, new
+                           {
+                               @class = "form-control mandate",
+                               id = "txtDepartmentName",
+                               @msg = "Please enter department name.",
+                               @pat = "^[A-Za-z]*$",
+                               @onkeypress = "return isKeyValid(event,'32,65-90,97-122');",
+                               @autocomplete = "off"
+                           })
+                                @Html.ValidationMessageFor(model => model.DepartmentName)
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Description:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.DepartmentDesc, new
+                           {
+                               @class = "form-control mandate",
+                               @msg = "Please enter description.",
+                               @pat = "^[A-Za-z]*$",
+                               @onkeypress = "return isKeyValid(event,'32,65-90,97-122');",
+                               @autocomplete = "off"
+                           })
+
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-4 pull-left">
+                                <b>Note:-</b>Please create department name as "<b>Teachers</b>" for teachers.
+                            </div>
+                            <div class="col-lg-8">
+                                <div  class="pull-right">
+
+                                    @if (Model.ActionName == Constants.BTN_CREATE)
+                                    {
+                                        <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+                                        <input type="reset" class="btn btn-primary " name="btntype" value="Clear" onclick="return Clear();" />
+                                    }
+                                    else if (Model.ActionName == Constants.BTN_EDIT)
+                                    {
+
+                                        <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return inputValidation();" />
+                                        <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@section JS
+{
+
+    <script type="text/javascript">
+
+        function Clear() {
+            $('input[type="text"]').attr('value', '');
+
+        }
+    </script>
+}

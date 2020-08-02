@@ -1,0 +1,120 @@
+﻿@model WEB.Models.StudentModel
+@using SHARED
+
+@{
+    Layout = null;
+}
+<div id="studentpriview" style="display: block;">
+            @foreach (var _singleitem in Model.StudentList)
+            {
+                <table style="width:100%;  font-family:'Times New Roman', Times, serif; font-size:12px;">
+                    
+                    <tr>
+                        <td>
+
+                            <table border="1" style=" line-height:27px; width:100%;">
+                                <tr>
+                                    <td><b> Admission Form No:</b>@_singleitem.Adminssionno</td>
+                                    <td><b>Admission No:</b>@_singleitem.Adminssionno</td>
+                                    <td><b>Roll Number:</b> @_singleitem.RollNo</td>
+                                    <td rowspan="4" style="text-align:right;"> <img src="@_singleitem.studentimage" height="100px;" width="100px;" /> </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> <b> Student Name :</b> @_singleitem.Firstname </td>
+                                    <td> <b>Date of Admission:</b>@_singleitem.Off_dateofadmission </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> <b> Father's Name:</b>  @_singleitem.Bd_fathername </td>
+                                    <td> <b> Mother's Name:</b> @_singleitem.Bd_mothername</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Class:</b>@_singleitem.ClassName</td>
+                                    <td><b> Section:</b>@_singleitem.SectionName.</td>
+                                    <td><b>Student Date of Birth:</b>@_singleitem.Bd_dob </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Religion :</b>@_singleitem.ReligionName</td>
+                                    <td><b>Cast:</b>@_singleitem.CastName</td>
+                                    <td><b>Category:</b>@_singleitem.CatName</td>
+                                    <td><b>Gender:</b>@_singleitem.GName</td>
+                                </tr>
+                                <tr>
+                                    <td><b> Father Mobile No (SMS):</b>@_singleitem.Bd_fathermob</td>
+                                    <td> <b> Mother Mobile No:</b>@_singleitem.Bd_mothermob </td>
+                                    <td><b>Email Id:</b>@_singleitem.Bd_Emailid</td>
+                                    <td><b> Father's Occupation:</b> @_singleitem.Bd_fatheroccuption </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4"><b style="font-size:14px; text-align:center;"> Official Details </b>  </td>
+                                </tr>
+
+                                <tr>
+
+                                    @{if (_singleitem.TPCost == true)
+                                        {
+                                            <td><b> Route:</b> @_singleitem.RouteName (@_singleitem.PickDropPointName)</td>
+                                            <td><b> Bus No :</b>@_singleitem.VehicleNumber</td>
+                                        }
+                                        else
+                                        {
+                                            <td><b> Route:</b> N/A</td>
+                                            <td><b> Bus No :</b>N/A</td>
+                                        }
+                                    }
+
+
+
+                                    <td> <b>Last School/Institute/College:</b> @_singleitem.Off_lastschool</td>
+                                    <td><b> Last Exam Given:</b>@_singleitem.Off_boardoruniversity</td>
+                                </tr>
+                                <tr>
+                                    <td> <b>Board/University:</b>@_singleitem.Off_boardoruniversity</td>
+
+                                    <td> <b>Marks Obtained:</b> N/A</td>
+                                    <td><b>Result:</b> N/A </td>
+                                    <td><b> Aadhar Card UID No:</b>@_singleitem.Off_Aadharno</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td> <b>Blood Group:</b>@_singleitem.BloodGroupName</td>
+                                    <td><b> Hostel Room No: </b> @_singleitem.Off_Hosalroomno</td>
+                                    <td> <b>Bed No:</b> @_singleitem.Off_bedno</td>
+                                    <td><b>Student Height,Weight: </b> @_singleitem.Off_heightweight </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4"><b style="font-size:14px; text-align:center;"> Contact Information </b>   </td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Nationality:</b> @_singleitem.Off_nationality</td>
+                                    <td><b>State :</b> @_singleitem.STATENAME</td>
+                                    <td><b>Distic:</b>@_singleitem.DistrictName</td>
+                                    <td><b>City:</b>@_singleitem.CITYNAME</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4"><b> Permanent Address: </b> @_singleitem.Bd_address1</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4"> <b> Local Address: </b> @_singleitem.Bd_address2</td>
+
+                                </tr>
+
+
+                            </table>
+
+                        </td>
+                    </tr>
+
+
+
+                </table>
+       
+            }
+
+        </div>

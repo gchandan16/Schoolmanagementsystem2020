@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7AE5DA7A-A6C8-4D81-9D04-84CB60AE3C9C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SHARED</RootNamespace>
+    <AssemblyName>SHARED</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\AllDLLs\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer">
+      <HintPath>..\AllDLLs\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AllDLLs\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AllDLLs\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\AllDLLs\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AllDLLs\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AllDLLs\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AllDLLs\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AllDLLs\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AllDLLs\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="base\AdmissionEnquiryMaster.cs" />
+    <Compile Include="base\Assigncontentinlecture.cs" />
+    <Compile Include="base\AssigncontentinlectureModel.cs" />
+    <Compile Include="base\Assignheadtoemployee.cs" />
+    <Compile Include="base\Assignperiodteacher.cs" />
+    <Compile Include="base\AssignperiodteacherModel.cs" />
+    <Compile Include="base\BellSystemMaster.cs" />
+    <Compile Include="base\BellSystemModel.cs" />
+    <Compile Include="base\BloodGroupMaster.cs" />
+    <Compile Include="base\CityMaster.cs" />
+    <Compile Include="base\ClassMaster.cs" />
+    <Compile Include="base\ContactTitleMaster.cs" />
+    <Compile Include="base\CountryMaster.cs" />
+    <Compile Include="base\DistrictMaster.cs" />
+    <Compile Include="base\Feegroupstudentfrm.cs" />
+    <Compile Include="base\GendraMaster.cs" />
+    <Compile Include="base\GEO.cs" />
+    <Compile Include="base\MartialStatusMaster.cs" />
+    <Compile Include="base\Onlineexamstudent.cs" />
+    <Compile Include="base\OragnisationMaster.cs" />
+    <Compile Include="base\PeriodMaster.cs" />
+    <Compile Include="base\PeriodModel.cs" />
+    <Compile Include="base\Questionmaster.cs" />
+    <Compile Include="base\QuestionmasterModel.cs" />
+    <Compile Include="base\Quizeexammaster.cs" />
+    <Compile Include="base\QuizeexammasterModel.cs" />
+    <Compile Include="base\RoleMaster.cs" />
+    <Compile Include="base\Salaryheadmaster.cs" />
+    <Compile Include="base\ShiftMaster.cs" />
+    <Compile Include="base\StartexaminationModel.cs" />
+    <Compile Include="base\StateMaster.cs" />
+    <Compile Include="base\StudentAttendanceMaster.cs" />
+    <Compile Include="base\Studentddl.cs" />
+    <Compile Include="base\Studentleavedetail.cs" />
+    <Compile Include="base\StudentMaster.cs" />
+    <Compile Include="base\SubjectchapterMaster.cs" />
+    <Compile Include="base\SubjectChapterModel.cs" />
+    <Compile Include="base\SubjectMaster.cs" />
+    <Compile Include="base\SubjectModel.cs" />
+    <Compile Include="base\TDSSettingmaster.cs" />
+    <Compile Include="base\UserTypeMaster.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="Fee.cs" />
+    <Compile Include="InterfacesContract\ICommonSrv.cs" />
+    <Compile Include="InterfacesContract\IFeeSrv.cs" />
+    <Compile Include="Monthalyattendance.cs" />
+    <Compile Include="OragnisationMaster.cs" />
+    <Compile Include="PacketEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Student.cs" />
+    <Compile Include="Transport.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

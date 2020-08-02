@@ -1,0 +1,8 @@
+Message:Error converting data type varchar to numeric.
+Line NO:1184
+Message:Error converting data type varchar to numeric.
+Line NO:1184
+Message:StudentName
+Line NO:1187
+Message:StudentName
+Line NO:1187

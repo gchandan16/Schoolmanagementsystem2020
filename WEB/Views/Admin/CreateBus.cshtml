@@ -1,0 +1,108 @@
+﻿@model WEB.Models.RouteModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Route";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+
+@using (Html.BeginForm("CreateRoute", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.Routemid)
+    @Html.AntiForgeryToken()
+    <div>
+
+        <div class="card card_ps">
+            <div class="panel panel-default">
+                <div class="header_ps">
+                    @if (Model.ActionName == Constants.BTN_CREATE)
+                    {
+                        <span>CREATE ROUTE</span>
+                    }
+                    else
+                    {
+                <span>UPDATE ROUTE </span>
+                    }
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="pwd" class="redlabel">
+                                ROUTE Name:
+                            </label>
+                        </div>
+                        <div class="col-lg-2">
+                            @Html.TextBoxFor(model => model.RouteName, new
+                            {
+                                @class = "form-control",
+                                id = "txtroutename",
+                           onblur = "return ValidateRouteNameExist(this)"
+                            })
+                            @Html.ValidationMessageFor(model => model.RouteName)
+                        </div>
+
+                    </div>
+                    <hr />
+                    <div class="col-md-12">
+                        <hr />
+                        <div class="row botton_tppp">
+                            <div class="col-lg-12  text-right margin_lf ">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn_font" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+
+                                    <input type="submit" class="btn btn_font" name="btntype" value="Update" id="btnupdate" />
+                                }
+                                <input type="reset" class="btn btn_font" name="btntype" value="Clear" onclick="return Clear();" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section JS
+{
+
+    <script type="text/javascript">
+         function ValidateRouteNameExist(element) {
+            var Routename = $(element).val();
+            if (Routename.length>0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: '@Url.Action("CheckIsRouteNameExist", "Admin")',
+                    data: JSON.stringify({ Routename: Routename}),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data == true) {
+                            alert("Route Name already exists");
+                            $('#txtroutename').val('');
+                            $('#txtroutename').focus();
+                        }
+                    },
+                    error: function (data) {
+                        // throw ex;
+                    }
+
+                });
+            }
+        }
+
+        function Clear()
+        {
+            $('input[type="text"]').attr('value', '');
+
+        }
+    </script>
+}

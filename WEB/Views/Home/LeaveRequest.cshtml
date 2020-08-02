@@ -1,0 +1,139 @@
+﻿@model SHARED.Leave
+@using WEB.AppCode
+@using SHARED
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        LEAVE REQUEST
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
+        <li class="active">LEAVE REQUEST</li>
+    </ol>
+</section>
+
+@using (Html.BeginForm("LeaveRequest", "Home", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken();
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="card card-default">
+                            <div class="card-header card_bg">
+                                <div class="card-title card_tittle2">
+                                    <span>Leave Request</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <label for="pwd" class="redlabel">
+                                            Leave From:
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.TextBoxFor(m => m.LeaveFrom, new { @class = "form-control LeaveFrom mandate", @placeholder = "Date", @msg = "Please select date.", @autocomplete = "off" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label for="pwd" class="redlabel">
+                                            Leave To:
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.TextBoxFor(m => m.LeaveTo, new { @class = "form-control LeaveTo mandate", @placeholder = "Date", @msg = "Please select date.", @autocomplete = "off" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label for="pwd" class="redlabel">
+                                            Leaves:
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span id="spnTotalLeaves">@Html.DisplayFor(m => m.TotalLeaves)</span>
+                                        @Html.HiddenFor(m => m.TotalLeaves)
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <label for="pwd">
+                                                Leave Type:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            @Html.DropDownListFor(m => m.LeaveType, new SelectList(Model.LeaveTypeList, "Value", "Text"), "--Select--", new { @class = "form-control mandate", @msg = "Please select leave type." })
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label for="pwd">
+                                                Half Day:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            @Html.CheckBoxFor(m => m.HalfDay, new { @onchange = "return CalculateTotalLeaves();" })
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label for="pwd">
+                                                Remark:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            @Html.TextAreaFor(m => m.SenderRemark, new { @class = "form-control mandate", @msg = "Please enter remark." })
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="col-sm-12 col-md-12 right_bottom">
+                                    <input type="submit" value="Send" name="btntype" class="btn btn-primary pull-right" id="LeaveRequest" onclick="return LeaveValidation();" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<script>
+    $(document).ready(function () {
+
+        $('.LeaveFrom').datepicker({
+            format: 'dd/M/yyyy',
+            autoclose: true,
+            startDate: new Date()
+        }).on('changeDate', function (selected) {
+            var minDate = new Date(selected.date.valueOf());
+            $('.LeaveTo').datepicker('setStartDate', minDate);
+            CalculateTotalLeaves();
+        });
+        $('.LeaveTo').datepicker({
+            format: 'dd/M/yyyy',
+            autoclose: true,
+            startDate: new Date()
+        }).on('changeDate', function (selected) {
+            var maxDate = new Date(selected.date.valueOf());
+            $('.LeaveFrom').datepicker('setEndDate', maxDate);
+            CalculateTotalLeaves();
+        });
+    });
+    function CalculateTotalLeaves() {
+        var noOfDays = 0;
+        if ($('.LeaveFrom').val() != '' && $('.LeaveTo').val() != '') {
+            noOfDays = ((new Date(new Date($('.LeaveTo').val()) - new Date($('.LeaveFrom').val()))) / 1000 / 60 / 60 / 24) + 1;
+            if ($("#HalfDay").is(":checked")) {
+                noOfDays = noOfDays / 2;
+            }
+
+        }
+        $("#TotalLeaves").val(noOfDays);
+        $("#spnTotalLeaves").html(noOfDays);
+
+    }
+</script>

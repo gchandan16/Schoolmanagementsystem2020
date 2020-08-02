@@ -1,0 +1,134 @@
+﻿@model WEB.Models.SubjectModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Subject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Add Subject
+        </h4>
+    }
+    else
+    {
+<h4 class="box-title">
+    Update Subject
+</h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/SubjectList">Subject Master</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+    <li class="active">Add Subject</li>
+        }
+        else
+        {
+    <li class="active">Update Subject</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("CreateSubject", "Admin", FormMethod.Post, new { }))
+{
+
+    @Html.HiddenFor(m => m.Sumid)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Subject Name:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(model => model.Subjectname, new { @class = "form-control mandate", id = "txtsubjectname", onblur = "return ValidateSubjectNameExist(this) ", @msg = "Please enter subject name.", @pat = "^[A-Za-z 0-9]*$", @onkeypress = "return isKeyValid(event,'32,48-57,65-90,97-122');", @autocomplete = "off" })
+                                @Html.ValidationMessageFor(model => model.Subjectname)
+                            </div>
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Subject Description:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(model => model.Subjectdescription, new { @class = "form-control" })
+                            </div>
+
+                        </div>
+                        
+                        <hr />
+                        <div class="row pull-right">
+                            <div class="col-lg-12">
+
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+                                    <input type="reset" class="btn btn-primary " name="btntype" value="Clear" onclick="return Clear();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return inputValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+@section JS
+{
+
+    <script type="text/javascript">
+        
+        function ValidateSubjectNameExist(element) {
+            var subjectname = $(element).val();
+            if (subjectname.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: '/Admin/CheckIsSubjectNameExist',
+                    data: JSON.stringify({ _subjectname: subjectname}),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data == true) {
+                            alert("Subject Name already exists");
+                            $('#txtsubjectname').val('');
+                            $('#txtsubjectname').focus();
+                        }
+                    },
+                    error: function (data) {
+                        // throw ex;
+                    }
+
+                });
+            }
+        }
+
+        function Clear() {
+            $('input[type="text"]').attr('value', '');
+
+        }
+    </script>
+}

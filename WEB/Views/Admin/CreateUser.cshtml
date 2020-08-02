@@ -1,0 +1,197 @@
+﻿@model SHARED.UserModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Add User
+        </h4>
+    }
+    else
+    {
+        <h4 class="box-title">
+            Update User
+        </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+            <li class="active">Add User</li>
+        }
+        else
+        {
+            <li class="active">Update User</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.User_Id)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    User Type:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    @Html.DropDownListFor(m => m.Usertype, new SelectList(Model.UserTypeList, "UTMID", "UName"), "--Select--", new { @class = "form-control chosen-select", onChange = "return CheckUserType(this)" })
+                                    @Html.ValidationMessageFor(m => m.Usertype)
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(m => m.Usertype, new SelectList(Model.UserTypeList, "UTMID", "UName"), "--Select--", new { @class = "form-control chosen-select", onChange = "return CheckUserType(this)", @disabled = "disabled" })
+                                    @Html.HiddenFor(m => m.Usertype)
+                                    @Html.ValidationMessageFor(m => m.Usertype)
+                                }
+
+                                @Html.Hidden("hdnusertypeid")
+
+                            </div>
+
+                            <div class="col-lg-2">
+                                <label for="Student_Id" id="Student" class="redlabel">
+                                    Student Name:
+                                </label>
+                                <label for="Emp_Id" id="Emp" class="redlabel">
+                                    Employee Name:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    @Html.DropDownListFor(m => m.Student_Id, new SelectList(Model.StudentList, "Smid", "Firstname"), "--Select--", new { @class = "form-control chosen-select", onChange = "return CheckExistUser('STUDENT');" })
+                                    @Html.DropDownListFor(m => m.Employee_Id, new SelectList(Model.EmployeeList, "EMP_ID", "FIRSTNAME"), "-- Select--", new { @class = "form-control chosen-select", onChange = "return CheckExistUser('EMPLOYEE');" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(m => m.Student_Id, new SelectList(Model.StudentList, "Smid", "Firstname"), "--Select--", new { @class = "form-control chosen-select", onChange = "return CheckExistUser('STUDENT');", @disabled = "disabled" })
+                                    @Html.HiddenFor(m => m.Student_Id)
+                                    @Html.DropDownListFor(m => m.Employee_Id, new SelectList(Model.EmployeeList, "EMP_ID", "FIRSTNAME"), "-- Select--", new { @class = "form-control chosen-select", onChange = "return CheckExistUser('EMPLOYEE');", @disabled = "disabled" })
+                                    @Html.HiddenFor(m => m.Employee_Id)
+                                }
+
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Role Type:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.DropDownListFor(m => m.Role_Id, new SelectList(Model.RoleList, "ROLE_ID", "ROLENAME"), "--Select--", new { @class = "form-control chosen-select" })
+                                @Html.ValidationMessageFor(m => m.Role_Id)
+
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row pull-right">
+
+                            <div class="col-md-12">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return CheckValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return CheckValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@section JS
+{
+
+    <script type="text/javascript">
+        $(function () {
+            $('#Student_Id_chosen').hide();
+            CheckUserType();
+        });
+        var issubmit = false;
+        function CheckValidation() {
+            var valid = true;
+            issubmit = false;
+            var Usertype = $('#Usertype').val();
+            var selectedtext = $("#Usertype option:selected").text();
+            var Employee_Id = $('#Employee_Id').val();
+            var Student_Id = $('#Student_Id').val();
+            var Role_Id = $('#Role_Id').val();
+            if (Usertype == "" || Usertype == null) {
+                $('#Usertype').trigger('chosen:activate');
+                alert("Please select user type");
+                valid = false;
+            }
+            else if (selectedtext == "Student" && (Student_Id == "" || Student_Id == null)) {
+                $('#Student_Id').trigger('chosen:activate');
+                alert("Please select Student");
+                valid = false;
+            }
+            else if (selectedtext == "Employee" && (Employee_Id == "" || Employee_Id == null)) {
+                $('#Employee_Id').trigger('chosen:activate');
+                alert("Please select employee");
+                valid = false; 
+            }
+            else if (Role_Id == "" || Role_Id == null) {
+                $('#Role_Id').trigger('chosen:activate');
+                alert("Please select role");
+                valid = false;
+            }
+            return valid;
+        }
+
+
+        function Clear() {
+            $('input[type="text"]').attr('value', '');
+            $('#IsActive').attr('checked', false);
+
+        }
+        $(".chosen-select").chosen();
+        function CheckUserType() {
+            debugger;
+            var selectedtext = $("#Usertype option:selected").text();
+            $('#hdnusertypeid').val(selectedtext);
+            if (selectedtext == "Student") {
+                $('#Student').show();
+                $('#Student_Id_chosen').show();
+                $('#Employee_Id_chosen').hide();
+                $('#Emp').hide();
+            }
+            else {
+                $('#Employee_Id_chosen').show();
+                $('#Student_Id_chosen').hide();
+                $('#Emp').show();
+                $('#Student').hide();
+            }
+        }
+    </script>
+}

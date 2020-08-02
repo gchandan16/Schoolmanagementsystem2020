@@ -1,0 +1,1 @@
+The process cannot access the file 'E:\Manish Gupta Laptop Backup\WebAppSMS-MSSQL\WEB\ExceptionLogger\28-06-2020\DALCommon(GetUserInfoByuserId).txt' because it is being used by another process.

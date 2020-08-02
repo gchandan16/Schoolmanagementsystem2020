@@ -1,0 +1,477 @@
+﻿@model WEB.Models.AdmissionEnquiryModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Admission Enquiry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+<section class="content-header">
+    <h4 class="box-title">
+        Admission Enquiry
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/AdmissionEnquiryList">Admission Enquiry</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+            <li class="active">Add Enquiry</li>
+        }
+        else
+        {
+            <li class="active">Update Enquiry</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("AdmissionEnquiry", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.AMID)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Enquiry No
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.AEnquiryNo, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AEnquiryNo)
+                            </div>
+
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Student Name
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.AStudentName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AStudentName)
+                            </div>
+
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Seek Admission in Class
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.DropDownListFor(m => m.AClassName, new SelectList(Model.GetClassList, "CMid", "ClassName"), "-- Select--", new { @class = "form-control chosen-select" })
+                                @Html.ValidationMessageFor(m => m.AClassName)
+                            </div>
+
+
+
+                        </div>
+                        <br />
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Gender
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.DropDownListFor(m => m.AGendar, new SelectList(Model.GetGendarList, "GMid", "GName"), "-- Select--", new { @class = "form-control chosen-select" })
+                                @Html.ValidationMessageFor(m => m.AGendar)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    City
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.ACity, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ACity)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Contact No
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.AContactno, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AContactno)
+                            </div>
+
+                        </div>
+                        <br />
+
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Address 1
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.ACont_Address, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ACont_Address)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Address 2
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.ACont_Address2, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ACont_Address2)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Date of Birth
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(model => model.ADOB, new { @class = "form-control datepicker", @readonly = "readonly" })
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+
+                                @Html.ValidationMessageFor(model => model.ADOB)
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="row row_pt">
+                            <div class="col-lg-12">
+                                <div class="header_ps">
+                                    <span>PARENTS DETAILS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Father's Name
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.APdfather, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.APdfather)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Father's Mobile
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.APdFathermobile, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.APdFathermobile)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Qualification
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.APQualification, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.APQualification)
+                            </div>
+
+                        </div>
+                        <br />
+
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Father's Occupation
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.APFatheroccuption, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.APFatheroccuption)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Father's DOB
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(model => model.APFatherdob, new { @class = "form-control datepicker", @readonly = "readonly" })
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.APFatherdob)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Mother's DOB
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(model => model.Apmotherdob, new { @class = "form-control datepicker", @readonly = "readonly" })
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Apmotherdob)
+                            </div>
+
+                        </div>
+                        <br />
+
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Mother's Name
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.APMother, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.APMother)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Mother's Mobile
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Apmothermobile, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Apmothermobile)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Mother Qualification
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.ApMotherqualifation, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ApMotherqualifation)
+                            </div>
+
+                        </div>
+                        <br />
+
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Date Of Anniversary
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(model => model.Apdoanniversary, new { @class = "form-control datepicker", @readonly = "readonly" })
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+
+                                @Html.ValidationMessageFor(model => model.Apdoanniversary)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Email ID
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Apemailid, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Apemailid)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+
+                            </div>
+
+                        </div>
+
+                        <hr />
+                        <div class="row row_pt">
+                            <div class="col-lg-12">
+                                <div class="header_ps">
+                                    <span>FOR OFFICE USE ONLY</span>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Name Of Last School
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Fonameofschool, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Fonameofschool)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Last Exam Given
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Lastexamgiven, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Lastexamgiven)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Year
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.FoYear, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.FoYear)
+                            </div>
+
+                        </div>
+                        <br />
+
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Current Result Status
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Fostatus, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Fostatus)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Marks(%)
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Marks, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Marks)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Board/University
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.BoardUniversity, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.BoardUniversity)
+                            </div>
+
+                        </div>
+                        <br />
+
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Date Of Enquiry
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(model => model.DateofEnquiry, new { @class = "form-control datepicker", @readonly = "readonly" })
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.DateofEnquiry)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Prospectus NO
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.ProspectusNo, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ProspectusNo)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Admission Form No
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Admissionformno, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Admissionformno)
+                            </div>
+
+                        </div>
+                        <br />
+
+                        <div class="row row_pt">
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Prospectus Fee
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Prospectusfees, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Prospectusfees)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Registration Fee
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Registrationfees, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Registrationfees)
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                <label for="pwd" class="redlabel">
+                                    Remarks
+                                </label>
+                            </div>
+                            <div class="col-lg-2 col-xs-12">
+                                @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Remarks)
+                            </div>
+
+                        </div>
+
+                        <hr />
+                        <div class="row pull-right">
+
+                            <div class="col-md-12">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@section JS
+{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+             $('.fromdatepicker').datepicker({
+                format: 'dd/M/yyyy',
+                orientation: "bottom auto", autoclose: true,
+            });
+
+              $(".chosen-select").chosen();
+        });
+
+    </script>
+}

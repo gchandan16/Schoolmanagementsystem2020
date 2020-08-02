@@ -1,0 +1,155 @@
+﻿
+@using SHARED
+
+@{
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" onclick="CloseAdmissionFormDiv();">
+            ×
+        </button>
+        <h4 class="modal-title">Admission Form</h4>
+        <input type="button" id="print" class="btn btn-default" value="Print" onclick="return printDiv('divToPrint');">
+    </div>
+    <div class="modal-body">
+
+        <div id="divToPrint" style="display: block;">
+            <table style="width:100%;  font-family:'Times New Roman', Times, serif; font-size:12px;">
+                <tr>
+                    <td>
+
+                        <table style="width:100%; ">
+                            <tr>
+                                <td rowspan="4"> <img src="@ViewBag.OrganisationDetail.OrgImage" style="width:100px; height: 50px;" />  </td>
+                                <td style="font-size:26px; font-family:Geneva, Arial, Helvetica, sans-serif; font-weight:bold; text-align:center; ">@ViewBag.OrganisationDetail.Oname</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:20px;text-align:center; ">@ViewBag.OrganisationDetail.BOAddress @ViewBag.OrganisationDetail.BOAddress2 @ViewBag.OrganisationDetail.BOPincode</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:16px;text-align:center; ">@ViewBag.OrganisationDetail.LWebsite, Email id:- @ViewBag.OrganisationDetail.LEmailId, Mobile No:- @ViewBag.OrganisationDetail.LMobile, @ViewBag.OrganisationDetail.LPhone </td>
+                            </tr>
+
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                        <table border="1" style=" line-height:27px; width:100%;">
+                            <tr>
+                                <td><b> Admission Form No:</b>@ViewBag.StudentDetail.Adminssionno</td>
+                                <td><b>Admission No:</b>@ViewBag.StudentDetail.Adminssionno</td>
+                                <td><b>Roll Number:</b> @ViewBag.StudentDetail.RollNo</td>
+                                <td rowspan="4" style="text-align:right;"> <img src="@ViewBag.StudentDetail.studentimage" height="100px;" width="100px;" /> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <b> Student Name :</b> @ViewBag.StudentDetail.Firstname </td>
+                                <td> <b>Date of Admission:</b>@ViewBag.StudentDetail.Off_dateofadmission </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <b> Father's Name:</b>  @ViewBag.StudentDetail.Bd_fathername </td>
+                                <td> <b> Mother's Name:</b> @ViewBag.StudentDetail.Bd_mothername</td>
+                            </tr>
+                            <tr>
+                                <td><b>Class:</b>@ViewBag.StudentDetail.ClassName</td>
+                                <td><b> Section:</b>@ViewBag.StudentDetail.SectionName.</td>
+                                <td><b>Student Date of Birth:</b>@ViewBag.StudentDetail.Bd_dob </td>
+                            </tr>
+                            <tr>
+                                <td><b>Religion :</b>@ViewBag.StudentDetail.ReligionName</td>
+                                <td><b>Cast:</b>@ViewBag.StudentDetail.CastName</td>
+                                <td><b>Category:</b>@ViewBag.StudentDetail.CatName</td>
+                                <td><b>Gender:</b>@ViewBag.StudentDetail.GName</td>
+                            </tr>
+                            <tr>
+                                <td><b> Father Mobile No (SMS):</b>@ViewBag.StudentDetail.Bd_fathermob</td>
+                                <td> <b> Mother Mobile No:</b>@ViewBag.StudentDetail.Bd_mothermob </td>
+                                <td><b>Email Id:</b>@ViewBag.StudentDetail.Bd_Emailid</td>
+                                <td><b> Father's Occupation:</b> @ViewBag.StudentDetail.Bd_fatheroccuption </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4"><b style="font-size:14px; text-align:center;"> Official Details </b>  </td>
+                            </tr>
+
+                            <tr>
+
+                                @{if (ViewBag.StudentDetail.TPCost == true)
+                                    {
+                                        <td><b> Route:</b> @ViewBag.StudentDetail.RouteName (@ViewBag.StudentDetail.PickDropPointName)</td>
+                                        <td><b> Bus No :</b>@ViewBag.StudentDetail.VehicleNumber</td>
+                                    }
+                                    else
+                                    {
+                                        <td><b> Route:</b> N/A</td>
+                                        <td><b> Bus No :</b>N/A</td>
+                                    }
+                                }
+
+
+
+                                        <td> <b>Last School/Institute/College:</b> @ViewBag.StudentDetail.Off_lastschool</td>
+                                        <td><b> Last Exam Given:</b>@ViewBag.StudentDetail.Off_boardoruniversity</td>
+                            </tr>
+                            <tr>
+                                <td> <b>Board/University:</b>@ViewBag.StudentDetail.Off_boardoruniversity</td>
+
+                                <td> <b>Marks Obtained:</b> N/A</td>
+                                <td><b>Result:</b> N/A </td>
+                                <td><b> Aadhar Card UID No:</b>@ViewBag.StudentDetail.Off_Aadharno</td>
+                            </tr>
+
+
+                            <tr>
+                                <td> <b>Blood Group:</b>@ViewBag.StudentDetail.BloodGroupName</td>
+                                <td><b> Hostel Room No: </b> @ViewBag.StudentDetail.Off_Hosalroomno</td>
+                                <td> <b>Bed No:</b> @ViewBag.StudentDetail.Off_bedno</td>
+                                <td><b>Student Height,Weight: </b> @ViewBag.StudentDetail.Off_heightweight </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4"><b style="font-size:14px; text-align:center;"> Contact Information </b>   </td>
+                            </tr>
+
+                            <tr>
+                                <td><b>Nationality:</b> @ViewBag.StudentDetail.Off_nationality</td>
+                                <td><b>State :</b> @ViewBag.StudentDetail.STATENAME</td>
+                                <td><b>Distic:</b>@ViewBag.StudentDetail.DistrictName</td>
+                                <td><b>City:</b>@ViewBag.StudentDetail.CITYNAME</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4"><b> Permanent Address: </b> @ViewBag.StudentDetail.Bd_address1</td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="4"> <b> Local Address: </b> @ViewBag.StudentDetail.Bd_address2</td>
+
+                            </tr>
+
+
+                        </table>
+
+                    </td>
+                </tr>
+
+
+
+            </table>
+
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="CloseAdmissionFormDiv()">
+            Close
+        </button>
+    </div>
+</div>

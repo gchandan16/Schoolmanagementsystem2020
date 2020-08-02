@@ -1,0 +1,165 @@
+﻿@model WEB.Models.TDSSettingModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add TDSSetting";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Add TDSSetting
+        </h4>
+    }
+    else
+    {
+        <h4 class="box-title">
+            Update TDSSetting
+        </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/Religionlist">TDSSetting Master</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+            <li class="active">Add TDSSetting</li>
+        }
+        else
+        {
+            <li class="active">Update TDSSetting</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("CreateTDSSetting", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.Tdsmid)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Tax Category:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.DropDownListFor(model => model.Taxcategory, new List<SelectListItem> {
+                                                         new SelectListItem{Text="Man",Value="Man" },
+                                                          new SelectListItem{Text="Woman",Value="Woman" },
+                                                           new SelectListItem{Text="Senior Citizen Man",Value="Senior Citizen Man" },
+                                                           new SelectListItem{Text="Senior Citizen Woman",Value="Senior Citizen Woman" },
+                                                     }, new { @class = "form-control chosen-select mandate" })
+                            </div>
+
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Year:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(model => model.TYear, new { @class = "form-control mandate datepickeryear", @msg = "Choose Date" })
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                        </div>
+
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Applicable From:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(model => model.ApplicableFrom, new { @class = "form-control mandate datepicker", @msg = "Choose Date"})
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Tax Rate:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.TaxRate, new { @class = "form-control mandate", @msg = "Enter Employer Amount", @placeholder = "Enter Employer Amount", @value = "0.00" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Min Amount:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.Tminamount, new { @class = "form-control mandate", @msg = "Enter Min Amount", @placeholder = "Enter Min Amount", @value = "0.00" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Max Amount:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.Tmaxamount, new { @class = "form-control mandate", @msg = "Enter Max Amount", @placeholder = "Enter Max Amount", @value = "0.00" })
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="row pull-right">
+                            <div class="col-lg-12 ">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return inputValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@section JS
+{
+
+    <script type="text/javascript">
+
+
+        function Clear() {
+            $('input[type="text"]').attr('value', '');
+
+        }
+  
+            $(document).ready(function () {
+                $('.datepicker').datepicker({
+                    format: 'dd/M/yyyy',
+                    orientation: "bottom auto", autoclose: true,
+                });
+                $('.datepickeryear').datepicker({
+                    changeMonth: false,
+        changeYear: true,
+                    orientation: "bottom auto", autoclose: true,
+                });
+                
+    </script>
+}

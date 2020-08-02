@@ -1,0 +1,302 @@
+﻿@model SHARED.EmployeeAttendance
+@using SHARED
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/Fee/Fee.js"></script>
+<section class="content-header">
+    <h1>
+        SALARY CREATION
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Salary Creation</li>
+    </ol>
+</section>
+@using (Html.BeginForm("SalaryCreation", "Fee", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="card card-default">
+                            <div class="card-header card_bg">
+                                <div class="card-title card_tittle2">
+                                    <span>Salary Creation</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        @Html.TextBoxFor(m => m.MonthYear, new { @class = "form-control datepicker mandate", @autocomplete = "off", @onkeydown = "event.preventDefault()" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input type="submit" value="Search" name="btnSearch" class="btn btn-primary pull-right" id="btnSearch" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@if (Model.EmployeeAttendanceList != null)
+{
+    using (Html.BeginForm("SalaryCreation", "Fee", FormMethod.Post, new { }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.MonthYear)
+        @Html.HiddenFor(m => m.TotalDaysInMonth)
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div>
+                            Month (@Model.MonthYear): @Model.TotalDaysInMonth days
+                            <br />
+                            Total Employee: @Model.EmployeeAttendanceList.Count() / @Model.EmployeeAttendanceList.Where(x => x.PaidSalary != "N/G").Count()
+                        </div>
+                        <div>
+                            <input type="submit" value="Submit" name="btnSearch" class="btn btn-primary pull-right" id="btnSubmit" onclick="return SalaryValidation();" />
+                            <input type="submit" value="Display Salary" name="btnSearch" class="btn btn-primary pull-right" id="btnDisplay" onclick="return SalaryValidation();" />
+                        </div>
+                        <div class="box-body">
+                            <table id="roletbl1" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                                <thead class="thead-lights">
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" id="ChkSelectAll" /> Select
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+
+                                        <th>
+                                            Working Days
+                                        </th>
+                                        <th>
+                                            LeaveInCash
+                                        </th>
+                                        <th>
+                                            Present
+                                        </th>
+                                        <th>
+                                            Absent
+                                        </th>
+                                        <th>
+                                            Holiday
+                                        </th>
+                                        <th>
+                                            Leave
+                                        </th>
+                                        <th>
+                                            Missing
+                                        </th>
+                                        <th>
+                                            Week Off
+                                        </th>
+                                        <th>
+                                            Paid Salary
+                                        </th>
+                                        <th>
+                                            Mode Of Payment
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.EmployeeAttendanceList.Count(); i++)
+                                    {
+                                        @Html.HiddenFor(m => m.EmployeeAttendanceList[i].EmployeeDetails.EMP_ID)
+                                        <tr>
+                                            <td>
+                                                @if (!Model.EmployeeAttendanceList[i].PaymentStatus)
+                                                {
+                                                    @Html.CheckBoxFor(m => m.EmployeeAttendanceList[i].Check, new { @class = "checkbox", @id = "Check", @row = @i })
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" disabled/>
+                                                }
+                                            </td>
+                                            <td>
+                                                @Model.EmployeeAttendanceList[i].EmployeeDetails.FIRSTNAME - @Model.EmployeeAttendanceList[i].EmployeeDetails.EMPCODE
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].EmployeeDetails.FIRSTNAME)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].EmployeeDetails.EMPCODE)
+                                            </td>
+
+                                            <td>
+
+                                                @Model.EmployeeAttendanceList[i].AttendanceDetail.TotalWorkingDaysList.Count()
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.TotalWorkingDaysList)
+                                                <input type="hidden" id="TotalWorkingDays_@i" value="@Model.EmployeeAttendanceList[i].AttendanceDetail.TotalWorkingDaysList.Count()" />
+                                            </td>
+                                            <td>
+                                                @Html.CheckBoxFor(m => m.EmployeeAttendanceList[i].LeaveInCash)
+
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ActualTotalPresent)
+                                                @Html.TextBoxFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalPresent, new { @class = "form-control", @msg = "Please enter days.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "2", @autocomplete = "off" })
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.PresentList)
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ActualTotalAbsent)
+                                                @Html.TextBoxFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalAbsent, new { @class = "form-control", @msg = "Please enter days.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "2", @autocomplete = "off" })
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.AbsentList)
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ActualTotalHoliday)
+                                                @Html.TextBoxFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalHoliday, new { @class = "form-control", @msg = "Please enter days.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "2", @autocomplete = "off" })
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.HolidayList)
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ActualTotalPaidLeave)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ActualTotalUnPaidLeave)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalPaidLeave)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalUnPaidLeave)
+                                                @Convert.ToDecimal(@Model.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalPaidLeave + @Model.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalUnPaidLeave) (Paid: @Model.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalPaidLeave, UnPaid: @Model.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalUnPaidLeave)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.PaidLeaveList)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.UnPaidLeaveList)
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ActualTotalMissingAttendence)
+                                                @Html.TextBoxFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalMissingAttendence, new { @class = "form-control", @msg = "Please enter days.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "2", @autocomplete = "off", @empid = "@Model.EmployeeAttendanceList[i].EmployeeDetails.EMP_ID" })
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.MissingAttendenceList)
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ActualTotalWO)
+                                                @Html.TextBoxFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.ModifiedTotalWO, new { @class = "form-control", @msg = "Please enter days.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "2", @autocomplete = "off" })
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].AttendanceDetail.WOList)
+                                            </td>
+                                            <td>
+                                                @Model.EmployeeAttendanceList[i].PaidSalary
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].MonthSalary)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].PaidSalary)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].TotalEarning)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].TotalDeduction)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].EmployeePFAmount)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].EmployerPFAmount)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].EmployeeESIAmount)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].EmployerESIAmount)
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].EmployeeTDS)
+                                            </td>
+                                            <td>
+                                                @Model.EmployeeAttendanceList[i].EmployeeDetails.ModeOfPayment
+                                                @Html.HiddenFor(m => m.EmployeeAttendanceList[i].EmployeeDetails.ModeOfPayment)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- /.box -->
+                </div>
+            </div>
+        </section>
+    }
+}
+
+<script>
+    $(document).ready(function () {
+
+        $('#MonthYear').datepicker({
+            autoclose: true,
+            minViewMode: 1,
+            endDate: "0m0y",
+            format: 'M/yyyy'
+        })
+
+        $("#ChkSelectAll").change(function () {
+            var status = this.checked;
+            $('.checkbox').each(function () {
+                this.checked = status;
+            });
+        });
+
+        $('.checkbox').change(function () {
+            if (!this.checked)
+                $("#ChkSelectAll")[0].checked = false;
+
+
+            if ($('.checkbox:checked').length == $('.checkbox').length)
+                $("#ChkSelectAll")[0].checked = true;
+
+        });
+    });
+    function SalaryValidation() {
+        debugger;
+        var flag = true;
+        if ($('.checkbox:checked').length == 0) {
+            alert("Please select employee.");
+            return false;
+        }
+        else {
+            $('.checkbox:checked').each(function () {
+                var row = $(this).attr("row");
+                //if ($("#" + "EmployeeAttendanceList_" + row + "__EmployeeDetails_ModeOfPayment").val() == "") {
+                //    alert("Please update mode of payment. Employee Name: " + $("#" + "EmployeeAttendanceList_" + row + "__EmployeeDetails_FIRSTNAME").val() + "-" + $("#" + "EmployeeAttendanceList_" + row + "__EmployeeDetails_EMPCODE").val());
+                //    flag = false;
+                //    return false;
+                //}
+                //else
+                if ($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalMissingAttendence").val() != 0) {
+                    alert("Please check missing attendence.");
+                    $("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalMissingAttendence").focus();
+                    flag = false;
+                    return false;
+                }
+                else {
+                    debugger;
+                    if (isNaN(parseFloat($("#" + "TotalWorkingDays_" + row).val()))) {
+                        $("#" + "TotalWorkingDays_" + row).val("0");
+                    }
+                    if (isNaN(parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalPresent").val()))) {
+                        $("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalPresent").val("0");
+                    }
+                    if (isNaN(parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalAbsent").val()))) {
+                        $("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalAbsent").val("0");
+                    }
+                    if (isNaN(parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalHoliday").val()))) {
+                        $("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalHoliday").val("0");
+                    }
+                    if (isNaN(parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalPaidLeave").val()))) {
+                        $("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalPaidLeave").val("0");
+                    }
+                    if (isNaN(parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalUnPaidLeave").val()))) {
+                        $("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalUnPaidLeave").val("0");
+                    }
+                    if (isNaN(parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalMissingAttendence").val()))) {
+                        $("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalMissingAttendence").val("0");
+                    }
+                    if (isNaN(parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalWO").val()))) {
+                        $("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalWO").val("0");
+                    }
+                    var totalWorkingDays = parseFloat($("#" + "TotalWorkingDays_" + row).val());
+                    var TotalPresent = parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalPresent").val());
+                    var TotalAbsent = parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalAbsent").val());
+                    var TotalHoliday = parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalHoliday").val());
+                    var TotalPaidLeave = parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalPaidLeave").val());
+                    var TotalUnPaidLeave = parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalUnPaidLeave").val());
+                    var TotalMissingAttendence = parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalMissingAttendence").val());
+                    var TotalWO = parseFloat($("#" + "EmployeeAttendanceList_" + row + "__AttendanceDetail_ModifiedTotalWO").val());
+
+                    if (parseFloat(totalWorkingDays) != parseFloat(parseFloat(TotalPresent) + parseFloat(TotalAbsent) + parseFloat(TotalHoliday) + parseFloat(TotalPaidLeave) + parseFloat(TotalUnPaidLeave) + parseFloat(TotalMissingAttendence) + parseFloat(TotalWO))) {
+                        alert("Miss-match found in total days.");
+                        flag = false;
+                        return false;
+                    }
+                }
+            });
+            return flag;
+        }
+    }
+</script>

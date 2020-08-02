@@ -1,0 +1,726 @@
+﻿@model WEB.Models.StudentModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Student";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+<section class="content-header">
+    <h4 class="box-title">
+        Add Student
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/StudentList">Manage Student</a></li>
+        <li class="active">Add Student</li>
+    </ol>
+</section>
+
+@using (Html.BeginForm("CreateStudent", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.Smid)
+    @Html.AntiForgeryToken()
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Student Details</h3> <span class="pull-right" id="TotalStudent"></span>
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-group">
+
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Admission Form No</label>
+                                @Html.TextBoxFor(model => model.Adminssionno, new { @class = "form-control mandate", @placeholder = "Enter Admission Form No" })
+                                @Html.ValidationMessageFor(model => model.Adminssionno)
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Date of Admission</label>
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(model => model.Off_dateofadmission, new { @class = "form-control datepicker", @placeholder = "Date of Admission", @readonly = "readonly" })
+                                    @*@Html.ValidationMessageFor(model => model.Off_dateofadmission)*@
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>Class</label>
+                                @Html.DropDownListFor(m => m.CMid, new SelectList(Model.ClassList, "CMid", "ClassName"), "-- Select--", new { @class = "form-control chosen-select", @onchange = "return Getsectionbaseonclass(this)" })
+                                @*@Html.ValidationMessageFor(m => m.CMid)*@
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Section</label>
+                                @Html.DropDownListFor(m => m.SecMid, new SelectList(Model.SectionList, "Secmid", "SectionName"), "-- Select--", new { @class = "form-control chosen-select", @onchange = "getapplicationfrmno(this);GetStudentList(this);" })
+                                @*@Html.ValidationMessageFor(m => m.SecMid)*@
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>Fees Group</label>
+
+                                @Html.DropDownListFor(m => m.FeeGroup, new SelectList(Model.Feegrouplist, "FeeGroupID", "FeeGroupName"), "-- Select--", new { @class = "form-control chosen-select" })
+                                @*@Html.ValidationMessageFor(m => m.SecMid)*@
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Enquiry No(If Any) </label>
+                                @Html.DropDownListFor(m => m.Enquiryno, new SelectList(Model.GetAddmissionEnqlist, "AEnquiryNo", "AEnquiryNo"), "-- Select--", new { @class = "form-control chosen-select" })
+                                @*@Html.TextBoxFor(model => model.Adminssionno, new { @class = "form-control", @placeholder = "Admission Number" })*@
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Roll Number </label>
+                                @Html.TextBoxFor(model => model.RollNo, new { @class = "form-control", @placeholder = "Roll Number" })
+                                @*@Html.ValidationMessageFor(model => model.RollNo)*@
+                            </div>
+
+                            <label for="exampleInputEmail1">Student Name</label>
+                            @Html.TextBoxFor(model => model.Firstname, new { @class = "form-control", @placeholder = "Enter Student Name" })
+                            @Html.ValidationMessageFor(model => model.Firstname)
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Student Date of Birth</label>
+                            <div class="input-group date fromdatepicker">
+                                @Html.TextBoxFor(model => model.Bd_dob, new { @class = "form-control datepicker", @placeholder = "Enter Student Date of Birth" })
+                                @*@Html.ValidationMessageFor(model => model.Bd_dob)*@
+                                <span class="input-group-append input-group-addon ">
+                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Aadhar Card UID No  </label>
+                            @Html.TextBoxFor(model => model.Off_Aadharno, new { @class = "form-control", @placeholder = "Enter Aadhar Card UID No" })
+
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>Gender</label>
+                            @Html.DropDownListFor(m => m.GMid, new SelectList(Model.GendraList, "GMid", "GName"), "-- Select--", new { @class = "form-control chosen-select" })
+                            @Html.ValidationMessageFor(m => m.GMid)
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Mobile No (SMS)</label>
+                            @Html.TextBoxFor(model => model.Bd_contactno, new { @class = "form-control", @placeholder = "Enter Mobile No for SMS" })
+                            @Html.ValidationMessageFor(model => model.Bd_contactno)
+
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Email Id</label>
+                            @Html.TextBoxFor(model => model.Bd_Emailid, new { @class = "form-control", @placeholder = "Enter Email Id" })
+                            @Html.ValidationMessageFor(model => model.Bd_Emailid)
+
+
+                        </div>
+
+
+                    </div><!-- /.box-body -->
+
+
+
+                </div><!-- /.box -->
+                <!-- Form Element sizes -->
+                <div class="box box-success">
+                    <div class="box-header">
+                        <h3 class="box-title">Parents Details</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Father's Name</label>
+                            @Html.TextBoxFor(model => model.Bd_fathername, new { @class = "form-control", @placeholder = "Enter Father's Name" })
+                            @Html.ValidationMessageFor(model => model.Bd_fathername)
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Father's Education</label>
+                            @Html.TextBoxFor(model => model.Bd_qualification, new { @class = "form-control", @placeholder = "Enter Father's Education" })
+                            @Html.ValidationMessageFor(model => model.Bd_qualification)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Father's Occupation</label>
+                            @Html.TextBoxFor(model => model.Bd_fatheroccuption, new { @class = "form-control", @placeholder = "Enter Father's Occupation" })
+                            @Html.ValidationMessageFor(model => model.Bd_fatheroccuption)
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Father's Mobile No</label>
+                            @Html.TextBoxFor(model => model.Bd_fathermob, new { @class = "form-control", @placeholder = "Enter Father's Mobile No" })
+                            @Html.ValidationMessageFor(model => model.Bd_fathermob)
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Mother's Name</label>
+                            @Html.TextBoxFor(model => model.Bd_mothername, new { @class = "form-control", @placeholder = "Enter  Mother's Name" })
+                            @Html.ValidationMessageFor(model => model.Bd_mothername)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Mother's Education</label>
+                            @Html.TextBoxFor(model => model.Bd_motherqualification, new { @class = "form-control", @placeholder = "Enter Mother's Education" })
+                            @Html.ValidationMessageFor(model => model.Bd_motherqualification)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Mother's Occupation</label>
+                            @Html.TextBoxFor(model => model.Bd_Motheroccuption, new { @class = "form-control", @placeholder = "Enter Mother's Occupation" })
+                            @Html.ValidationMessageFor(model => model.Bd_Motheroccuption)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Mother's Mobile No</label>
+                            @Html.TextBoxFor(model => model.Bd_mothermob, new { @class = "form-control", @placeholder = "Enter Mother's Mobile No" })
+                            @Html.ValidationMessageFor(model => model.Bd_mothermob)
+
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Parents Wedding Date (for Anniversary Wish)</label>
+                            <div class="input-group date fromdatepicker">
+                                @Html.TextBoxFor(model => model.Bd_dateofannversy, new { @class = "form-control datepicker", @placeholder = "Enter Parents Wedding Date (dd-mm-yyyy)" })
+                                @Html.ValidationMessageFor(model => model.Bd_dateofannversy)
+                                <span class="input-group-append input-group-addon ">
+                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Student's Photo</label>
+                                    <input type="file" id="studentimage" name="studentimage" style="display:none;">
+                                    <br />
+                                    <a onclick="$('#studentimage').click();">
+                                        @if (Model.studentimage != null)
+                                        {
+                                            <img id="studentimagepreview" src="@Model.studentimage" style="width:75px;height:75px;" />
+
+                                        }
+                                        else
+                                        {
+                                            <img id="studentimagepreview" src="~/Content/Student/dummystudent.png" style="width:50px;height:50px;" />
+                                        }
+
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Father's Photo</label>
+                                    <input type="file" id="fatherimage" name="fatherimage" style="display:none;">
+                                    <br />
+                                    <a onclick="$('#fatherimage').click();">
+                                        @if (Model.fatherimage != null)
+                                        {
+                                            <img id="fatherimagepreview" src="@Model.fatherimage" style="width:75px;height:75px;" />
+
+                                        }
+                                        else
+                                        {
+                                            <img id="fatherimagepreview" src="~/Content/Student/dummyfather.png" style="width:50px;height:50px;" />
+                                        }
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Mother's Photo</label>
+                                    <input type="file" id="motherimage" name="motherimage" style="display:none;">
+                                    <br />
+                                    <a onclick="$('#motherimage').click();">
+                                        @if (Model.motherimage != null)
+                                        {
+                                            <img id="motherimagepreview" src="@Model.motherimage" style="width:75px;height:75px;" />
+
+                                        }
+                                        else
+                                        {
+                                            <img id="motherimagepreview" src="~/Content/Student/dummymonther.png" style="width:50px;height:50px;" />
+                                        }
+
+                                    </a>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-control hide">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <table>
+                                        <tr>
+                                            <td><div id="videoElement" width="200" height="200" style="display:none;"></div></td>
+                                            <td><canvas id="canvas" width="200" height="200" style="display:none;"></canvas></td>
+                                        </tr>
+                                        <tr>
+                                            <td> <button type="button" id="studentsnap" onclick="accecwebcam();" class="btn btn-primary hide">WebCam</button></td>
+                                            <td>
+                                                <button type="button" id="snap" class="btn btn-primary hide">Capture Student</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <button type="button" id="snapfather" class="btn btn-primary hide">Capture Father</button>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <button type="button" id="snapmother" class="btn btn-primary hide">Capture Mother</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+
+
+            </div><!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+                <!-- general form elements disabled -->
+                <div class="box box-warning">
+                    <div class="box-header">
+                        <h3 class="box-title">Official Details</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Religion   </label>
+                            @Html.DropDownListFor(m => m.Relmid, new SelectList(Model.ReligionList, "Relmid", "ReligionName"), "-- Select--", new { @class = "form-control chosen-select" })
+                            @Html.ValidationMessageFor(m => m.Relmid)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Cast </label>
+                            @Html.DropDownListFor(m => m.Castmid, new SelectList(Model.CastList, "Castmid", "CastName"), "-- Select--", new { @class = "form-control chosen-select" })
+                            @Html.ValidationMessageFor(m => m.Castmid)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>Category  </label>
+                            @Html.DropDownListFor(m => m.Categmid, new SelectList(Model.Categorylist, "Catmid", "CatName"), "-- Select--", new { @class = "form-control chosen-select" })
+                            @Html.ValidationMessageFor(m => m.Categmid)
+
+                        </div>
+
+                        @*<div class="form-group hide">
+                                <label>Route  </label>
+                                @Html.DropDownListFor(m => m.RouteMid, new SelectList(Model.Routelist, "Routemid", "RouteName"), "-- Select--", new { @class = "form-control chosen-select" })
+                            </div>
+
+                            <div class="form-group hide">
+                                <label>Bus No  </label>
+                                @Html.DropDownListFor(m => m.BusMid, new SelectList(Model.Buslist, "Busmid", "BusName"), "-- Select--", new { @class = "form-control chosen-select" })
+                            </div>*@
+
+
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Blood Group </label>
+                            @Html.DropDownListFor(model => model.Off_bloodgroup, new SelectList(Model.BloodGroupList, "Bdmid", "BloodGroupName"), "--select--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Off_bloodgroup)
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Eye Vision  </label>
+                            @Html.TextBoxFor(model => model.VisionLeft, new { @class = "form-control", @placeholder = "Eye Vission" })
+                            @Html.ValidationMessageFor(model => model.VisionLeft)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Last School/Institute/College  </label>
+                            @Html.TextBoxFor(model => model.Off_lastschool, new { @class = "form-control", @placeholder = "Enter School/Institute/College" })
+                            @Html.ValidationMessageFor(model => model.Off_lastschool)
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Last Exam Given  </label>
+                            @Html.TextBoxFor(model => model.Off_Examgiven, new { @class = "form-control", @placeholder = "Enter Last Exam Given" })
+                            @Html.ValidationMessageFor(model => model.Off_Examgiven)
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Board/University  </label>
+                            @Html.TextBoxFor(model => model.Off_boardoruniversity, new { @class = "form-control", @placeholder = "Enter Board/University" })
+                            @Html.ValidationMessageFor(model => model.Off_boardoruniversity)
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Student Height,Weight  </label>
+                            @Html.TextBoxFor(model => model.Off_heightweight, new { @class = "form-control", @placeholder = "Enter Student Height,Weight" })
+                            @Html.ValidationMessageFor(model => model.Off_heightweight)
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Hostel Room No  </label>
+                            @Html.TextBoxFor(model => model.Off_Hosalroomno, new { @class = "form-control", @placeholder = "Enter  Hostel Room No" })
+                            @Html.ValidationMessageFor(model => model.Off_Hosalroomno)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Bed No  </label>
+
+                            @Html.TextBoxFor(model => model.Off_bedno, new { @class = "form-control", @placeholder = "Enter Bed No" })
+                            @Html.ValidationMessageFor(model => model.Off_bedno)
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Biometrics/RFID No  </label>
+                            @Html.TextBoxFor(model => model.Off_biometricno, new { @class = "form-control", @placeholder = "Enter Biometrics/RFID No" })
+                            @Html.ValidationMessageFor(model => model.Off_biometricno)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Nationality </label>
+                            @Html.TextBoxFor(model => model.Off_nationality, new { @class = "form-control", @placeholder = "Enter Nationality" })
+                            @Html.ValidationMessageFor(model => model.Off_nationality)
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Permanent Address </label>
+                            @Html.TextAreaFor(model => model.Bd_address1, new { @class = "form-control", @placeholder = "Enter Permanent Address (Vill, Post, District, Pin Code)" })
+                            @Html.ValidationMessageFor(model => model.Bd_address1)
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Local Address (Vill,Post,Distic,Pin Code) </label>
+                            @Html.TextAreaFor(model => model.Bd_address2, new { @class = "form-control", @placeholder = "Enter Local Address (Vill,Post,Distic,Pin Code)" })
+                            @Html.ValidationMessageFor(model => model.Bd_address2)
+
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Extra Note </label>
+                            @Html.TextAreaFor(model => model.Off_remarks, new { @class = "form-control", @placeholder = "Extra Note " })
+                            @Html.ValidationMessageFor(model => model.Off_remarks)
+
+                        </div>
+
+                        <!-- checkbox -->
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <h4> Document Submit</h4>
+                                <label>
+                                    @if (Model.Off_TC == "Y")
+                                    {
+                                        <input type="checkbox" id="chk_tc" name="chk_tc" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="chk_tc" name="chk_tc" />
+                                    }
+                                    T.C.
+                                </label>
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                    @if (Model.Off_CC == "Y")
+                                    {
+
+                                        <input type="checkbox" id="chk_cc" checked name="chk_cc" />
+
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="chk_cc" name="chk_cc" />
+                                    }
+                                    C.C.
+                                </label>
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                    @if (Model.Off_CC == "Y")
+                                    {
+
+                                        <input type="checkbox" id="chk_dob_certificate" name="chk_dob_certificate" checked />
+
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="chk_dob_certificate" name="chk_dob_certificate" />
+                                    } DOB Certificate
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            @if (Model.ActionName == Constants.BTN_CREATE)
+                            {
+                                <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+                                <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                            }
+                            else if (Model.ActionName == Constants.BTN_EDIT)
+                            {
+
+                                <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return inputValidation();" />
+                                <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </section><!-- /.content -->
+
+}
+@section JS
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+    <script>
+        var video = document.querySelector("#videoElement");
+        var stuphoto = document.getElementById("studentimagepreview");
+        var fatphoto = document.getElementById("fatherimagepreview");
+        var motphoto = document.getElementById("motherimagepreview");
+        function accecwebcam() {
+            document.getElementById("videoElement").style.display = 'block';
+            Webcam.set({
+                width: 100,
+                height: 100,
+                image_format: 'jpeg',
+                jpeg_quality: 90
+            });
+            Webcam.attach('#videoElement');
+        }
+        document.getElementById('snap').addEventListener('click', function () {
+            Webcam.snap(function (data_uri) {
+                stuphoto.src = data_uri;
+            });
+        });
+        document.getElementById('snapfather').addEventListener('click', function () {
+            Webcam.snap(function (data_uri) {
+                fatphoto.src = data_uri;
+            });
+        });
+        document.getElementById('snapmother').addEventListener('click', function () {
+            Webcam.snap(function (data_uri) {
+                motphoto.src = data_uri;
+            });
+        });
+
+
+    </script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/M/yyyy',
+                orientation: "bottom auto", autoclose: true,
+            });
+
+            /*---------------For Student Image-------------*/
+            var p1 = $("#studentimagepreview");
+            $("#studentimage").change(function () {
+                var imgPath = document.getElementById("studentimage").files[0].name;
+                var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                if (extn == "png" || extn == "jpg" || extn == "jpeg") {
+                p1.fadeOut();
+                var Freader = new FileReader();
+                Freader.readAsDataURL(document.getElementById("studentimage").files[0]);
+                Freader.onload = function (oFREvent) {
+                    var scrll = oFREvent.target.result;
+                    p1.attr('src', oFREvent.target.result).fadeIn();
+                    }
+                }
+                else {
+                    $("#studentimage").val('');
+                    alert("Please upload image file only having extension png, jpg, jpeg.")
+                }
+            });
+
+            /*--------------End For Student Image---------------*/
+            /*---------------For Father Image-------------*/
+            var p2 = $("#fatherimagepreview");
+            $("#fatherimage").change(function () {
+                var imgPath = document.getElementById("fatherimage").files[0].name;
+                var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                if (extn == "png" || extn == "jpg" || extn == "jpeg") {
+                p2.fadeOut();
+                var Freader = new FileReader();
+                Freader.readAsDataURL(document.getElementById("fatherimage").files[0]);
+                Freader.onload = function (oFREvent) {
+                    var scrll = oFREvent.target.result;
+                    p2.attr('src', oFREvent.target.result).fadeIn();
+                    }
+                }
+                else {
+                    $("#fatherimage").val('');
+                    alert("Please upload image file only having extension png, jpg, jpeg.")
+                }
+            });
+
+            /*--------------End For Father Image---------------*/
+            /*---------------For Mother Image-------------*/
+            var p3 = $("#motherimagepreview");
+            $("#motherimage").change(function () {
+                var imgPath = document.getElementById("motherimage").files[0].name;
+                var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                if (extn == "png" || extn == "jpg" || extn == "jpeg") {
+                p3.fadeOut();
+                var Freader = new FileReader();
+                Freader.readAsDataURL(document.getElementById("motherimage").files[0]);
+                Freader.onload = function (oFREvent) {
+                    var scrll = oFREvent.target.result;
+                    p3.attr('src', oFREvent.target.result).fadeIn();
+                    }
+                }
+                else {
+                    $("#motherimage").val('');
+                    alert("Please upload image file only having extension png, jpg, jpeg.")
+                }
+            });
+
+            /*--------------End For Mother Image---------------*/
+
+
+            // $('#BirthDate').val(formatDate($('#BirthDate').val()));
+
+        });
+        /*------------------Start Application No-------------------*/
+        function getapplicationfrmno(sectionid) {
+            var secid = sectionid.value;
+            var classid = $("#CMid").val();
+            var checkUrl = '@Url.Action("Getapplicationformno", "Admin")';
+            $.ajax({
+                url: checkUrl,
+                type: "GET",
+                dataType: "JSON",
+                data: { classid: classid,secid:secid },
+                success: GetapplicationformnoSuccess,
+                error: GetapplicationformnoFail
+            });
+        }
+        function GetStudentList(sectionid) {
+            var secid = sectionid.value;
+            $("#TotalStudent").html("");
+            var classid = $("#CMid").val();
+            var chUrl = '@Url.Action("GetStudentList", "Admin")';
+            if (secid != 0 && secid != "") {
+                $.ajax({
+                    url: chUrl,
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { ClassID: classid, SectionID: secid },
+                    success: function (response) {
+                        $("#TotalStudent").html("<b>Total Students: " + response.length + "</b>");
+                    },
+                    failure: function (response) {
+                        $("#TotalStudent").html("");
+                        alert('Unable to perform event. Please try again.');
+                    },
+                });
+            }
+        }
+        
+        function GetapplicationformnoSuccess(result) {
+            debugger;
+            $("#Adminssionno").val(result);
+
+        }
+
+        function GetapplicationformnoFail() {
+
+        }
+/*------------------End Application No----------------------*/
+         function Getsectionbaseonclass(obj) {
+             BlockUI();
+             var classId = obj.value == "" ? 0 : obj.value;
+             var checkUrl = '@Url.Action("GetsectionbaseonclassId", "Admin")';
+            $.ajax({
+                url: checkUrl,
+                type: "GET",
+                dataType: "JSON",
+                data: { classId: classId },
+                success: GetsectionbaseonclassIdSuccess,
+                error: GetsectionbaseonclassIdFail
+            });
+
+        }
+       
+        function GetsectionbaseonclassIdSuccess(result) {
+           
+             $("#Adminssionno").val(result.frmno);
+            FillSectionList(result.seclst);
+            $.unblockUI();
+           // $("#SecMid").val('').trigger("chosen:updated");
+
+        }
+
+        function GetsectionbaseonclassIdFail() {
+            $.unblockUI();
+        }
+
+        function FillSectionList(SectionList) {
+            debugger;
+            var v = "<option value=\"0\">--Select--</option>";
+            $.each(SectionList, function (i, sec) {
+
+                v += "<option value=" + sec.Secmid + ">" + sec.SectionName + "</option>";
+            });
+
+            $("#SecMid").html(v).trigger("chosen:updated");
+        }
+
+
+    </script>
+}

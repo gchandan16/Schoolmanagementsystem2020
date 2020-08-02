@@ -1,0 +1,147 @@
+﻿@model WEB.Models.AdmissionEnquiryModel
+@using SHARED
+
+@{
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" onclick="CloseEnqueryFormDiv();">
+            ×
+        </button>
+        <h4 class="modal-title">STUDENT ENQUERY RECORDS</h4>
+        <input type="button" id="print" class="btn btn-default" value="Print" onclick="return printDiv('divToPrint');">
+    </div>
+    <div class="modal-body" style="height:700px; overflow:scroll;">
+
+        <div id="divToPrint" style="display: block;">
+            @foreach (var _singleitem in Model.GetAddmissionEnqlist)
+            {
+                <table style="width:100%;  font-family:'Times New Roman', Times, serif; font-size:12px;">
+                    <tr>
+                        <td>
+
+                            <table style="width:100%; ">
+                                <tr>
+                                    <td rowspan="4"> <img src="@(Model.OragnisationMaster.OrgImage)" style="width:100px; height: 50px;" />  </td>
+                                    <td style="font-size:26px; font-family:Geneva, Arial, Helvetica, sans-serif; font-weight:bold; text-align:center; ">@(Model.OragnisationMaster.Oname)</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:20px;text-align:center; ">@(Model.OragnisationMaster.BOAddress) @(Model.OragnisationMaster.BOAddress2) @(Model.OragnisationMaster.BOPincode)</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:16px;text-align:center; ">@(Model.OragnisationMaster.LWebsite), Email id:-@(Model.OragnisationMaster.LEmailId), Mobile No:-@(Model.OragnisationMaster.LMobile), @(Model.OragnisationMaster.LPhone) </td>
+                                </tr>
+
+                            </table>
+
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+
+                            <table border="1" style=" line-height:27px; width:100%;">
+                                <tr>
+                                    <td><b> Enquery No:</b>@_singleitem.AEnquiryNo</td>
+                                    <td><b></b></td>
+                                    <td><b>Admission Form No:</b> @_singleitem.Admissionformno</td>
+                                    <td rowspan="4" style="text-align:right;"> </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> <b> Student Name :</b> @_singleitem.AStudentName </td>
+                                    <td> <b>Date of Enquery:</b>@_singleitem.DateofEnquiry </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> <b> Father's Name:</b>  @_singleitem.APdfather </td>
+                                    <td> <b> Mother's Name:</b> @_singleitem.APMother</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Class:</b>@_singleitem.AClassName</td>
+                                    <td><b> </b></td>
+                                    <td><b>Student Date of Birth:</b>@_singleitem.ADOB </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Religion :</b>------</td>
+                                    <td><b>Cast:</b>-------</td>
+                                    <td><b>Category:</b>-------</td>
+                                    <td><b>Gender:</b>@_singleitem.AGendar</td>
+                                </tr>
+                                <tr>
+                                    <td><b> Father Mobile No (SMS):</b>@_singleitem.APdFathermobile</td>
+                                    <td> <b> Mother Mobile No:</b>@_singleitem.Apmothermobile </td>
+                                    <td><b>Email Id:</b>@_singleitem.Apemailid</td>
+                                    <td><b> Father's Occupation:</b> @_singleitem.APFatheroccuption </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4"><b style="font-size:14px; text-align:center;"> Official Details </b>  </td>
+                                </tr>
+
+                                <tr>
+
+                                    <td></td>
+                                    <td></td>
+
+                                    <td> <b>Last School/Institute/College:</b> @_singleitem.Fonameofschool</td>
+                                    <td><b> Last Exam Given:</b>@_singleitem.Lastexamgiven</td>
+                                </tr>
+                                <tr>
+                                    <td> <b>Board/University:</b>@_singleitem.BoardUniversity</td>
+
+                                    <td> <b>Marks Obtained:</b>@_singleitem.Marks</td>
+                                    <td><b>Result:</b>@_singleitem.Fostatus </td>
+                                    <td><b> </b></td>
+                                </tr>
+
+
+                                @*<tr>
+                                    <td> <b>Blood Group:</b>@_singleitem.BloodGroupName</td>
+                                    <td><b> Hostel Room No: </b> @_singleitem.Off_Hosalroomno</td>
+                                    <td> <b>Bed No:</b> @_singleitem.Off_bedno</td>
+                                    <td><b>Student Height,Weight: </b> @_singleitem.Off_heightweight </td>
+                                </tr>*@
+
+                                <tr>
+                                    <td colspan="4"><b style="font-size:14px; text-align:center;"> Contact Information </b>   </td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Mobile No:</b> @_singleitem.AContactno</td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td><b>City:</b>@_singleitem.ACity</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4"><b> Permanent Address: </b> @_singleitem.ACont_Address</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4"> <b> Registration Fee: </b> @_singleitem.Registrationfees</td>
+
+                                </tr>
+
+
+                            </table>
+
+                        </td>
+                    </tr>
+
+
+
+                </table>
+                
+            }
+
+        </div>
+    </div>
+    <div class="modal-footer">
+
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="CloseEnqueryFormDiv();">
+            Close
+        </button>
+    </div>
+</div>

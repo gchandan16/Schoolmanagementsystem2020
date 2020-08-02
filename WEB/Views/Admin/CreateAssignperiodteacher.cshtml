@@ -1,0 +1,222 @@
+﻿@model WEB.Models.AssignperiodteacherModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Assign Period To Teacher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+    <h4 class="box-title">
+        Add Assign Period To Teacher
+    </h4>
+    }
+    else
+    {
+<h4 class="box-title">
+    Update Assign Period To Teacher
+</h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/AssignperiodteacherList">Assign Period To Teacher</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+    <li class="active">Add  Period To Teacher</li>
+        }
+        else
+        {
+    <li class="active">Update  Period To Teacher</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("CreateAssignperiodteacher", "Admin", FormMethod.Post, new { }))
+{
+
+    @Html.HiddenFor(m => m.Apttmid)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Teacher Name:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(model=>model.EMP_ID, new SelectList(Model.TeacherList, "EMP_ID", "FIRSTNAME"), "-- Select--", new { @class = "form-control chosen-select mandate",@onchange="return ValidateassignlectureExist();" })
+                                @Html.ValidationMessageFor(model => model.EMP_ID)
+                            </div>
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Period :
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(model => model.Pmid, new SelectList(Model.PeriodmasterList, "Pmid", "Perioddesc"), "-- Select--", new { @class = "form-control chosen-select mandate" ,@onchange="return ValidateassignlectureExist();" })
+                                @Html.ValidationMessageFor(model => model.Pmid)
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Class:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(model => model.CMid, new SelectList(Model.ClassmasterList, "CMid", "ClassName"), "-- Select--", new { @class = "form-control chosen-select mandate",@onchange="return Getsectionbaseonclass(this);" })
+                                @Html.ValidationMessageFor(model => model.CMid)
+                            </div>
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Section:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(model => model.Secmid, new SelectList(Model.SectionmasterList, "Secmid", "SectionName"), "-- Select--", new { @class = "form-control chosen-select mandate",@onchange="return ValidateassignlectureExist();" })
+                                @Html.ValidationMessageFor(model => model.Secmid)
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Description:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+
+                                @Html.TextBoxFor(model => model.Perioddescription, new { @class = "form-control"})
+                            </div>
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                               
+
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="row pull-right">
+                            <div class="col-lg-12">
+
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" onclick="return ValidateperiodNameExist(); " class="btn btn-success" />
+                                    <input type="reset" class="btn btn-primary " name="btntype" value="Clear" onclick="return Clear();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return ValidateperiodNameExist(); " />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+@section JS
+{
+
+    <script type="text/javascript">
+        function Getsectionbaseonclass(obj) {
+             BlockUI();
+             var classId = obj.value == "" ? 0 : obj.value;
+             var checkUrl = '/Admin/GetsectionbaseonclassId';
+            $.ajax({
+                url: checkUrl,
+                type: "GET",
+                dataType: "JSON",
+                data: { classId: classId },
+                success: GetsectionbaseonclassIdSuccess,
+                error: GetsectionbaseonclassIdFail
+            });
+
+        }
+       
+        function GetsectionbaseonclassIdSuccess(result) {
+            FillSectionList(result.seclst);
+            $.unblockUI();
+           // $("#SecMid").val('').trigger("chosen:updated");
+
+        }
+
+        function GetsectionbaseonclassIdFail() {
+            $.unblockUI();
+        }
+
+        function FillSectionList(SectionList) {
+            debugger;
+            var v = "<option value=\"0\">--Select--</option>";
+            $.each(SectionList, function (i, sec) {
+
+                v += "<option value=" + sec.Secmid + ">" + sec.SectionName + "</option>";
+            });
+
+            $("#Secmid").html(v).trigger("chosen:updated");
+        }
+
+
+
+        function ValidateassignlectureExist() {
+             var empid = $("#EMP_ID").val();
+            var periodid = $("#Pmid").val();
+            var classid = $("#CMid").val();
+            var sectionid = $("#Secmid").val();
+            if (sectionid.length > 0 || periodid.length>0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: '/Admin/CheckIsAssignperiodteacherExist',
+                    data: JSON.stringify({ _EMP_ID:empid,_Pmid: periodid, _CMid: classid,_Secmid:sectionid}),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data == true) {
+                            alert("Teacher have Assigned the lecture in another class for this time!");
+                           
+                            return false;
+                        }
+                         
+                    },
+                    error: function (data) {
+                        // throw ex;
+                    }
+
+                });
+            }
+        }
+
+        function Clear() {
+            $('input[type="text"]').attr('value', '');
+
+        }
+    </script>
+}

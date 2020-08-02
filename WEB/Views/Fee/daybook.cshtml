@@ -1,0 +1,139 @@
+﻿@model SHARED.Ledger
+@using SHARED
+@{
+    ViewBag.Title = "Day Boook";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<section class="content-header">
+    <h4>
+        Day Book
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Day Book</li>
+    </ol>
+</section>
+
+@using (Html.BeginForm("daybook", "Fee", FormMethod.Post, new { id="daybook" }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Start Date:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control StartDate mandate", @placeholder = "Start Date", @msg = "Please select start date.", @autocomplete = "off" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<section class="content">
+   
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <span class="mb-1 pull-left text-bold">
+                        Total Debit: INR @Model.LedgerList.Sum(x => x.Debit)
+                        <br />
+                        Total Credit: INR @Model.LedgerList.Sum(x => x.Credit)
+                    </span>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="roletbl1" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                        <thead class="thead-lights">
+                            <tr>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th>
+                                    Debit (INR)
+                                </th>
+                                <th>
+                                    Credit (INR)
+                                </th>
+                                <th>
+                                    Effective Date
+                                </th>
+                                <th>
+                                    Created Date
+                                </th>
+                                <th>
+                                    Created By
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.LedgerList)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Description
+                                    </td>
+                                    <td>
+                                        @item.DescriptionType
+                                    </td>
+                                    <td>
+                                        @item.Debit
+                                    </td>
+                                    <td>
+                                        @item.Credit
+                                    </td>
+                                    <td>
+                                        @item.EffectiveDate
+                                    </td>
+                                    <td>
+                                        @item.CreatedDate
+                                    </td>
+                                    <td>
+                                        @item.CreatedBy
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/Fee/Fee.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#roletbl1').DataTable();
+        });
+        $('.StartDate').datepicker({
+            format: 'dd/M/yyyy',
+            autoclose: true,
+            endDate: new Date()
+        }).on('changeDate', function (selected) {
+            BlockUI();
+            $("#daybook").submit();
+        });
+
+        //var minDate = new Date(selected.date.valueOf());
+        //$('.EndDate').datepicker('setStartDate', minDate);
+    });
+    
+</script>

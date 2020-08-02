@@ -1,0 +1,92 @@
+
+.card_bg {
+	
+background:#555 !important; line-height: 3px;
+
+}
+
+.card_tittle2{
+font-size: 13px !important;
+color: #fff !important;	
+	
+}
+.table_bg{
+	
+background-color: rgba(0, 0, 0, 0.03) !important;
+line-height: 10px;
+text-align: center;	
+	
+}
+
+.form-controal2 {
+    padding: 2px 5px !important;
+}
+
+.table_bg2{
+line-height: 9px;
+text-align: center;
+font-size: 13px;	
+	
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #847b7b;
+    border-color: #847b7b;
+}
+
+
+
+.header {
+  overflow: hidden;
+
+
+}
+
+.header a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px; 
+  line-height: 25px;
+  border-radius: 4px;
+}
+
+.header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+
+
+.header a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.header-right {
+  float: right;
+}
+
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: right;
+  }
+  .header-right {
+    float: none;
+  }
+}
+
+
+@media only screen (min-width: 320px)and (max-width: 480px) {
+	
+
+
+
+	
+	
+}

@@ -1,0 +1,172 @@
+﻿@model WEB.Models.QuizeexammasterModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Online Examination";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+    <h4 class="box-title">
+        Add Online Examination
+    </h4>
+    }
+    else
+    {
+<h4 class="box-title">
+    Update  Online Examination
+</h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/QuizeexammasterList">Online Examination</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+    <li class="active">Add  Online Examination</li>
+        }
+        else
+        {
+    <li class="active">Update  Online Examination</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("Quizeexammaster", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.Qzmid)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Examination Title:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.Examtitle, new { @class = "form-control mandate", @msg = "Enter Examination Title", @placeholder = "Enter Examination Title", @value = "" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Class:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.DropDownListFor(m => m.Classid, new SelectList(Model.ClassMasterList, "CMid", "ClassName"), "--Select--", new { @class = "form-control chosen-select mandate", @msg = "Please choose Class." })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Subject:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.DropDownListFor(m => m.Subjectid, new SelectList(Model.SubjectList, "Sumid", "Subjectname"), "--Select--", new { @class = "form-control chosen-select mandate", @msg = "Please choose Subject." })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Mark on Right Question:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.Rightque, new { @class = "form-control mandate", @msg = "Enter Mark on Right Question", @placeholder = "Enter Mark on Right Question", @value = "1" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Mark on Wrong Question:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.Wrongque, new { @class = "form-control mandate", @msg = "Enter Mark on Wrong Question", @placeholder = "Enter Mark on Wrong Question", @value = "1" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Time( In minutes):
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.ExamTime, new { @class = "form-control mandate", @msg = "Enter Time", @placeholder = "Enter Time", @value = "1" })
+                            </div>
+
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Description:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.Description, new { @class = "form-control mandate", @msg = "Enter Description", @placeholder = "Enter Description", @value = "1" })
+                            </div>
+
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Total Question:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.Totalquestion, new { @class = "form-control mandate", @msg = "Enter Totalquestion", @placeholder = "Enter Totalquestion", @value = "1" })
+                            </div>
+                            <div class="col-lg-2">
+                            <label for="pwd" class="redlabel">
+                                Examination Date:
+                            </label>
+                        </div>
+                            <div class="col-lg-2">
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(model => model.Examdate, new { @class = "form-control datepicker mandate", @msg = "Enter Totalquestion", @placeholder = "Enter Totalquestion", @value = "1" })
+                                   
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                              
+                            </div>
+                    </div>
+                        <hr />
+                        <div class="row pull-right">
+                            <div class="col-lg-12 ">
+                                  @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return inputValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@section JS
+{
+
+    <script type="text/javascript">
+         $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/M/yyyy',
+                orientation: "bottom auto", autoclose: true,
+            });
+        });
+
+        function Clear() {
+            $('input[type="text"]').attr('value', '');
+
+        }
+    </script>
+}

@@ -1,0 +1,48 @@
+﻿@model WEB.Models.AttendanceModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Attendance List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+  
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        STUDENT ATTENDANCE
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">STUDENT ATTENDANCE</li>
+    </ol>
+</section>
+
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div id="calender_section">
+                        @Html.Raw(Model.Attendancesection)
+                       
+                    </div>
+                    </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+<style>
+
+</style>
+@section JS {
+
+}
+<link href="~/Styles/calendar.css" rel="stylesheet" />

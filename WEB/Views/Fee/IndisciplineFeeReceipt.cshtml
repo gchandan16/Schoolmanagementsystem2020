@@ -1,0 +1,78 @@
+﻿@model SHARED.IndisciplineFeeReciept
+@{
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" onclick="CloseReceiptDiv();">
+            ×
+        </button>
+        <h4 class="modal-title">Indiscipline Fee Receipt</h4>
+    </div>
+    <div class="modal-body">
+
+        <div id="divToPrint" style="display: block;">
+            <table style="outline:none;width:100%;">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table style="outline:none;float:left;margin:0;width:17%;margin-left:0px;">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="3" width="20%">
+                                            <img class="logo" alt="logo" style="width:116px;height:90px;" src="@Model.OragnisationDetails.OrgImage">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table><table valign="top" style="outline:none;margin:0;width:72%;">
+                                <tbody>
+                                    <tr>
+                                        <td style="font-size:18px;text-align:center;padding-right:80px;font-weight:bold;">
+                                            <span style="font-size:30px;">@Model.OragnisationDetails.Oname </span><br><span>@Model.OragnisationDetails.BOAddress  @Model.OragnisationDetails.BOAddress2 @Model.OragnisationDetails.BOCity</span><br><span>@Model.OragnisationDetails.LMobile -  @Model.OragnisationDetails.LEmailId</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr><td><span style="text-align:center;font-weight:bold;margin-left:39%;"> Indiscipline Slip </span><span style="float:right;margin-right:4%;"> Date : @Model.FeeDetails.CreatedDate  </span></td></tr>
+                </tbody>
+            </table><hr style="border:1px solid black;margin-left:0%;"><table class="myClass" style="outline:none;float:left;margin:0;width:100%;margin-left:3%;">
+                <tbody>
+                    <tr>
+                        <td style="width:25%;font-weight:bold;">Name</td>
+                        <td style="width:25%;">@Model.StudentDetails.Firstname</td>
+                        <td style="width:25%;font-weight:bold">Class</td>
+                        <td style="width:25%;">@Model.StudentDetails.ClassName</td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%;font-weight:bold">Father's Name</td>
+                        <td style="width:25%;">@Model.StudentDetails.Bd_fathername</td>
+                        <td style="width:25%;font-weight:bold">Phone</td>
+                        <td style="width:25%;">@Model.StudentDetails.Bd_fathermob</td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%;font-weight:bold">Mother's Name</td>
+                        <td>@Model.StudentDetails.Bd_mothername</td>
+                        <td style="width:25%;font-weight:bold">Type</td>
+                        <td style="width:25%;"> @Model.FeeDetails.Status</td>
+                    </tr>
+                    <tr><td style="width:25%;font-weight:bold">Address</td><td style="width:27%;" colspan="3"></td></tr>
+                    <tr><td style="width:25%;font-weight:bold">Fine Amt</td><td style="width:75%;" colspan="3">@Model.FeeDetails.FineAmount</td></tr>
+                    <tr><td style="width:25%;font-weight:bold">Remarks</td><td style="width:75%;" colspan="3">@Model.FeeDetails.Remark</td></tr>
+                    <tr><td colspan="4"><br><br><span style="float:right;margin-right:4%;"> <b> Office Incharge</b> </span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="CloseReceiptDiv()">
+            Close
+        </button>
+        <input type="button" class="btn btn-default" id="print" value="Print" onclick="return printDiv('divToPrint');">
+    </div>
+</div>
+

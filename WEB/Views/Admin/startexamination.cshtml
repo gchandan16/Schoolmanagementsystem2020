@@ -1,0 +1,101 @@
+﻿@model WEB.Models.StartexaminationModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Start Examination";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var quesstrt = 1;
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    <h4 class="box-title">
+        Start Examination
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/QuizeexammasterList">Question With Answer</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+            <li class="active">Start Examination</li>
+        }
+        else
+        {
+            <li class="active">Start Examination</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("Startexamination", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.Qzmid)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                    </div>
+                    @using (Html.BeginForm("Startexamination", "Admin", FormMethod.Post, new { }))
+                    {
+                        @Html.HiddenFor(m => m.Qzmid)
+                        @Html.AntiForgeryToken()
+                        <div class="box-body">
+                            <div class="row">
+                                <h1> &nbsp;&nbsp;&nbsp; &nbsp;Exam Name :@(Model.Examtitle)</h1>
+                            </div>
+                            <div class="row">
+                                @if (Model.Questionlist != null)
+                                {
+
+                                    <div class="col-xs-12">
+                                        @foreach (var _item in Model.Questionlist)
+                                        {
+                                            <div id="q0">
+                                                <h3>@(quesstrt). @(_item.Question) <input type="hidden" id="questionid_@(quesstrt)" name="questionid_@(quesstrt)" value="@(_item.Qmid)" /></h3>
+                                                @foreach (var _singquestion in _item.Optionlist)
+                                                {
+                                                    <input type="radio" name="option_@(quesstrt)" value="@(_singquestion.Opmid)"> @(_singquestion.Optiontext)<br>
+                                                }
+                                            </div>
+                                            { quesstrt = quesstrt + 1; }
+                                        }
+
+                                    </div>
+                                }
+                            </div>
+                            <hr />
+                            <div class="row pull-right">
+                                <div class="col-lg-12 ">
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success"/>
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@section JS
+{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/M/yyyy',
+                orientation: "bottom auto", autoclose: true,
+            });
+        });
+
+        function Clear() {
+            $('input[type="text"]').attr('value', '');
+
+        }
+    </script>
+}

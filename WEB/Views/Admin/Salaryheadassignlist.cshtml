@@ -1,0 +1,168 @@
+﻿@model WEB.Models.AssignheadtoemployeeModel
+@using WEB.AppCode
+@using System.Data;
+@using SHARED
+@{
+    ViewBag.Title = "Salaryheadassign List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h4>
+        Salaryheadassign List
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="">Salaryheadassign List</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <a class="mb-1 btn btn-success pull-right" href="/Admin/Salaryheadassign?@Constants.HASH_ADMIN">Create New</a>
+                    }
+
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="studenttbl" class="display table table-striped table-bordered  nowrap" style="width: 100%">
+                        <thead>
+                            <tr>
+                                @foreach (var column in @Model.AssignheadtoemployeetblList.Columns)
+                                {
+
+                                    <th style="text-align: center">
+                                        @{var vcol = @column.ToString();}
+                                        @if (vcol != "Ashmid")
+                                        {
+                                            @column
+                                        }
+                                        else
+                                        {
+                                            <h5>Action</h5>
+                                        }
+                                    </th>
+
+                                }
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow rows in @Model.AssignheadtoemployeetblList.Rows)
+                            {
+                                <tr>
+                                    @foreach (DataColumn column in @Model.AssignheadtoemployeetblList.Columns)
+                                    {
+
+                                        <td style="text-align: center">
+                                            @{var valcolumn = @column.ToString();}
+                                            @if (valcolumn != "Ashmid")
+                                            {
+                                                @rows[@column]
+                                            }
+                                            else
+                                            {
+                                                <a href="/Admin/Salaryheadassign?Ashmid=@rows[@column]&ActionName=edit&@Constants.HASH_ADMIN" title="edit Student" class="dropdown-toggle">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                <a href="#" onclick="return DeleteSalaryhead(@rows[@column])" title="delete Salaryhead" class="dropdown-toggle">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+
+
+                                            }
+
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div><!-- /.box -->
+
+
+        </div>
+    </div>
+
+
+</section>
+
+
+@using (Html.BeginForm("DeleteSalaryhead", "Admin", FormMethod.Post, new { @Id = "PostDelete" }))
+{
+    @Html.HiddenFor(m => m.Shmid, new { @Id = "Del_Shmid" });
+}
+
+
+@section JS {
+    <script src="~/Scripts/Searchuse.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#studenttbl').DataTable({
+                scrollX: 450,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        title: function () {
+                            return "Student List";
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Excel</i>',
+
+                    },
+                    /*
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: 'visible'
+                        },
+                        title: function () {
+                            return "Student List";
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Print</i>',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        },
+                        customize: function (win) {
+                            $(win.document.body)
+                                .css('font-size', '10pt')
+                                .prepend(
+                                    '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                                );
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                    */
+                ]
+            });
+        });
+        function DeleteSalaryhead(id) {
+            $('.modal-title').html("Delete Salary Head");
+            $('.modal-body').html("You are about to deactivate a record. <br/> Do you want to continue.<br /><br /><b><i><u>Note:-All related records will be deleted. </u></i></b> ");
+            $('#Del_Shmid').val(id);
+            $('#DeleteModel').modal('show');
+        }
+
+        $("#SubmitDelete").click(function () {
+            BlockUI();
+            $("#PostDelete").submit();
+
+        });
+
+    </script>
+}

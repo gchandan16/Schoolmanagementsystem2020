@@ -1,0 +1,158 @@
+﻿@model WEB.Models.EmployeeModel
+@using WEB.AppCode
+@using System.Data;
+@using SHARED
+@{
+    ViewBag.Title = "Employee List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h4>
+        Employee List
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="active">Manage Employee</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <a class="mb-1 btn btn-success pull-right" href="/Admin/CreateEmployee?@Constants.HASH_ADMIN">Create New</a>
+                    }
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="employeetbllist" class="table table-striped table-bordered dt-responsive display  nowrap" style="width:100%">
+                        <thead>
+                            <tr>
+                                @foreach (var column in @Model.EmployeeTBLList.Tables[0].Columns)
+                                {
+
+                                    <th style="text-align: center">
+                                        @{var vcol = @column.ToString();}
+                                        @if (vcol != "EMP_ID")
+                                        {
+                                            @column
+                                        }
+                                        else
+                                        {
+                                            <h5>Action</h5>
+                                        }
+                                    </th>
+                                }
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow rows in @Model.EmployeeTBLList.Tables[0].Rows)
+                            {
+                                <tr>
+                                    @foreach (DataColumn column in @Model.EmployeeTBLList.Tables[0].Columns)
+                                    {
+
+                                        <td style="text-align: center">
+                                            @{var valcolumn = @column.ToString();}
+                                            @if (valcolumn != "EMP_ID" && valcolumn != "Pan Image" && valcolumn != "Employee Image")
+                                            {
+                                                @rows[@column]
+                                            }
+                                            else if (valcolumn != "EMP_ID" && (valcolumn == "Pan Image" || valcolumn == "Employee Image"))
+                                            {
+                                                <img src="@rows[@column]" width="100" height="100" />
+                                            }
+                                            else
+                                            {
+                                                <a href="/Admin/CreateEmployee?EmpId=@rows[@column]&ActionName=edit&@Constants.HASH_ADMIN" title="Edit Employee" class="dropdown-toggle">
+                                                    <i class="fa fa-pencil">Edit</i>
+                                                </a>
+                                                @*<a href="#" onclick="return DeleteEmployee(@rows[@column])" title="Delete Employee" class="dropdown-toggle">
+                                                    <i class="fa fa-trash">Delete</i>
+                                                </a>*@
+                                            }
+
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#employeetbllist').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "Employee List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A0',
+                        text: '<i class="fa fa-file-pdf-o"> PDF</i>',
+                        titleAttr: 'PDF'
+                    },
+                    {
+                        extend: 'excel',
+                        title: function () {
+                            return "Employee List";
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Excel</i>',
+
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: function () {
+                            return "Employee List";
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Print</i>',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        },
+                        customize: function (win) {
+                            $(win.document.body)
+                                .css('font-size', '10pt')
+                                .prepend(
+                                    '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                                );
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+            });
+        });
+        function DeleteEmployee(id) {
+            $('.modal-title').html("Delete Employee");
+            $('.modal-body').html("You are about to delete a record. <br/> Do you want to continue.<br /><br /><b><i><u>Note:-All related records will be deleted. </u></i></b> ");
+            $('#Del_StudentId').val(id);
+            $('#DeleteModel').modal('show');
+        }
+        $("#SubmitDelete").click(function () {
+            BlockUI();
+            $("#PostDelete").submit();
+
+        });
+
+    </script>

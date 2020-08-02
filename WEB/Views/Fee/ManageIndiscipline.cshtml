@@ -1,0 +1,115 @@
+﻿@model SHARED.Indiscipline
+@using SHARED
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h4>
+        Manage Indiscipline
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Fee</a></li>
+        <li class="active">Manage Indiscipline</li>
+    </ol>
+</section>
+@using (Html.BeginForm("ManageIndiscipline", "Fee", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">Student Details</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1"> Search By </label>
+                                                <input type="Text" class="form-control StudentNameIndiscipline" id="txtStudent" placeholder="Search By Student Name or Admission No.">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <table id="example2" class="table table-bordered table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <td rowspan="2"> <img id="studentPhoto" src="../Content/Student/dummystudent.png" style="width:100px;height:100px;">@Html.HiddenFor(m => m.Student.Smid, new { @class = "StudentID mandate", @msg = "Please select student." })</td>
+                                                        <td>Name: <span class="FirstNameSpan"></span> @Html.HiddenFor(m => m.Student.Firstname, new { @class = "FirstName" }) </td>
+                                                        <td>Father Name: <span class="FatherNameSpan"></span> @Html.HiddenFor(m => m.Student.Bd_fathername, new { @class = "FatherName" })</td>
+                                                        <td>Admission No : <span class="AdmissionNoSpan"></span> @Html.HiddenFor(m => m.Student.Adminssionno, new { @class = "AdmissionNo" })</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Class:  <span class="ClassNameSpan"></span> @Html.HiddenFor(m => m.Student.ClassName, new { @class = "ClassName" })</td>
+                                                        <td>Section: <span class="SectionNameSpan"></span> @Html.HiddenFor(m => m.Student.SectionName, new { @class = "SectionName" })</td>
+                                                        <td>Fee Group:<span class="FeeGroupSpan"></span> @Html.HiddenFor(m => m.Student.FeeGroup, new { @class = "FeeGroup" })</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+
+
+
+                            </div><!-- /.box -->
+                            <!-- Form Element sizes -->
+                            <!-- /.box -->
+
+
+
+                        </div><!--/.col (left) -->
+                        <!-- right column -->
+                        <div class="col-md-6">
+                            <!-- general form elements disabled -->
+                            <div class="box box-warning">
+                                <div class="box-header">
+                                    <h3 class="box-title">Payment Information</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <form role="form">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1"> Status </label>
+                                            @Html.DropDownListFor(m => m.Status, new List<SelectListItem>() { new SelectListItem { Text = "Warning", Value = "Warning" }, new SelectListItem { Text = "Fine", Value = "Fine" }}, "-Select-", new { @class = "form-control mandate", @msg="Please select Status." })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1"> Remarks </label>
+                                            @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control mandate", @placeholder = "Enter Remarks", @msg="Enter Remark."})
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1"> Fine </label>
+                                            @Html.TextBoxFor(m => m.FineAmount, new { @class = "form-control ", @Value = "0", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');" })
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="exampleInputPassword1">  </label>
+                    <input type="submit" value="Submit" name="btntype" id="Submit" class="btn btn-primary pull-right" onclick="return IndisciplineValidation();" />
+                </div>
+            </div>
+        </div>
+
+    </section>
+}
+<div id="popupDiv" style="display: none; position: fixed; top: 0px; z-index: 1005; background: rgb(1, 1, 1);">
+    <div id="FeeReceipt"></div>
+</div>
+<script src="~/Scripts/Fee/Fee.js"></script>

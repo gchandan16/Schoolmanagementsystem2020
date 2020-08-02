@@ -1,0 +1,117 @@
+﻿@model WEB.Models.QuestionmasterModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Question With Answer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+    <h4 class="box-title">
+        Add Question With Answer
+    </h4>
+    }
+    else
+    {
+<h4 class="box-title">
+    Update  Question With Answer
+</h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/QuizeexammasterList">Question With Answer</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+    <li class="active">Add  Question With Answer</li>
+        }
+        else
+        {
+    <li class="active">Update  Question With Answer</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("Createquestionwithoption", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.Qzmid)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <h1> &nbsp;&nbsp;&nbsp; &nbsp;Exam Name :@(Model.Examtitle)</h1>
+                        </div>
+                        <div class="row">
+                            @if (Model.Questionlist!=null) {
+                            <div class="col-xs-12">
+                                @foreach (var _item in Model.Questionlist)
+                                {
+
+                                    <p><b>Question</b> @(_item.Qmid):<input type="text" class="form-control mandate" id="quesname_@(_item.Qmid)" name="quesname_@(_item.Qmid)" placeholder="Enter the Question No @(_item.Qmid)" value="" /></p>
+                                      <br />
+                                    foreach (var _singquestion in _item.Optionlist)
+                                    {
+                                    <p>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <b>Option </b>@(_singquestion.Opmid):<input type="text" class="form-control mandate" id="option_@(_singquestion.Opmid)@(_item.Qmid)" name="option_@(_singquestion.Opmid)@(_item.Qmid)" placeholder="Enter the Option No @(_singquestion.Opmid)" value="" />
+                                    </p>
+                               
+                                    }
+                            <p>
+                                &nbsp;&nbsp;&nbsp;
+                                <b> Answer</b> @(_item.Qmid):@Html.DropDownList("answerid_" + Convert.ToString(_item.Qmid),new SelectList(_item.Optionlist, "Opmid", "Opmid"), "--Select--", new { @class = "form-control chosen-select mandate", @msg = "Please choose Correct Answer.", @id = "answerid_" + Convert.ToString(_item.Qmid), @name = "answerid_" + Convert.ToString(_item.Qmid) })
+                            </p>
+                            }
+
+</div>
+                            }
+                        </div>
+                        <hr />
+                        <div class="row pull-right">
+                            <div class="col-lg-12 ">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return inputValidation();" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@section JS
+{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/M/yyyy',
+                orientation: "bottom auto", autoclose: true,
+            });
+        });
+
+        function Clear() {
+            $('input[type="text"]').attr('value', '');
+
+        }
+    </script>
+}

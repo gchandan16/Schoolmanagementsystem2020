@@ -1,0 +1,126 @@
+﻿
+@model SHARED.BaseModel
+@using SHARED
+@using WEB.AppCode
+@{
+    UserMasters currentuser = (UserMasters)Session[Constants.Session.USER];
+}
+
+@*
+    
+    <header class="main-header">
+
+    <!-- Logo -->
+    <a href="/home/index" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>S</b>WT</span>
+        <!-- logo for regular state and mobile devices -->
+        @if (!string.IsNullOrEmpty(Model.BaseSessionInfo.SchoolLogo))
+        {
+    <span class="logo-lg">
+        <img src="@Model.BaseSessionInfo.SchoolLogo" style="width:30px;height:30px;">
+    </span>
+        }
+        else
+        {
+        <span>@Model.BaseSessionInfo.SchoolName</span>
+        }
+        
+</a>
+
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <!-- Messages: style can be found in dropdown.less-->
+                <li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-envelope-o"></i>
+                        <span class="label label-success">4</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">You have complaint 4 messages</li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <ul class="menu">
+                                <li>
+                                    <!-- start message -->
+                                    <a href="#">
+                                        <div class="pull-left">
+                                            <img src="~/Content/Images/5.jpg" class="img-circle" alt="User Image" />
+                                        </div>
+                                        <h4>
+                                            Support Team
+                                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                        </h4>
+                                        <p>Why not buy a new awesome theme?</p>
+                                    </a>
+                                </li><!-- end message -->
+
+                            </ul>
+                        </li>
+                        <li class="footer"><a href="#">See All Messages</a></li>
+                    </ul>
+                </li>
+
+                <!-- Tasks: style can be found in dropdown.less -->
+                <li class="dropdown tasks-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-flag-o"></i>
+                        <span class="label label-danger">9</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">You have birthday 20 wishes</li>
+                        <li>                  </li>
+                        <li class="footer">
+                            <a href="#">View all tasks</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>*@
+
+
+
+
+<div class="modal" id="DeleteModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal" style="position: relative; top: -10px; color: #fff;">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">Modal body.</div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="SubmitDelete">Submit</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .header_msg {
+        z-index: 1100;
+        border: none;
+        width: auto;
+        height: auto;
+        top: 21px;
+        left: 30%;
+        background-color: rgb(0, 0, 0);
+        position: fixed;
+    }
+</style>
+<div class="header_msg">
+    @{Html.RenderPartial("_Message", @Model);}
+</div>

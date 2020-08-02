@@ -1,0 +1,10 @@
+Message:Incorrect syntax near '+'.
+Line NO:3749
+Message:Incorrect syntax near '+'.
+Line NO:3749
+Message:Incorrect syntax near '+'.
+Line NO:3749
+Message:@RouteID is not a parameter for procedure SP_GetStudentList.
+Line NO:3750
+Message:@RouteID is not a parameter for procedure SP_GetStudentList.
+Line NO:3750

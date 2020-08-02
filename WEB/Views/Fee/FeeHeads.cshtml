@@ -1,0 +1,435 @@
+﻿@model SHARED.FeeHead
+@using SHARED
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Create Fees Head
+        </h4>
+    }
+    else
+    {
+        <h4 class="box-title">
+            Update Fees Head
+        </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Manage Fee Head</li>
+    </ol>
+</section>
+@using (Html.BeginForm("FeeHeads", "Fee", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.FeeID)
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Fees Heading:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    @Html.TextBoxFor(m => m.FeeHeadName, new { @class = "form-control mandate", @placeholder = "Fee Head", @msg = "Please enter Fee Head.", @pat = "^[A-Za-z ]*$", @maxlength = "100", @onkeypress = "return isKeyValid(event,'32,65-90,97-122');", @autocomplete = "off" })
+
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(m => m.FeeHeadName, new { @class = "form-control mandate" })
+                                    @Html.HiddenFor(m => m.FeeHeadName)
+                                }
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Frequency:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.DropDownListFor(a => a.Frequency, new SelectList(Model.FrequecyLst, "Value", "Text"), "Select by Fee", new { @class = "form-control mandate", @msg = "Please select Frequency" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd">
+                                    Refundable:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.DropDownListFor(a => a.Refundable, new SelectList(Model.RefundableLst, "Value", "Text", ""), "-Select-", new { @class = "form-control mandate", @msg = "Please select" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    Start Date:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control datepicker mandate", @placeholder = "Start Date", @msg = "Please select start date.", @autocomplete = "off" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd" class="redlabel">
+                                    End Date:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control datepicker mandate", @placeholder = "End Date", @msg = "Please select end date.", @autocomplete = "off" })
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="pwd">
+                                    Due Date:
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(m => m.DueDate, new { @class = "form-control datepicker mandate", @placeholder = "DueDate Date", @msg = "Please select due date.", @autocomplete = "off" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="pwd" class="redlabel">
+                                    Select Months when Fees Due:
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table id="example2">
+                                <tr>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            <label for="pwd">Select All <input type="checkbox" name="select_all" id="select_all" /></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.April, new { @class = "chkbox" }) <label for="pwd">April</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.May, new { @class = "chkbox" }) <label for="pwd">May</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.June, new { @class = "chkbox" }) <label for="pwd">June</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.July, new { @class = "chkbox" }) <label for="pwd">July</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.August, new { @class = "chkbox" }) <label for="pwd">August</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.September, new { @class = "chkbox" }) <label for="pwd">September</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.October, new { @class = "chkbox" }) <label for="pwd">October</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.November, new { @class = "chkbox" }) <label for="pwd">November</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.December, new { @class = "chkbox" }) <label for="pwd">December</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.January, new { @class = "chkbox" }) <label for="pwd">January</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.February, new { @class = "chkbox" }) <label for="pwd">February </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-1">
+                                            @Html.CheckBoxFor(model => model.months.March, new { @class = "chkbox" }) <label for="pwd"> March</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr />
+                        <div class="row pull-right">
+                            <div class="col-md-12">
+                                @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                                {
+                                    if (Model.ActionName == Constants.BTN_CREATE)
+                                    {
+                                        <input type="submit" value="Save" name="btntype" class="btn btn-success" id="SaveFeeTerm" onclick="return ValidateFeeHeadName();" />
+                                        <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                    }
+                                }
+                                @if (Model.PermissionNameList.Contains(Constants.PermissionName.EDIT))
+                                {
+                                    if (Model.ActionName == Constants.BTN_EDIT)
+                                    {
+                                        <input type="submit" value="Update" name="btntype" class="btn btn-success" id="UpdateFeeTerm" onclick="return ValidateFeeHeadName();" />
+                                        <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+}
+@if (Model.lstFeeHead.Count > 0)
+{
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <input type="hidden" id="hdnfeeid" />
+                    <!-- Content Header (Page header) -->
+                    <!-- Main content -->
+                    <div class="card card_ps">
+
+                        <div class="card card-default">
+                            <div class="box-body">
+                                <table id="roletbl" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                                    <thead class="thead-lights">
+                                        <tr>
+                                            <th>
+                                                Fee Heading
+                                            </th>
+                                            <th>
+                                                Frequency
+                                            </th>
+                                            <th>
+                                                Refundable
+                                            </th>
+                                            <th>
+                                                Start Date
+                                            </th>
+                                            <th>
+                                                End Date
+                                            </th>
+                                            <th>
+                                                Due Date
+                                            </th>
+                                            <th>
+                                                Apr
+                                            </th>
+                                            <th>
+                                                May
+                                            </th>
+                                            <th>
+                                                June
+                                            </th>
+                                            <th>
+                                                July
+                                            </th>
+                                            <th>
+                                                Aug
+                                            </th>
+                                            <th>
+                                                Sep
+                                            </th>
+                                            <th>
+                                                Oct
+                                            </th>
+                                            <th>
+                                                Nov
+                                            </th>
+                                            <th>
+                                                Dec
+                                            </th>
+                                            <th>
+                                                Jan
+                                            </th>
+                                            <th>
+                                                Feb
+                                            </th>
+                                            <th>
+                                                Mar
+                                            </th>
+                                            <th>
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.lstFeeHead)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.FeeHeadName
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        if (@Model.FrequecyLst.Where(x => x.Value == @item.Frequency).Any())
+                                                        {
+                                                            @Model.FrequecyLst.Where(x => x.Value == @item.Frequency).Select(x => x.Text).FirstOrDefault();
+                                                        }
+
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        if (@Model.RefundableLst.Where(x => x.Value == Convert.ToString(@item.Refundable)).Select(x => x.Text).Any())
+                                                        {
+                                                            @Model.RefundableLst.Where(x => x.Value == Convert.ToString(@item.Refundable)).Select(x => x.Text).FirstOrDefault();
+                                                        }
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @item.StartDate
+                                                </td>
+                                                <td>
+                                                    @item.EndDate
+                                                </td>
+                                                <td>
+                                                    @item.DueDate
+                                                </td>
+                                                <td>
+                                                    @item.months.April
+                                                </td>
+                                                <td>
+                                                    @item.months.May
+                                                </td>
+                                                <td>
+                                                    @item.months.June
+                                                </td>
+                                                <td>
+                                                    @item.months.July
+                                                </td>
+                                                <td>
+                                                    @item.months.August
+                                                </td>
+                                                <td>
+                                                    @item.months.September
+                                                </td>
+                                                <td>
+                                                    @item.months.October
+                                                </td>
+                                                <td>
+                                                    @item.months.November
+                                                </td>
+                                                <td>
+                                                    @item.months.December
+                                                </td>
+                                                <td>
+                                                    @item.months.January
+                                                </td>
+                                                <td>
+                                                    @item.months.February
+                                                </td>
+                                                <td>
+                                                    @item.months.March
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" id="hdnfeeheadid" value="@item.FeeID" />
+                                                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.EDIT))
+                                                    {
+                                                        <a href="/Fee/FeeHeads?FeeId=@item.FeeID&ActionName=edit" title="Edit"><i class="fa fa-pencil"></i></a>
+                                                    }
+                                                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.INACTIVE))
+                                                    {
+                                                        <a href="#" title="Delete Fee Head" onclick="return DeleteFeeHead('@item.FeeID')">
+                                                            <i class="fa fa-trash bg_red"></i>
+                                                        </a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<script src="~/Scripts/Fee/Fee.js"></script>
+
+@using (Html.BeginForm("DeleteFeeHeads", "Fee", FormMethod.Post, new { @Id = "PostFeeHeadDelete" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.FeeID, new { @Id = "Del_FeeHeadId" });
+}
+<script type="text/javascript">
+    function ValidateFeeHeadName() {
+        if (inputValidation()) {
+            if ($.trim($("#FeeHeadName").val()).toUpperCase() == "CONCESSION" || $.trim($("#FeeHeadName").val()).toUpperCase() == "TRANSPORT" || $.trim($("#FeeHeadName").val()).toUpperCase() == "FINE") {
+                alert("Fee Head Name \"" + $.trim($("#FeeHeadName").val()) + "\" is not allowed");
+                return false;
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    function DeleteFeeHead(id) {
+        $('.modal-title').html("Delete Fee Heads");
+        $('.modal-body').html("You are about to delete a record. <br/> Do you want to continue.<br /><br /><b><i><u>Note:-All related records will be deleted. </u></i></b> ");
+        $('#Del_FeeHeadId').val(id);
+        $('#DeleteModel').modal('show');
+        $("#SubmitDelete").focus();
+    }
+
+    $("#SubmitDelete").click(function () {
+        BlockUI();
+        $("#PostFeeHeadDelete").submit();
+
+    });
+    var select_all = document.getElementById("select_all"); //select all checkbox
+    var checkboxes = document.getElementsByClassName("chkbox"); //checkbox items
+
+    //select all checkboxes
+    select_all.addEventListener("change", function (e) {
+        for (i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = select_all.checked;
+        }
+    });
+
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].addEventListener('change', function (e) { //".checkbox" change 
+            //uncheck "select all", if one of the listed checkbox item is unchecked
+            if (this.checked == false) {
+                select_all.checked = false;
+            }
+            //check "select all" if all checkbox items are checked
+            if (document.querySelectorAll('.chkbox:checked').length == checkboxes.length) {
+                select_all.checked = true;
+            }
+        });
+    }
+</script>
+

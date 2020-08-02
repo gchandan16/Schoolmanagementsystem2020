@@ -1,0 +1,81 @@
+﻿@model SHARED.StudnetRollNo
+@using SHARED
+@{
+    ViewBag.Title = "Student Roll Number";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<section class="content-header">
+    <h4>
+        Student Roll Number
+
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">
+            Student Roll Number
+        </li>
+    </ol>
+</section>
+@using (Html.BeginForm("StudentRollNo", "Student", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row divStudent">
+                            <div class="col-lg-12">
+                                <div class="col-lg-2">
+                                    Class:
+                                </div>
+                                <div class="col-lg-2">
+                                    @Html.DropDownListFor(m => m.ClassID, new SelectList(Model.ClassList, "CMid", "ClassName"), "-- Select--", new { @class = "form-control", @onchange = "return GetSectionLists(this);" })
+                                </div>
+                                <div class="col-lg-2">
+                                    Section:
+                                </div>
+                                <div class="col-lg-2">
+                                    @Html.DropDownListFor(m => m.SectionID, new SelectList(Model.SectionList, "SecMid", "ClassName"), "-- Select--", new { @class = "form-control", @onchange = "return ListSectionStudents();" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content details" style="display:none;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <!-- Content Header (Page header) -->
+                    <!-- Main content -->
+                    <div class="card card_ps">
+                        <div class="card card-default">
+                            <div class="box-body">
+                                <div class="col-lg-12 box-body" id="StudentTbl" >
+
+                                </div>
+                                <hr />
+                                <div class="row pull-right">
+                                    <div class="col-md-12">
+                                        <input type="submit" name="btntype" value="Update" id="btnUpdate" class="btn btn-success" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+
+    </section>
+}
+<script src="~/Scripts/Student/Student.js"></script>

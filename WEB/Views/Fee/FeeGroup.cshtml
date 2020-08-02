@@ -1,0 +1,310 @@
+﻿@model SHARED.FeeGroup
+@using SHARED
+@{
+    ViewBag.Title = "Fee Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Create Fees Group
+        </h4>
+    }
+    else
+    {
+        <h4 class="box-title">
+            Update Fees Group
+        </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Manage Fee Group</li>
+    </ol>
+</section>
+@using (Html.BeginForm("FeeGroup", "Fee", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Fees Group:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    @Html.TextBoxFor(m => m.FeeGroupName, new { @class = "form-control mandate", @placeholder = "Fee Head", @msg = "Please enter Fee Group.", @pat = "^[A-Za-z 0-9]*$", @maxlength = "100", @onkeypress = "return isKeyValid(event,'32,48-57,65-90,97-122');", @autocomplete = "off" })
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(m => m.FeeGroupName, new { @class = "form-control mandate" })
+                                    @Html.HiddenFor(m => m.FeeGroupName)
+                                }
+
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Frequency:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(a => a.Frequency, new SelectList(Model.FrequecyLst, "Value", "Text"), "Select by Fee", new { @class = "form-control mandate", @msg = "Please select Frequency" })
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">Created All Fees Heads</div>
+                        </div>
+                        @if (Model.feeHeadList.Count >= 1)
+                        {
+                            <table>
+                                <thead class="thead-lights">
+                                    <tr>
+                                        <th>Select All</th>
+                                        <th>FeeHead</th>
+                                        <th>Amount</th>
+                                        <th>Apr</th>
+                                        <th>May</th>
+                                        <th>Jun</th>
+                                        <th>Jul</th>
+                                        <th>Aug</th>
+                                        <th>Sep</th>
+                                        <th>Oct</th>
+                                        <th>Nov</th>
+                                        <th>Dec</th>
+                                        <th>Jan</th>
+                                        <th>Feb</th>
+                                        <th>Mar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var l = 0; l < Model.feeHeadList.Count; l++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.CheckBoxFor(m => m.feeHeadList[l].Check, new { @class = "chkFeeHead" })
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(m => m.feeHeadList[l].Name)
+                                                @Html.HiddenFor(m => m.feeHeadList[l].Name)
+                                                @Html.HiddenFor(m => m.feeHeadList[l].ID)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Amount, new { @class = "form-control", @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off", @onchange = "return setValues(this," + l + ");" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Apr, new { @class = (Model.feeHeadList[l].months.April ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].May, new { @class = (Model.feeHeadList[l].months.May ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Jun, new { @class = (Model.feeHeadList[l].months.June ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Jul, new { @class = (Model.feeHeadList[l].months.July ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Aug, new { @class = (Model.feeHeadList[l].months.August ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Sep, new { @class = (Model.feeHeadList[l].months.September ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Oct, new { @class = (Model.feeHeadList[l].months.October ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Nov, new { @class = (Model.feeHeadList[l].months.November ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Dec, new { @class = (Model.feeHeadList[l].months.December ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Jan, new { @class = (Model.feeHeadList[l].months.January ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Feb, new { @class = (Model.feeHeadList[l].months.February ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.feeHeadList[l].Mar, new { @class = (Model.feeHeadList[l].months.March ? "FH" : "") + " form-control amt" + l, @placeholder = "0", @msg = "Please enter Amount.", @pat = "^[0-9]*$", @onkeypress = "return isKeyValid(event,'48-57');", @maxlength = "10", @autocomplete = "off" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    No Fee Head Found.
+                                </div>
+                            </div>
+                        }
+                        <br />
+                        <div class="col-sm-12 col-md-12 right_bottom">
+                            <div class="row pull-right">
+                                <div class="col-md-12">
+                                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                                    {
+                                        if (Model.ActionName == Constants.BTN_CREATE)
+                                        {
+                                            <input type="submit" value="Save" name="btntype" class="btn btn-success" id="SaveFeeTerm" onclick="return inputValidation();" />
+                                            <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                        }
+                                    }
+                                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.EDIT))
+                                    {
+                                        if (Model.ActionName == Constants.BTN_EDIT)
+                                        {
+                                            <input type="submit" value="Update" name="btntype" class="btn btn-success" id="UpdateFeeTerm" onclick="return inputValidation();" />
+                                            <input type="reset" class="btn btn-primary" name="btntype" value="Clear" onclick="return Clear();" />
+                                        }
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+}
+@if (Model.lstFeeGroup.Count > 0)
+{
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <input type="hidden" id="hdnfeeid" />
+                    <!-- Content Header (Page header) -->
+                    <!-- Main content -->
+                    <div class="card card_ps">
+
+                        <div class="card card-default">
+                            <div class="box-body">
+                                <table id="roletbl" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                                    <thead class="thead-lights">
+                                        <tr>
+                                            <th>
+                                                Fee Group
+                                            </th>
+
+                                            <th>
+                                                Fee Head
+                                            </th>
+                                            <th>
+                                                Frequency
+                                            </th>
+                                            <th>
+                                                Amount
+                                            </th>
+                                            <th>
+                                                &nbsp;
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.lstFeeGroup)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.FeeGroupName
+                                                </td>
+                                                <td>
+                                                    @item.FeeHeadName
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        if (@Model.FrequecyLst.Where(x => x.Value == @item.Frequency).Any())
+                                                        {
+                                                            @Model.FrequecyLst.Where(x => x.Value == @item.Frequency).Select(x => x.Text).FirstOrDefault();
+                                                        }
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    @item.Amount
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" id="hdnfeeheadid" value="@item.FeeGroupID" />
+                                                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.EDIT))
+                                                    {
+                                                        <a href="/Fee/FeeGroup?FeeGroupId=@item.FeeGroupID&ActionName=edit" title="Edit"><i class="fa fa-pencil"></i></a>
+                                                    }
+                                                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.INACTIVE))
+                                                    {
+                                                        <a href="#" title="Delete Fee Group" onclick="return DeleteFeeGroup('@item.FeeGroupID','@item.FeeGroupName')">
+                                                            <i class="fa fa-trash bg_red"></i>
+                                                        </a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<script src="~/Scripts/Fee/Fee.js"></script>
+@using (Html.BeginForm("DeleteFeeGroup", "Fee", FormMethod.Post, new { @Id = "PostFeeGroupDelete" }))
+{
+    @Html.HiddenFor(m => m.FeeGroupID, new { @Id = "Del_FeeGroupId" });
+    @Html.HiddenFor(m => m.FeeGroupName, new { @Id = "Del_FeeGroupName" });
+}
+<script type="text/javascript">
+    function DeleteFeeGroup(id, Name) {
+        $('.modal-title').html("Delete Fee Group");
+        $('.modal-body').html("You are about to delete a record. <br/> Do you want to continue.<br /><br /><b><i><u>Note:-All related records will be deleted. </u></i></b> ");
+        $('#Del_FeeGroupId').val(id);
+        $('#Del_FeeGroupName').val(Name);
+        $('#DeleteModel').modal('show');
+        $("#SubmitDelete").focus();
+    }
+
+    $("#SubmitDelete").click(function () {
+        BlockUI();
+        $("#PostFeeGroupDelete").submit();
+
+    });
+    function setValues(d, c) {
+        $(".amt" + c + ".FH").val(d.value);
+    }
+    function finalValidation() {
+        if (inputValidation()) {
+            if ($(".chkFeeHead").length == 0) {
+                alert("No Fee Head created. Please create Fee Heads.");
+                return false;
+            }
+            else if ($(".chkFeeHead").filter(":checked").length == 0) {
+                alert("Please select atleast one Fee Head.");
+                return false;
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+</script>

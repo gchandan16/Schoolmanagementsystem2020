@@ -1,0 +1,163 @@
+﻿@model WEB.Models.SalaryheadModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Salary Head";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+<section class="content-header">
+    <h4 class="box-title">
+        Add Salary Head
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/EmployeeList">Manage Salary Head</a></li>
+        <li class="active">Add Salary Head</li>
+    </ol>
+</section>
+@using (Html.BeginForm("Salaryhead", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.Shmid)
+    @Html.AntiForgeryToken()
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-body">
+                       
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Head Name</label>
+                                @Html.TextBoxFor(model => model.Headname, new { @class = "form-control mandate", @placeholder = "Enter Head Name" })
+                                @Html.ValidationMessageFor(model => model.Headname)
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Alias</label>
+                                @Html.TextBoxFor(model => model.Alias, new { @class = "form-control mandate", @placeholder = "Enter Alias" })
+                                @Html.ValidationMessageFor(model => model.Alias)
+                            </div>
+                        
+                        <div class="form-group">
+                            <label>Display Name</label>
+                            @Html.TextBoxFor(model => model.Displayname, new { @class = "form-control mandate", @placeholder = "Enter Display Name" })
+                            @Html.ValidationMessageFor(model => model.Displayname)
+                        </div>
+
+                        <div class="form-group">
+                            <label>Default Value </label>
+                            @Html.TextBoxFor(model => model.Defaultvalue, new { @class = "form-control mandate", @placeholder = "Enter Default Value " })
+                            @Html.ValidationMessageFor(model => model.Defaultvalue)
+                        </div>
+                        <div class="form-group">
+                            <label>Head Type</label>
+                            @Html.DropDownListFor(m => m.Headtype, new List<SelectListItem> {
+                           new SelectListItem{Text="Earning",Value="E" },
+                           new SelectListItem{Text="Deducation",Value="D" },
+                       }, new { @class = "form-control chosen-select mandate" })
+                            @Html.ValidationMessageFor(model => model.Headtype)
+                        </div>
+
+                      
+
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+                <!-- Form Element sizes -->
+
+            </div><!--/.col (left) -->
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Leave Deduction</label>
+                            @Html.DropDownListFor(m => m.Leavededucation, new List<SelectListItem> {
+                           new SelectListItem{Text="Yes",Value="Yes" },
+                           new SelectListItem{Text="No",Value="No" },
+                       }, new { @class = "form-control chosen-select mandate" })
+                            @Html.ValidationMessageFor(model => model.Leavededucation)
+                        </div>
+                        <div class="form-group">
+                            <label>ESI Applicable</label>
+                            @Html.DropDownListFor(m => m.Esiapplicable, new List<SelectListItem> {
+                           new SelectListItem{Text="Yes",Value="Yes" },
+                           new SelectListItem{Text="No",Value="No" },
+                       }, new { @class = "form-control chosen-select mandate" })
+                            @Html.ValidationMessageFor(model => model.Esiapplicable)
+                        </div>
+                        <div class="form-group">
+                            <label>EPF Applicable</label>
+                            @Html.DropDownListFor(m => m.Epfapplicable, new List<SelectListItem> {
+                           new SelectListItem{Text="Yes",Value="Yes" },
+                           new SelectListItem{Text="No",Value="No" },
+                       }, new { @class = "form-control chosen-select mandate" })
+                            @Html.ValidationMessageFor(model => model.Epfapplicable)
+                        </div>
+                        <div class="form-group">
+                            <label>Calculation Type</label>
+                            @Html.DropDownListFor(m => m.Calculationtype, new List<SelectListItem> {
+                           new SelectListItem{Text="Percentage",Value="Percentage" },
+                           new SelectListItem{Text="Fixed",Value="Fixed" },
+                       }, new { @class = "form-control chosen-select mandate" })
+                            @Html.ValidationMessageFor(model => model.Calculationtype)
+                        </div>
+                        <div class="form-group">
+                            <label>Display Sequence</label>
+                            @Html.TextBoxFor(model => model.Displaysequence, new { @class = "form-control mandate" })
+                            @Html.ValidationMessageFor(model => model.Displaysequence)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                </div><!-- /.box-body -->
+        <div class="row">
+            <input type="submit" name="btntype" value="Save" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+
+        </div>
+</section><!-- /.content -->
+
+}
+@section JS
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+
+    <script type="text/javascript">
+
+
+        function ValidateEmpEmailExist(element) {
+            var emailid = $.trim($(element).val());
+            var id = element.id;
+            if (emailid != "") {
+                BlockUI();
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: '@Url.Action("ValidateEmpEmailExist", "Admin")',
+                        data: JSON.stringify({ EmailID: emailid }),
+                        dataType: "json",
+                        success: function (data) {
+                            $.unblockUI();
+                            if (data == true) {
+                                alert("Email ID is already registered.");
+                                $('#' + id).val('');
+                                $('#' + id).focus();
+                            }
+                        },
+                        error: function (data) {
+                            $.unblockUI();
+                        }
+                    });
+                }
+        }
+
+    </script>
+}

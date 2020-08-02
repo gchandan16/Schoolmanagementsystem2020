@@ -1,0 +1,232 @@
+﻿@model SHARED.Leave
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Leave Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        LEAVE LIST
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
+        <li class="active">LEAVE LIST</li>
+    </ol>
+</section>
+
+@Html.AntiForgeryToken();
+<!-- Main content -->
+<section class="content">
+    <span>Requests</span>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <a class="mb-1 btn btn-success pull-right" href="/Home/LeaveRequest">Create New</a>
+                    }
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="roletbl1" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                        <thead class="thead-lights">
+                            <tr>
+                                <th>
+                                    Approver Name
+                                </th>
+                                <th>
+                                    Leave Type
+                                </th>
+                                <th>
+                                    Leave Duration
+                                </th>
+                                <th>
+                                    Total Leaves
+                                </th>
+                                <th>
+                                    Half Day
+                                </th>
+                                <th>
+                                    Sender Remark
+                                </th>
+                                <th>
+                                    Approver Remark
+                                </th>
+                                <th>
+                                    Leave Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.LeaveList)
+                            {
+                                if (@item.Action == "GETSENDER")
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.ApproverName
+                                        </td>
+                                        <td>
+                                            @item.LeaveType
+                                        </td>
+                                        <td>
+                                            @item.LeaveFrom
+                                            <br />
+                                            @item.LeaveTo
+                                        </td>
+                                        <td>
+                                            @item.TotalLeaves
+                                        </td>
+                                        <td>
+                                            @item.HalfDay
+                                        </td>
+                                        <td>
+                                            @item.SenderRemark
+                                        </td>
+                                        <td>
+                                            @item.ApproverRemark
+                                        </td>
+                                        <td>
+                                            @item.LeaveStatus
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <span>Approval</span>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <table id="roletbl2" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                        <thead class="thead-lights">
+                            <tr>
+                                <th>
+                                    Sender Name
+                                </th>
+                                <th>
+                                    Leave Type
+                                </th>
+                                <th>
+                                    Leave Duration
+                                </th>
+                                <th>
+                                    TotalLeaves
+                                </th>
+                                <th>
+                                    Half Day
+                                </th>
+                                <th>
+                                    Sender Remark
+                                </th>
+                                <th>
+                                    Approver Remark
+                                </th>
+                                <th>
+                                    Leave Status
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.LeaveList)
+                            {
+                                if (@item.Action == "GETAPPROVER")
+                                {
+                            <tr>
+                                <td>
+                                    @item.SenderName
+                                </td>
+                                <td>
+                                    @item.LeaveType
+                                </td>
+                                <td>
+                                    @item.LeaveFrom
+                                    <br />
+                                    @item.LeaveTo
+                                </td>
+                                <td>
+                                    @item.TotalLeaves
+                                </td>
+                                <td>
+                                    @item.HalfDay
+                                </td>
+                                <td>
+                                    @item.SenderRemark
+                                </td>
+                                @if (item.LeaveStatus == "Pending")
+                                {
+                                    <td>
+                                        <textarea id="txtApproverRemark_@item.Lid"></textarea>
+                                    </td>
+                                    <td>
+                                        <select id="optAction_@item.Lid">
+                                            <option value="">@item.LeaveStatus</option>
+                                            <option value="Rejected">Rejected</option>
+                                            <option value="Approved">Approved</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="button" id="" value="Submit" onclick="return updateRequest('@item.Lid');" />
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @item.ApproverRemark
+                                    </td>
+                                    <td>
+                                        @item.LeaveStatus
+                                    </td>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                }
+                            </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/Fee/Fee.js"></script>
+
+@section JS {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#roletbl1').DataTable();
+            $('#roletbl2').DataTable();
+        });
+
+                                //function DeleteHoliday(id) {
+                                //    $('.modal-title').html("DELETE HOLIDAY");
+                                //    $('.modal-body').html("You are about to delete a record. <br/> Do you want to continue.");
+                                //    $('#Del_Hid').val(id);
+                                //    $('#DeleteModel').modal('show');
+                                //    $("#SubmitDelete").focus();
+                                //}
+
+                                //$("#SubmitDelete").click(function () {
+                                //    $("#PostHolidayDelete").submit();
+
+                                //});
+    </script>
+}
+

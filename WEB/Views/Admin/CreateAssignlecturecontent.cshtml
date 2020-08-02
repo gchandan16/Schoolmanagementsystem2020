@@ -1,0 +1,277 @@
+﻿@model WEB.Models.AssigncontentinlectureModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Assign Lecture Content";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+    <h4 class="box-title">
+        Add Lecture Content
+    </h4>
+    }
+    else
+    {
+<h4 class="box-title">
+    Update Lecture Content
+</h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/AssignlecturecontentList">Lecture Content</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+    <li class="active">Add  Lecture Content</li>
+        }
+        else
+        {
+    <li class="active">Update  Lecture Content</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("CreateAssignlecturecontent", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+
+    @Html.HiddenFor(m => m.Acdtmid)
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Teacher Lecture:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(model => model.Apttmid, new SelectList(Model.AssignperiodteacherList, "Apttmid", "Perioddescription"), "-- Select--", new { @class = "form-control chosen-select mandate",@onchange="Getsubjectbasedonlecture(this);" })
+                                @Html.ValidationMessageFor(model => model.Apttmid)
+                            </div>
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Posted Date
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="input-group date fromdatepicker">
+                                    @Html.TextBoxFor(@model => model.Dates, new { @class = "form-control datepicker mandate", @readonly = "readonly" })
+                                    <span class="input-group-append input-group-addon ">
+                                        <i class="input-group-text2 fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Dates)
+                            </div>
+
+
+                        </div>
+                        <br />
+                        <div class="row">
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Subject :
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(model => model.Sumid, new SelectList(Model.SubjectList, "Sumid", "Subjectname"), "-- Select--", new { @class = "form-control chosen-select mandate", @onchange = "return Getchapterbaseonsubject(this);" })
+                                @Html.ValidationMessageFor(model => model.Sumid)
+                            </div>
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Chapter:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(model => model.Scmid, new SelectList(Model.SubjectchapterList, "Scmid", "Chaptername"), "-- Select--", new { @class = "form-control chosen-select mandate" })
+                                @Html.ValidationMessageFor(model => model.Scmid)
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="row">
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Topic:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(model => model.Topic, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Topic)
+                            </div>
+
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Content:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+
+                                @Html.TextBoxFor(model => model.Contents, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Contents)
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Online Url:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+
+                                @Html.TextBoxFor(model => model.Onlineurl, new { @class = "form-control" })
+                            </div>
+
+
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Files
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="file" id="contentfiles" name="contentfiles" />
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="row pull-right">
+                            <div class="col-lg-12">
+
+                                @if (Model.ActionName == Constants.BTN_CREATE)
+                                {
+                                    <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" />
+                                    <input type="reset" class="btn btn-primary " name="btntype" value="Clear" onclick="return Clear();" />
+                                }
+                                else if (Model.ActionName == Constants.BTN_EDIT)
+                                {
+                                    <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" />
+                                    <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+@section JS
+{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/M/yyyy',
+                orientation: "bottom auto", autoclose: true,
+            });
+        })
+        function Getsubjectbasedonlecture(obj) {
+            BlockUI();
+            var lectureid = obj.value == "" ? 0 : obj.value;
+            var checkUrl = '/Admin/Getsubjectbaseonlecture';
+            $.ajax({
+                url: checkUrl,
+                type: "GET",
+                dataType: "JSON",
+                data: { lectureid: lectureid },
+                success: GetsubjectbasedonlectureSuccess,
+                error: GetsubjectbasedonlectureFail
+            });
+        }
+        function GetsubjectbasedonlectureSuccess(result) {
+             $("#Scmid").html('').trigger("chosen:updated");
+            $("#Sumid").html('').trigger("chosen:updated");
+            FillsubjectList(result.subjectlst);
+            $.unblockUI();
+            // $("#SecMid").val('').trigger("chosen:updated");
+
+        }
+
+        function GetsubjectbasedonlectureFail() {
+             $("#Scmid").html('').trigger("chosen:updated");
+            $("#Sumid").html('').trigger("chosen:updated");
+            $.unblockUI();
+        }
+
+        function FillsubjectList(subjectList) {
+            debugger;
+            var v = "<option value=\" \">--Select--</option>";
+            $.each(subjectList, function (i, sec) {
+
+                v += "<option value=" + sec.Sumid + ">" + sec.Subjectname + "</option>";
+            });
+
+            $("#Sumid").html(v).trigger("chosen:updated");
+        }
+
+        /*-----------------End Lecture Subject------------------*/
+
+        function Getchapterbaseonsubject(obj) {
+            BlockUI();
+            var subjectId = obj.value == "" ? 0 : obj.value;
+            var checkUrl = '/Admin/Getchapterbaseonsubjectid';
+            $.ajax({
+                url: checkUrl,
+                type: "GET",
+                dataType: "JSON",
+                data: { subjectId: subjectId },
+                success: GetchapterbaseonsubjectidSuccess,
+                error: GetchapterbaseonsubjectidFail
+            });
+
+        }
+
+        function GetchapterbaseonsubjectidSuccess(result) {
+             $("#Scmid").html('').trigger("chosen:updated");
+            FillChapterList(result.subjectchapterlst);
+
+            $.unblockUI();
+            // $("#SecMid").val('').trigger("chosen:updated");
+
+        }
+
+        function GetchapterbaseonsubjectidFail() {
+             $("#Scmid").html('').trigger("chosen:updated");
+            $.unblockUI();
+        }
+
+        function FillChapterList(ChapterList) {
+            debugger;
+            
+           
+            var v = "<option value=\" \">--Select--</option>";
+            
+                $.each(ChapterList, function (i, sec) {
+
+                    v += "<option value=" + sec.Scmid + ">" + sec.Chaptername + "</option>";
+                });
+            
+            $("#Scmid").html(v).trigger("chosen:updated");
+        }
+
+        function Clear() {
+            $('input[type="text"]').attr('value', '');
+
+        }
+    </script>
+}

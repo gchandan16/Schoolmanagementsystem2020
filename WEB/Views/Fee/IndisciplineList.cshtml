@@ -1,0 +1,119 @@
+﻿@model SHARED.Indiscipline
+@using WEB.AppCode
+@using SHARED
+
+@{
+    ViewBag.Title = "Indiscipline List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h4>
+        Indiscipline List
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Fee</a></li>
+        <li class="active">Indiscipline List</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <a class="mb-1 btn btn-success pull-right" href="/Fee/ManageIndiscipline?@Constants.HASH_ADMIN">Create New</a>
+                    }
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="roletbl" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                        <thead class="thead-lights">
+                            <tr>
+                                <th>
+                                    SNo.
+                                </th>
+                                <th>
+                                    Admission No
+                                </th>
+                                <th>
+                                    Student Name
+                                </th>
+                                <th>
+                                    Father Name
+                                </th>
+                                <th>
+                                    Class/Section
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Fine Amount
+                                </th>
+                                <th>
+                                    Remark
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int SNo = 1;}
+                            @foreach (var item in Model.IndisciplineDetailList)
+                            {
+                                <tr>
+                                    <td>
+                                        @SNo
+                                    </td>
+                                    <td>
+                                        @item.AdmissionNo
+                                    </td>
+                                    <td>
+                                        @item.StudentName
+                                    </td>
+                                    <td>
+                                        @item.FatherName
+                                    </td>
+                                    <td>
+                                        @item.ClassName/@item.SectionName
+                                    </td>
+                                    <td>
+                                        @item.Status
+                                    </td>
+                                    <td>
+                                        @item.FineAmount
+                                    </td>
+                                    <td>
+                                        @item.Remark
+                                    </td>
+                                    <td>
+                                        @item.CreatedDate
+                                    </td>
+                                    <th><a href="#" onclick="return GetIndisciplineFeeReceipt('@item.Counter','@item.AdmissionNo');">Print</a></th>
+                                </tr>
+                                SNo = SNo + 1;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+<div id="popupDiv" style="display: none; position: fixed; top: 50px; z-index: 1005; background: rgb(1, 1, 1); left:500px;">
+    <div id="IndisciplineFeeReceipt"></div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#roletbl').DataTable({
+                "order": []
+            });
+        });
+    });
+</script>
+<script src="~/Scripts/Fee/Fee.js"></script>

@@ -1,0 +1,95 @@
+﻿@model SHARED.Route
+@using WEB.AppCode
+@using SHARED
+
+@{
+    ViewBag.Title = "Route List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h4>
+        Route List
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Transport</a></li>
+        <li class="active">Route List</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <a class="mb-1 btn btn-success pull-right" href="/Transport/AddRoute?@Constants.HASH_ADMIN">Create New</a>
+                    }
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="roletbl" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+                        <thead class="thead-lights">
+                            <tr>
+                                <th>
+                                    SNo.
+                                </th>
+                                <th>
+                                    Route Name
+                                </th>
+                                <th>
+                                    Vehicle Number
+                                </th>
+                                <th>
+                                    Total Seats
+                                </th>
+                              
+                                <th>
+                                    &nbsp;
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int SNo = 1;}
+                            @foreach (var item in Model.RouteDetailList)
+                            {
+                            <tr>
+                                <td>
+                                    @SNo
+                                </td>
+                                <td>
+                                    @item.RouteName
+                                </td>
+                                <td>
+                                    @item.VehicleDetail.State <b>-</b> @item.VehicleDetail.Sequential <b>-</b> @item.VehicleDetail.RTO <b>-</b> @item.VehicleDetail.UniqueNo
+                                </td>
+
+                                <td>
+                                    @item.VehicleDetail.TotalSeats
+                                </td>
+                                <td>
+                                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.EDIT))
+                                    {
+                                        <a href="/Transport/AddRoute?RouteID=@item.RouteID&ActionName=edit" title="Edit"><i class="fa fa-pencil"></i></a>
+                                    }
+                                </td>
+                            </tr>
+                                SNo = SNo + 1;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#roletbl').DataTable({
+                "order": []
+            });
+        });
+    });
+</script>

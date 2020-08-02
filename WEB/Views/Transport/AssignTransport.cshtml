@@ -1,0 +1,214 @@
+﻿@model SHARED.AssignTransport
+@using SHARED
+@{
+    ViewBag.Title = "Assign Transport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<section class="content-header">
+    <h4>
+        Assign Transport
+
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">
+            Assign Transport
+        </li>
+    </ol>
+</section>
+@using (Html.BeginForm("AssignTransport", "Transport", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="col-lg-3">
+                                    Search by Admission Number:
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="text" id="txtAdmissionNumber" class="form-control" />
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <input type="button" class="btn btn-primary" id="searchStudent" onclick="return searchStudentDetails();" value="Search" />
+                                </div>
+                                <div class="col-lg-3">
+
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-2">
+                                Class:
+                            </div>
+                            <div class="col-lg-3">
+                                <select id="ddlClassList" onchange="return GetSectionList(this);" class="form-control"></select>
+                            </div>
+                            <div class="col-lg-1">
+                                <input class="btn btn-primary" type="button" id="ClassStudent" onclick="return ListClassStudent();" value="Search" />
+                            </div>
+                            <div class="col-lg-2">
+                                Section:
+                            </div>
+                            <div class="col-lg-3">
+                                <select id="ddlSectionList" class=" form-control"></select>
+                            </div>
+                            <div class="col-lg-1">
+                                <input class="btn btn-primary" type="button" id="SectionStudent" onclick="return ListSectionStudent();" value="List" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <!-- Content Header (Page header) -->
+                    <!-- Main content -->
+                    <div class="card card_ps">
+                        <div class="card card-default">
+                            <div class="box-body">
+                                <div class="col-lg-12 box-body" id="StudentTbl">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<div class="modal" id="popupDiv">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px;">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Assign Transport</h4>
+                <button type="button" class="close" data-dismiss="modal" style="position: relative; top: -10px; color: #000;">&times;</button>
+            </div>
+            <!-- Modal body -->
+
+            <div id="RouteDetails" class="col-lg-12">
+                <input type="hidden" id="hdnStudentID" />
+                <input type="hidden" id="hdnFee" class="MonthFee" />
+                <input type="hidden" id="hdnTPCodeID" />
+                <div class="row">
+                    <div class="col-lg-3">
+                        <b>Route:</b>
+                    </div>
+                    <div class="col-lg-3">
+                        <select id="ddlRoute" class="form-control" onchange="return getPickDropPointList(this);"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <b> Pick Drop Point:</b>
+                    </div>
+                    <div class="col-lg-3">
+                        <select id="ddlPickDropPoint" class="form-control" onchange="return DisplayPickDropPointDetails(this);"></select>
+                    </div>
+                </div>
+                <div id="divFeeDetails" style="display:none;">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <b>Pickup Time:</b>
+                        </div>
+                        <div class="col-lg-2">
+                            <label id="LblPickUpTime"></label>
+                        </div>
+                        <div class="col-lg-2">&nbsp;</div>
+                        <div class="col-lg-2">
+                            <b> Drop Time:</b>
+                        </div>
+                        <div class="col-lg-2">
+                            <label id="LblDropTime"></label>
+                        </div>
+                        <div class="col-lg-2">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2"><b>April:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtApr" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                        <div class="col-lg-2"><b>August:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtAug" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                        <div class="col-lg-2"><b>December:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtDec" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2"><b>May:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtMay" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                        <div class="col-lg-2"><b>September:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtSep" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                        <div class="col-lg-2"><b>January:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtJan" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2"><b>June:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtJun" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                        <div class="col-lg-2"><b>October:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtOct" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                        <div class="col-lg-2"><b>February:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtFeb" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2"><b>July:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtJul" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                        <div class="col-lg-2"><b>November:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtNov" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                        <div class="col-lg-2"><b>March:</b></div>
+                        <div class="col-lg-2"><input type="text" id="txtMar" class="MonthFee form-control" style="width:60px;" pat="^[0-9]*$" maxlength="4" onkeypress="return isKeyValid(event,'32,48-57');" autocomplete="off" /></div>
+                    </div>
+                    @*<div class="row">
+                            <input class="btn btn-primary" type="button" onclick='$("#popupDiv").hide();' value="Cancel" />
+                            <input class="btn btn-primary pull-right" type="button" onclick="return AssignTransport();" value="Assign Transport" />
+                        </div>*@
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <br />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="SubmitDelete" onclick="return AssignTransport();">Assign Transport</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Transport/transport.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#ddlClassList").empty().append('<option value="0">--Select--</option>');
+        $("#ddlSectionList").empty().append('<option value="0">--Select--</option>');
+        BlockUI();
+        $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: '@Url.Action("GetClassList", "Transport")',
+                dataType: "json",
+                success: function (data) {
+                    if (data.length > 0) {
+                        for (var l = 0; l < data.length; l++) {
+                            $("#ddlClassList").append('<option value="' + data[l].CMid + '">' + data[l].ClassName +'</option>');
+                        }
+
+                    }
+                    $.unblockUI();
+                },
+                error: function (data) {
+                    $.unblockUI();
+                }
+        });
+    });
+
+</script>

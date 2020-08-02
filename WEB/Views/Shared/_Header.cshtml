@@ -1,0 +1,156 @@
+﻿
+@model SHARED.BaseModel
+@using SHARED
+@using WEB.AppCode
+@{
+    UserMasters currentuser = (UserMasters)Session[Constants.Session.USER];
+}
+<div class="wrapper">
+    
+
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="position: relative; top: -10px; color: #fff;">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">Modal body.</div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="DeleteModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="position: relative; top: -10px; color: #fff;">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">Modal body.</div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="SubmitDelete">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="ShowInfo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="ShowInfo-modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="position: relative; top: -10px; color: #fff;">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" id="ShowInfo-modal-body">Modal body.</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="ChangePasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModal2Label">
+    </div>
+    <div class="modal" id="ProfileDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModal2Label">
+    </div>
+</div>
+
+
+
+<div id="myModalFeeDesc" class="modal">
+    <div class="modal-dialog" style="width: 100%;max-width: 869px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Fees Term Details</h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="Reload()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row box-footer">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Fee Desc Name</td>
+                                <td colspan="2"><input type="text" id="txtFeeDescName" class="form-control"></td>
+                                <td>Start Date</td>
+                                <td colspan="2"><input type="text" id="StartDate" class="form-control datepicker" data-date-format="dd/mm/yyyy" autocomplete="off"></td>
+                                <td>End Date</td>
+                                <td colspan="2"><input type="text" id="EndDate" class="form-control datepicker" data-date-format="dd/mm/yyyy" autocomplete="off"></td>
+                                <td>Due Date</td>
+                                <td colspan="2"><input type="text" id="DueDate" class="form-control datepicker" data-date-format="dd/mm/yyyy" autocomplete="off"></td>
+                            </tr>
+                            <tr>
+                                <td>Apr</td>
+                                <td>May</td>
+                                <td>Jun</td>
+                                <td>Jul</td>
+                                <td>Aug</td>
+                                <td>Sep</td>
+                                <td>Oct</td>
+                                <td>Nov</td>
+                                <td>Dec</td>
+                                <td>Jan</td>
+                                <td>Feb</td>
+                                <td>Mar</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="chkapr" class="apr">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkmay" class="may">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkjun" class="jun">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkjul" class="jul">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkaug" class="aug">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chksep" class="sep">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkoct" class="oct">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chknov" class="nov">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkdec" class="dec">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkjan" class="jan">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkfeb" class="feb">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkmar" class="mar">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <input type="button" id="btnCreate" onclick="SaveFeeDescription()" value="Save" class="btn btn-info pull-right">
+                    }
+                </div>
+                <div class="row box-footer">
+                    <div class="col-md-12">
+                        <table id="myTbl" class="table dTable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,180 @@
+﻿@model SHARED.DueFeeList
+@using WEB.AppCode
+@using SHARED
+@using System.Data
+@{
+    ViewBag.Title = "Due Fee List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h4>
+        Due Fee List
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="">Due Fee List</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-md-3">
+                                <!-- general form elements -->
+                                <!-- form start -->
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1"> Class  </label>
+                                            @Html.DropDownListFor(a => a.ClassID, new SelectList(Model.ClassList, "CMid", "ClassName"), "--Select--", new { @class = "form-control mandate", @onchange = "return GetSectionList(this);" })
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <div class="col-md-3">
+                                <!-- general form elements -->
+                                <!-- form start -->
+
+                                <div class="box-body">
+                                    <div class="form-group">
+
+
+
+
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">Section   </label>
+                                            <select id="ddlSectionList" class="form-control mandate">
+                                                <option value="0">--Select--</option>
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+
+
+
+                                </div><!-- /.box-body -->
+
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1"> Start Month  </label>
+                                            @Html.DropDownListFor(m => m.FromMonth, new SelectList(new List<SelectListItem> {
+             new SelectListItem { Text = "April", Value = "1"},
+             new SelectListItem { Text = "May", Value = "2"},
+              new SelectListItem { Text = "June", Value = "3"},
+               new SelectListItem { Text = "July", Value = "4"},
+                new SelectListItem { Text = "August", Value = "5"},
+                 new SelectListItem { Text = "September", Value = "6"},
+                  new SelectListItem { Text = "October", Value = "7"},
+                   new SelectListItem { Text = "November", Value = "8"},
+                    new SelectListItem { Text = "December", Value = "9"},
+                     new SelectListItem { Text = "January", Value = "10"},
+                      new SelectListItem { Text = "February", Value = "11"},
+                       new SelectListItem { Text = "March", Value = "12"},
+         }, "Value", "Text"),
+    "--Month--",
+     new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <div class="col-md-3">
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1"> End Month  </label>
+                                            @Html.DropDownListFor(m => m.ToMonth, new SelectList(new List<SelectListItem> {
+             new SelectListItem { Text = "April", Value = "1"},
+             new SelectListItem { Text = "May", Value = "2"},
+              new SelectListItem { Text = "June", Value = "3"},
+               new SelectListItem { Text = "July", Value = "4"},
+                new SelectListItem { Text = "August", Value = "5"},
+                 new SelectListItem { Text = "September", Value = "6"},
+                  new SelectListItem { Text = "October", Value = "7"},
+                   new SelectListItem { Text = "November", Value = "8"},
+                    new SelectListItem { Text = "December", Value = "9"},
+                     new SelectListItem { Text = "January", Value = "10"},
+                      new SelectListItem { Text = "February", Value = "11"},
+                       new SelectListItem { Text = "March", Value = "12"},
+         }, "Value", "Text"),
+    "--Month--",
+     new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pull-right">
+                        <div class="col-lg-12">
+                            <button type="button" onclick="return GetDueFeeList();" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </section><!-- /.content -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-lg-12 box box-body" id="StudentTbl" style="display:none;">
+            </div>
+        </div>
+    </div>
+</section>
+<div id="popupDiv" style="display: none; position: fixed; top: 10px; z-index: 1005; background: rgb(1, 1, 1); left:500px;">
+    <div id="UnpaidMonthDetails"></div>
+</div>
+
+<script src="~/Scripts/Fee/Fee.js"></script>
+
+@section JS {
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/jszip.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/pdfmake.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/vfs_fonts.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.print.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/tblPrintPdfexceljscss/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/tblPrintPdfexceljscss/buttons.dataTables.min.css">
+
+    <script type="text/javascript">
+
+
+        //var _lecturetitle = 'Promote Sheet';
+        //$(document).ready(function () {
+        //    $('#collectiontbllist').DataTable({
+        //        "scrollX": true,
+        //        dom: 'Bfrtip',
+        //        buttons: [
+
+        //            {
+        //                extend: 'excel',
+        //                title: function () {
+        //                    return 'Promote Sheet';
+        //                },
+        //                text: '<i class="fa fa-file-pdf-o"> Excel</i>',
+        //                className: 'btn btn-default',
+        //                exportOptions: {
+        //                    columns: 'th:not(:last-child)'
+        //                }
+        //            },
+
+        //        ]
+
+        //    });
+        //});
+    </script>
+}

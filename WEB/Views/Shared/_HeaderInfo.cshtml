@@ -1,0 +1,24 @@
+﻿@model SHARED.BaseModel
+
+<li class="dropdown tasks-menu">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-flag-o"></i>
+        <span class="label label-danger">9</span>
+    </a>
+    <ul class="dropdown-menu">
+
+        @if (Model != null && Model.BaseUserInfo != null)
+        {
+            if (!string.IsNullOrEmpty(@Model.BaseUserInfo.USERNAME))
+            {
+                <li class="header">UserName : <b>@Model.BaseUserInfo.USERNAME </b></li>
+            }
+            <li>                  </li>
+            if (!string.IsNullOrEmpty(@Model.BaseUserInfo.CurrentDate))
+            {
+                <li class="footer">Date : <b>@Model.BaseUserInfo.CurrentDate </b></li>
+            }
+        }
+    </ul>
+</li>
+@{Html.RenderPartial("_Message", @Model);}

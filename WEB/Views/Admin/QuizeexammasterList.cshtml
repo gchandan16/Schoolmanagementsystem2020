@@ -1,0 +1,136 @@
+﻿@model WEB.Models.QuizeexammasterModel
+@using WEB.AppCode
+@using System.Data;
+@using SHARED
+@{
+    ViewBag.Title = "Quize Exam List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h4>
+        Quize Exam List
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="active">Quize Exam List</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <a class="mb-1 btn btn-success pull-right" href="/Admin/Quizeexammaster?@Constants.HASH_ADMIN">Create New</a>
+                    }
+
+                </div><!-- /.box-header -->
+                <div class="box-body">
+
+                    <table id="studenttbl" class="display table table-striped table-bordered  nowrap" style="width: 100%">
+                        <thead>
+                            <tr>
+                                @foreach (var column in @Model.QuizeexamlistTbl.Columns)
+                                {
+
+                                    <th style="text-align: center">
+                                        @{var vcol = @column.ToString();}
+                                        @if (vcol != "Qzmid")
+                                        {
+                                            @column
+                                        }
+                                        else
+                                        {
+                                            <h5>Action</h5>
+                                        }
+                                    </th>
+
+                                }
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow rows in @Model.QuizeexamlistTbl.Rows)
+                            {
+                                <tr>
+                                    @foreach (DataColumn column in @Model.QuizeexamlistTbl.Columns)
+                                    {
+
+                                    <td style="text-align: center">
+                                        @{var valcolumn = @column.ToString();}
+                                        @if (valcolumn != "Qzmid")
+                                        {
+                                            @rows[@column]
+                                        }
+                                        else
+                                        {
+                                            <a href="/Admin/Startexamination?Qzmid=@rows[@column]&ActionName=edit&@Constants.HASH_ADMIN" title="Add Question Examination" class="dropdown-toggle">
+                                                Start Exam
+                                            </a>
+                                            <a href="/Admin/StudentList?Qzmid=@rows[@column]&ActionName=OnlineExam&@Constants.HASH_ADMIN" title="Add Question Examination" class="dropdown-toggle">
+                                                Assign Student
+                                            </a>
+                                            <a href="/Admin/Quizeexammaster?Qzmid=@rows[@column]&ActionName=edit&@Constants.HASH_ADMIN" title="edit Quiz Examination" class="dropdown-toggle">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            <a href="#" onclick="return DeleteQuizeexammaster(@rows[@column])" title="delete Quiz Examination" class="dropdown-toggle">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                            <a href="/Admin/Createquestionwithoption?Qzmid=@rows[@column]&ActionName=edit&@Constants.HASH_ADMIN" title="Add Question Examination" class="dropdown-toggle">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+
+                                        }
+
+                                    </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+
+
+        </div>
+    </div>
+
+
+</section>
+
+@using (Html.BeginForm("DeleteQuizeexammaster", "Admin", FormMethod.Post, new { @Id = "PostDelete" }))
+{
+    @Html.HiddenFor(m => m.Qzmid, new { @Id = "Del_Qzmid" });
+}
+
+
+@section JS {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#studenttbl').DataTable({
+                "order": []
+            });
+        });
+
+        function DeleteQuizeexammaster(id) {
+            $('.modal-title').html("Delete Quiz Exam");
+            $('.modal-body').html("You are about to deactivate a record. <br/> Do you want to continue.<br /><br /><b><i><u>Note:-All related records will be deleted. </u></i></b> ");
+            $('#Del_Qzmid').val(id);
+            $('#DeleteModel').modal('show');
+        }
+
+        $("#SubmitDelete").click(function () {
+            BlockUI();
+            $("#PostDelete").submit();
+
+        });
+    </script>
+}

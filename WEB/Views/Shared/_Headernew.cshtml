@@ -1,0 +1,237 @@
+﻿
+@model SHARED.BaseModel
+@using SHARED
+@using WEB.AppCode
+@{
+    UserMasters currentuser = (UserMasters)Session[Constants.Session.USER];
+}
+
+
+<div class="wrapper">
+    <header class="topnavbar-wrapper">
+        <div class="container-fluid top_div">
+            <div class="row">
+                <div class="col-md-4 col-xs-4">
+                    <!-- START Top Navbar-->
+                    <nav class="navbar topnavbar">
+                        <!-- START navbar header-->
+                        <div class="navbar-header">
+                            <ul class="navbar-nav mr-auto flex-row left-side">
+                                <li class="nav-item">
+                                    <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
+                                    <a class="nav-link d-none d-md-block d-lg-block d-xl-block" href="#" data-trigger-resize="" data-toggle-state="aside-collapsed">
+                                        <em class="fas fa-bars"></em>
+                                    </a>
+                                    <!-- Button to show/hide the sidebar on mobile. Visible on mobile only.-->
+                                    <a class="nav-link sidebar-toggle d-md-none" href="#" data-toggle-state="aside-toggled" data-no-persist="true">
+                                        <em class="fas fa-bars" style="color: #000;"></em>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a href="/Home/Index"> E-VISIONSOFT</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-md-4 col-xs-5 hidden-xs dms">
+                    <h4 class="tittle_cr hidden-xs">
+                        SCHOOL MANAGEMENT SYSTEMS
+                    </h4>
+                </div>
+                <div class="admin_new">
+                    <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+                        <li class="hidden-xs hidden-xs dms ">
+                            <!-- <img src="/Content/Images/mainlogo1.png" class="hidden-xs hidden-xs dms">-->
+                        </li>
+                        <li class="nav-item dropdown show">
+                            <a class="nav-link navbar-avatar" data-toggle="dropdown"
+                               href="#" aria-expanded="true" data-animation="scale-up" role="button">
+                                <span class="avatar avatar-online">
+
+                                    @if (Model != null && Model.BaseUserInfo != null)
+                                    {
+                                        if (!string.IsNullOrEmpty(Model.BaseUserInfo.EMPIMGPATH))
+                                        {
+                                            <img src="@Model.BaseUserInfo.EMPIMGPATH" alt="@Model.BaseUserInfo.USERNAME" style="width: 35px;height: 35px;">
+                                        }
+                                        else
+                                        {
+                                            <img src="/Content/Images/5.jpg" alt="...">
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <img src="/Content/Images/5.jpg" alt="...">
+                                    }
+                                    <i></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu " role="menu">
+                                <a class="dropdown-item" href="#" id="btnProfileDetail" role="menuitem">
+                                    <i class="fa fa-user"></i> Profile
+                                </a> <a class="dropdown-item" href="#" id="btnChangepassword" role="menuitem">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>  Change Password
+                                </a>
+                                <div class="dropdown-divider" role="presentation">
+                                </div>
+                                <a class="dropdown-item" href="/Account/Logout" role="menuitem">
+                                    <i class="fa fa-sign-out"
+                                       aria-hidden="true"></i>  Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="position: relative; top: -10px; color: #fff;">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">Modal body.</div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="DeleteModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="position: relative; top: -10px; color: #fff;">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">Modal body.</div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="SubmitDelete">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="ShowInfo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="ShowInfo-modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="position: relative; top: -10px; color: #fff;">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" id="ShowInfo-modal-body">Modal body.</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="ChangePasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModal2Label">
+    </div>
+    <div class="modal" id="ProfileDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModal2Label">
+    </div>
+</div>
+
+
+
+<div id="myModalFeeDesc" class="modal">
+    <div class="modal-dialog" style="width: 100%;max-width: 869px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Fees Term Details</h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="Reload()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row box-footer">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Fee Desc Name</td>
+                                <td colspan="2"><input type="text" id="txtFeeDescName" class="form-control"></td>
+                                <td>Start Date</td>
+                                <td colspan="2"><input type="text" id="StartDate" class="form-control datepicker" data-date-format="dd/mm/yyyy" autocomplete="off"></td>
+                                <td>End Date</td>
+                                <td colspan="2"><input type="text" id="EndDate" class="form-control datepicker" data-date-format="dd/mm/yyyy" autocomplete="off"></td>
+                                <td>Due Date</td>
+                                <td colspan="2"><input type="text" id="DueDate" class="form-control datepicker" data-date-format="dd/mm/yyyy" autocomplete="off"></td>
+                            </tr>
+                            <tr>
+                                <td>Apr</td>
+                                <td>May</td>
+                                <td>Jun</td>
+                                <td>Jul</td>
+                                <td>Aug</td>
+                                <td>Sep</td>
+                                <td>Oct</td>
+                                <td>Nov</td>
+                                <td>Dec</td>
+                                <td>Jan</td>
+                                <td>Feb</td>
+                                <td>Mar</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="chkapr" class="apr">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkmay" class="may">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkjun" class="jun">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkjul" class="jul">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkaug" class="aug">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chksep" class="sep">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkoct" class="oct">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chknov" class="nov">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkdec" class="dec">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkjan" class="jan">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkfeb" class="feb">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="chkmar" class="mar">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <input type="button" id="btnCreate" onclick="SaveFeeDescription()" value="Save" class="btn btn-info pull-right">
+                    }
+                </div>
+                <div class="row box-footer">
+                    <div class="col-md-12">
+                        <table id="myTbl" class="table dTable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

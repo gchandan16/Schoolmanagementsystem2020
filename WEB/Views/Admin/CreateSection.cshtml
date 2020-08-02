@@ -1,0 +1,133 @@
+﻿@model WEB.Models.SectionModel
+@using WEB.AppCode
+@using SHARED
+@{
+    ViewBag.Title = "Add Section";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="/Content/JsTree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="content-header">
+    @if (Model.ActionName == Constants.BTN_CREATE)
+    {
+        <h4 class="box-title">
+            Add Section
+        </h4>
+    }
+    else
+    {
+        <h4 class="box-title">
+            Update Section
+        </h4>
+    }
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin/SectionList">Section Master</a></li>
+        @if (Model.ActionName == Constants.BTN_CREATE)
+        {
+            <li class="active">Add Section</li>
+        }
+        else
+        {
+            <li class="active">Update Section</li>
+        }
+    </ol>
+</section>
+@using (Html.BeginForm("CreateSection", "Admin", FormMethod.Post, new { }))
+{
+    @Html.HiddenFor(m => m.Secmid)
+    @Html.AntiForgeryToken()
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="pwd" class="redlabel">
+                                Section Name:
+                            </label>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.TextBoxFor(model => model.SectionName, new {@class = "form-control mandate",id = "txtsectionname", onblur = "return ValidateSectionNameExist(this) ", @msg = "Please enter section name.", @pat = "^[A-Za-z 0-9]*$", @onkeypress = "return isKeyValid(event,'32,48-57,65-90,97-122');", @autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.SectionName)
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="pwd" class="redlabel">
+                                Class Name:
+                            </label>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.DropDownListFor(m => m.CMid, new SelectList(Model.ClassList, "CMid", "ClassName"), "-- Select--", new { @class = "form-control chosen-select mandate", @msg = "Please select class name." })
+                        </div>
+
+                        </div>
+                    <hr />
+                    <div class="row pull-right">
+                        <div class="col-lg-12">
+
+                            @if (Model.ActionName == Constants.BTN_CREATE)
+                            {
+                                <input type="submit" name="btntype" value="Create" id="btnadd" class="btn btn-success" onclick="return inputValidation();" />
+                                <input type="reset" class="btn btn-primary " name="btntype" value="Clear" onclick="return Clear();" />
+                            }
+                            else if (Model.ActionName == Constants.BTN_EDIT)
+                            {
+
+                                <input type="submit" class="btn btn-success" name="btntype" value="Update" id="btnupdate" onclick="return inputValidation();" />
+                                <input type="reset" class="btn btn-primary" name="btntype" value="Cancel" onclick="history.go(-1);" />
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+        
+        }
+        @section JS
+{
+
+            <script type="text/javascript">
+                function ValidateSectionNameExist(element) {
+                    var sectionname = $(element).val();
+                    var classid = $("#CMid").val();
+                    alert(classid);
+                    if (sectionname.length > 0) {
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: '/Admin/CheckIsSectionNameExist',
+                            data: JSON.stringify({ sectionname: sectionname, classid=classid }),
+                            dataType: "json",
+                            success: function (data) {
+                                if (data == true) {
+                                    alert("Section Name already exists");
+                                    $('#txtsectionname').val('');
+                                    $('#txtsectionname').focus();
+                                }
+                            },
+                            error: function (data) {
+                                // throw ex;
+                            }
+
+                        });
+                    }
+                }
+
+                function Clear() {
+                    $('input[type="text"]').attr('value', '');
+
+                }
+            </script>
+        }

@@ -1,0 +1,101 @@
+﻿@model SHARED.DueFeeListDetail
+@{
+    Layout = null;
+}
+<div class="modal-content" style="width: 530px;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" onclick="CloseReceiptDiv();">
+            ×
+        </button>
+        <h4 class="modal-title">
+            Fees Details
+        </h4>
+    </div>
+    <div class="modal-body" id="printable">
+        <input type="button" id="btnPrint" onclick="return printDiv('divToPrint');" value="Print" class="no-print">
+        <div id="divToPrint" style="display: block;">
+            <table style="width: 500px;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            Fees Reminder
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img class="logo" alt="logo" height="50px" width="70px" src="@Model.OragnisationDetails.OrgImage">
+                        </td>
+                        <td>
+                            <div>
+                                <center>
+                                    <h4 id="schoolname1">@Model.OragnisationDetails.Oname</h4>
+                                    <br>
+                                    <div style="margin-top: -20px;">
+                                        <span id="add">@Model.OragnisationDetails.BOAddress  @Model.OragnisationDetails.BOAddress2 @Model.OragnisationDetails.BOCity</span>
+                                    </div>
+                                </center>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered" style="width: 500px;">
+                <tbody>
+                    <tr>
+                        <td>
+                            Student Name
+                        </td>
+                        <td>
+                            <span id="studentNAme">@Model.StudentDetails.Firstname</span>
+                        </td>
+                        <td>
+                            Father Name
+                        </td>
+                        <td>
+                            <span id="fathername">@Model.StudentDetails.Bd_fathername</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Class - Section Name
+                        </td>
+                        <td>
+                            <span id="coursename">@Model.StudentDetails.ClassName - @Model.StudentDetails.SectionName</span>
+                        </td>
+                        @*<td>
+                            Due Date
+                        </td>
+                        <td>
+                            <span id="duedate">10/04/2018</span>
+                        </td>*@
+                    </tr>
+                </tbody>
+            </table>
+            <table id="grdPayment" class="table table-bordered" style="width: 500px;">
+                <tbody>
+
+                    <tr><th> Month  </th><th> Amount  </th></tr>
+                    <tr><th> April  </th><th> @Model.DueFeeList.Apr </ th ></ tr >
+                    <tr><th> May  </th><th>  @Model.DueFeeList.May </ th ></ tr >
+                    <tr><th> June  </th><th> @Model.DueFeeList.Jun </ th ></ tr >
+                    <tr><th> July  </th><th>  @Model.DueFeeList.Jul </ th ></ tr >
+                    <tr><th> August  </th><th> @Model.DueFeeList.Aug </ th ></ tr >
+                    <tr><th> September </th><th> @Model.DueFeeList.Sep </ th ></ tr >
+                    <tr><th> October </th><th>  @Model.DueFeeList.Oct </ th ></ tr >
+                    <tr><th> November  </th><th> @Model.DueFeeList.Nov </ th ></ tr >
+                    <tr><th> December  </th><th> @Model.DueFeeList.Dec </ th ></ tr >
+                    <tr><th> January </th><th>  @Model.DueFeeList.Jan </ th ></ tr >
+                    <tr><th> February </th><th> @Model.DueFeeList.Feb </ th ></ tr >
+                    <tr><th> March </th><th> @Model.DueFeeList.Mar </ th ></ tr >
+
+                    <tr> <th> Total  </th> <th> @Model.DueFeeList.Amount  </th>  </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"  onclick="CloseReceiptDiv()">
+            Close
+        </button>
+    </div>
+</div>

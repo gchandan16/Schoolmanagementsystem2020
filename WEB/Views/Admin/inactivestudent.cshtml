@@ -1,0 +1,338 @@
+﻿@model WEB.Models.StudentModel
+@using WEB.AppCode
+@using System.Data;
+@using SHARED
+@{
+    ViewBag.Title = "Inactive Student List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h4>
+        Inactive Student List
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="">Inactive Student List</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        @using (Html.BeginForm("inactivestudent", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <!-- left column -->
+                            <!--/.col (left) -->
+                            <!-- right column -->
+
+                            <div class="col-md-3">
+                                <!-- general form elements -->
+                                <!-- form start -->
+
+                                <div class="box-body">
+                                    <div class="form-group">
+
+
+                                        <div class="form-group">
+
+                                            <label for="exampleInputPassword1"> Class  </label>
+                                            @Html.DropDownListFor(m => m.CMid, new SelectList(Model.ClassList, "CMid", "ClassName", "0"), "-- Select--", new { @class = "form-control chosen-select", @onchange = "return Getsectionbaseonclass(this)" })
+                                        </div>
+
+                                        <div class="form-group">
+
+
+                                            <label for="exampleInputPassword1">Section   </label>
+                                            @Html.DropDownListFor(m => m.SecMid, new SelectList(Model.SectionList, "Secmid", "SectionName"), "-- Select--", new { @class = "form-control chosen-select" })
+                                            @*@Html.DropDownListFor(m => m.SecMid, new SelectList(Model.SectionList, "Secmid", "SectionName"), "-- Select--", new { @class = "form-control chosen-select"})*@
+
+                                        </div>
+
+                                    </div>
+
+
+
+
+                                </div><!-- /.box-body -->
+
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <div class="box-body">
+                                    <div class="form-group">
+
+                                        <div class="form-group">
+
+                                            <label for="exampleInputPassword1"> From Date  </label>
+                                            <div class="input-group date fromdatepicker">
+                                                @Html.TextBoxFor(model => model.Startdate, new { @class = "form-control datepicker", @placeholder = "From Date" })
+                                                <span class="input-group-append input-group-addon ">
+                                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <label for="exampleInputPassword1"> To Date  </label>
+                                            <div class="input-group date fromdatepicker">
+                                                @Html.TextBoxFor(model => model.Enddate, new { @class = "form-control datepicker", @placeholder = "To Date" })
+                                                <span class="input-group-append input-group-addon ">
+                                                    <i class="input-group-text2 fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div><!--/.col (left) -->
+                            <!-- right column -->
+                            <div class="col-md-3">
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Search</button>
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div><!--/.col (left) -->
+
+
+                        }
+                    </div>   <!-- /.row -->
+
+                </section><!-- /.content -->
+
+            </div><!-- /.box -->
+
+
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+
+                    @if (Model.PermissionNameList.Contains(Constants.PermissionName.CREATE))
+                    {
+                        <a class="mb-1 btn btn-success pull-right" href="/Admin/CreateStudent?@Constants.HASH_ADMIN">Create New</a>
+                    }
+                    <a class="mb-1 btn btn-success pull-right" onclick="studentprintdetails();" href="#">Print</a>
+
+
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="studenttbl" class="display table table-striped table-bordered  nowrap" style="width: 100%">
+                        <thead>
+                            <tr>
+                                @foreach (var column in @Model.StudenttblList.Tables[0].Columns)
+                                {
+
+                                    <th style="text-align: center">
+                                        @{var vcol = @column.ToString();}
+                                        @if (vcol != "Smid" && vcol != "Studentid")
+                                        {
+                                            @column
+                                        }
+                                        else
+                                        {
+                                            <h5>Action</h5>
+                                        }
+                                    </th>
+
+                                }
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow rows in @Model.StudenttblList.Tables[0].Rows)
+                            {
+                                <tr>
+                                    @foreach (DataColumn column in @Model.StudenttblList.Tables[0].Columns)
+                                    {
+
+                                        <td style="text-align: center">
+                                            @{var valcolumn = @column.ToString();}
+                                            @if (valcolumn == "Studentid")
+                                            {
+                                                <input type="checkbox" id="chk_@rows[@column]" name="studentprintdetail" value="@rows[@column]" />
+                                            }
+                                            else if (valcolumn != "Studentid" && valcolumn != "Smid" && valcolumn != "studentimage" && valcolumn != "motherimage" && valcolumn != "fatherimage")
+                                            {
+                                                @rows[@column]
+                                            }
+
+                                            else if (valcolumn == "studentimage" || valcolumn == "motherimage" || valcolumn == "fatherimage")
+                                            {
+                                                <img src="@rows[@column]" width="50" height="50" />
+                                            }
+                                            else
+                                            {
+
+                                                @*<a href="/Admin/CreateStudent?StudentId=@rows[@column]&ActionName=edit&@Constants.HASH_ADMIN" title="edit Student" class="dropdown-toggle">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>*@
+
+                                                @*<a href="#" onclick="return DisplayAdmissionForm('@rows[@column]')" title="Print Form" class="dropdown-toggle">
+                                                        <i class="fa fa-print" aria-hidden="true"></i>
+                                                    </a>*@
+                                                <a href="#" onclick="return DeleteStudent(@rows[@column])" title="Activate student" class="dropdown-toggle">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+
+
+                                            }
+
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div><!-- /.box -->
+
+
+        </div>
+    </div>
+
+
+</section>
+
+
+@using (Html.BeginForm("DeleteStudent", "Admin", FormMethod.Post, new { @Id = "PostDelete" }))
+{
+    @Html.HiddenFor(m => m.Smid, new { @Id = "Del_StudentId" });
+}
+
+
+@section JS {
+    <script src="~/Scripts/Searchuse.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#studenttbl').DataTable({
+                scrollX:450,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        title: function () {
+                            return "Inactive Student List";
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Excel</i>',
+
+                    },
+                    /*
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: 'visible'
+                        },
+                        title: function () {
+                            return "Student List";
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Print</i>',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        },
+                        customize: function (win) {
+                            $(win.document.body)
+                                .css('font-size', '10pt')
+                                .prepend(
+                                    '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                                );
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                    */
+                ]
+            });
+        });
+        function DeleteStudent(id) {
+
+            $('.modal-title').html("Delete Student");
+            $('.modal-body').html("You are about to Activate a record. <br/> Do you want to continue.<br /><br /><b><i><u>Note:-All related records will be deleted. </u></i></b> ");
+            $('#Del_StudentId').val(id);
+            $('#DeleteModel').modal('show');
+        }
+
+        $("#SubmitDelete").click(function () {
+            BlockUI();
+            $("#PostDelete").submit();
+
+        });
+        function DisplayAdmissionForm(StudentID) {
+            BlockUI();
+            $.ajax({
+                url:  '@Url.Action("GetAdmissionForm")',
+                contentType: 'application/json; charset=utf-8',
+                type: 'POST',
+                cache: false,
+                data: '{"StudentID":"' + StudentID + '"}',
+                success: function (response) {
+                    $.unblockUI();
+                    $("#AdmissionFormDiv").html(response);
+                    $("#popupDiv").show();
+
+                },
+                failure: function (response) {
+                    alert('Unable to perform event. Please try again.');
+                    $.unblockUI();
+                },
+            })
+        }
+        function studentprintdetails() {
+
+            var _studentidrecords = [];
+            $.each($("input[name='studentprintdetail']:checked"), function () {
+                _studentidrecords.push($(this).val());
+            });
+            if (_studentidrecords.length > 0) {
+                  BlockUI();
+                var _selectedstudent = _studentidrecords.join(",");
+                $.ajax({
+                    url: '@Url.Action("GetAdmissionformmulresult")',
+                    contentType: 'application/json; charset=utf-8',
+                    type: 'POST',
+                    cache: false,
+                    data: '{"_studentid":"' + _selectedstudent + '"}',
+                    success: function (response) {
+                        $.unblockUI();
+                        $("#AdmissionFormDiv").html(response);
+                        $("#popupDiv").show();
+
+                    },
+                    failure: function (response) {
+                        alert('Unable to perform event. Please try again.');
+                        $.unblockUI();
+                    },
+                });
+            }
+            else {
+                alert("Please Select Any student !");
+            }
+        }
+        function CloseAdmissionFormDiv() {
+            $("#AdmissionFormDiv").empty();
+            $("#popupDiv").hide();
+        }
+    </script>
+}
+<div id="popupDiv" style="display: none; position: fixed; top: 65px; z-index: 1005; left: 350px;background: rgb(1, 1, 1);">
+    <div id="AdmissionFormDiv"></div>
+</div>

@@ -1,0 +1,201 @@
+﻿@model SHARED.FeeGroupAllocation
+@using SHARED
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/Fee/Fee.js"></script>
+<section class="content-header">
+    <h4 class="box-title">
+        Fee Group Allocation
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Fee Group Allocation</li>
+    </ol>
+</section>
+@using (Html.BeginForm("FeeGroupAllocation", "Fee", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Fees Group:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(a => a.FeeGroupName, new SelectList(Model.lstFeeGroup.Select(x => x.FeeGroupName).Distinct().ToList()), "Group Name", new { @class = "form-control mandate", @msg = "Please select Group Name" })
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Fees For:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(a => a.FeeFor, new SelectList(Model.FeeForList, "Value", "Text"), "-Select-", new { @class = "form-control mandate", @msg = "Please select", @onchange = "return getFeeFor(this);" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="row col-lg-12" style="display:none;" id="feeClassDiv">
+                                <div class="col-lg-12">
+                                    <label for="pwd" class="redlabel">Class / Section:</label>
+                                </div>
+                                <div class="col-lg-12 table-responsive" id="feeClasstbl">
+                                </div>
+                            </div>
+                            <div class="row col-lg-12" style="display:none;" id="feeStudentDiv">
+                                <div class="col-lg-12">
+                                    <label for="pwd" class="redlabel">Class / Section:</label>
+                                </div>
+                                <div class="col-lg-12  table-responsive" id="feeStudentTbl">
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-sm-12 col-md-12 right_bottom">
+                            <input type="submit" value="Save" name="btntype" class="btn btn-primary pull-right" id="SaveFeeTerm" onclick="return finalValidation();" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+
+    function getFeeFor(d) {
+        $("#feeClasstbl").empty();
+        $("#feeClassDiv").hide();
+        $("#feeStudentTbl").empty();
+        $("#feeStudentDiv").hide();
+        if (d.value == "C" || d.value == "S") {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: '@Url.Action("GetClassSectionList", "Fee")',
+                dataType: "json",
+                success: function (data) {
+                    var html = '<table class="table">';
+                    if (data.length > 0) {
+                        html += '<thead class="thead-lights">';
+                        html += '<tr>';
+                        html += '<th>Select</th>';
+                        html += '<th>Class</th>';
+                        html += '<th>Section</th>';
+                        html += '</thead>';
+                        html += '<tbody>';
+
+                        for (var l = 0; l < data.length; l++) {
+                            html += '<tr>';
+                            if (d.value == "C") {
+                                html += '<input name="SectionList[' + l + '].SectionID" id="SectionList_' + l + '__SectionID" type="hidden" value="' + data[l].SectionID + '">';
+                                html += '<td><input name="SectionList[' + l + '].Check" id="SectionList_' + l + '__Check" type="checkbox" value="' + data[l].Check + '" data-val-required="The Check field is required." data-val="true" class="chkSection" ></td>';
+                            }
+                            else if (d.value == "S") {
+                                html += '<td><input name="SectionID" id="SectionID_' + l + '" type="radio" value="' + data[l].SectionID + '" class="rdSection" onchange="return getStudentList(this);"></td>';
+                            }
+                            html += '<td>' + data[l].ClassName + '</td>';
+                            html += '<td>' + data[l].SectionName + '</td>';
+                            html += '</tr>';
+
+                        }
+                        html += '</tbody>';
+                        $("#feeClasstbl").html(html)
+                        $("#feeClassDiv").show();
+                    }
+                },
+                error: function (data) {
+                }
+            });
+        }
+
+    }
+
+    function getStudentList(d) {
+        $("#feeStudentTbl").empty();
+        $("#feeStudentDiv").hide();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: '@Url.Action("StudentMaster", "Fee")',
+                data: JSON.stringify({ StudentID: 0, SectionID: d.value}),
+                dataType: "json",
+                success: function (data) {
+                    var html = '<table class="table">';
+                    if (data.length > 0) {
+                        html += '<thead class="thead-lights">';
+                        html += '<tr>';
+                        html += '<th>Select</th>';
+                        html += '<th>Admission No</th>';
+                        html += '<th>Name</th>';
+                        html += '</thead>';
+                        html += '<tbody>';
+                        for (var l = 0; l < data.length; l++) {
+                            html += '<tr>';
+                            html += '<input name="StudentList[' + l + '].Smid" id="StudentList_' + l + '__Smid" type="hidden" value="' + data[l].Smid + '">';
+                            html += '<input name="StudentList[' + l + '].SecMid" id="StudentList_' + l + '__SecMid" type="hidden" value="' + data[l].SecMid + '">';
+                            html += '<input name="StudentList[' + l + '].Firstname" id="StudentList_' + l + '__Firstname" type="hidden" value="' + data[l].Firstname + '">';
+                            html += '<td><input name="StudentList[' + l + '].Check" id="StudentList_' + l + '__Check" type="checkbox" value="' + data[l].Check + '" data-val-required="The Check field is required." data-val="true" class="chkStudent" ></td>';
+                            html += '<td>' + data[l].Adminssionno + '</td>';
+                            html += '<td>' + data[l].Firstname + '</td>';
+                            html += '</tr>';
+                        }
+                        html += '</tbody>';
+                        $("#feeStudentTbl").html(html)
+                        $("#feeStudentDiv").show();
+                    }
+                    else {
+                        $("#feeStudentTbl").html("No Student Registered.")
+                        $("#feeStudentDiv").show();
+                    }
+                },
+                error: function (data) {
+                }
+            });
+    }
+    function finalValidation() {
+        if (inputValidation()) {
+            if ($("#FeeFor").val() == "S") {
+                if ($(".rdSection").filter(":checked").length == 0) {
+                    alert("Please select Class/section.");
+                    return false;
+                }
+                else if ($(".chkStudent").length == 0) {
+                    alert("No Student found.");
+                    return false;
+                }
+                else if ($(".chkStudent").filter(":checked").length == 0) {
+                    alert("Please select atleast one student.");
+                    return false;
+                }
+                return true;
+            }
+            else if ($("#FeeFor").val() == "C") {
+                if ($(".chkSection").length == 0) {
+                    alert("No Class/Section found.");
+                    return false;
+                }
+                else if ($(".chkSection").filter(":checked").length == 0) {
+                    alert("Please select atleast one Class/section.");
+                    return false;
+                }
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+</script>

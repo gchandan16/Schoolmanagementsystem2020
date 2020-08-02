@@ -1,0 +1,64 @@
+﻿@model SHARED.UnallocatedFeeGroup
+@using SHARED
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/Fee/Fee.js"></script>
+<section class="content-header">
+    <h4 class="box-title">
+        Unallocated Fee Group Allocation
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Unallocated Fee Group Allocation</li>
+    </ol>
+</section>
+@using (Html.BeginForm("UnallocatedFeeGroup", "Fee", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Class:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(a => a.ClassName, new SelectList(Model.ClassList, "CMid", "ClassName"), "All", new { @class = "form-control mandate", @msg = "Please select", @onchange = "return getFeeFor(this);" })
+                                <input type="button" onclick="return GetClassUnAllocatedStudentList();" value="Search">
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="pwd" class="redlabel">
+                                    Fees Group:
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.DropDownListFor(a => a.FeeGroupName, new SelectList(Model.lstFeeGroup.Select(x => x.FeeGroupName).Distinct().ToList()), "Group Name", new { @class = "form-control mandate", @msg = "Please select Group Name" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="row col-lg-12" style="display:none;" id="feeStudentDiv">
+                                <div class="col-lg-12  table-responsive" id="feeStudentTbl">
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-sm-12 col-md-12 right_bottom">
+                            <input type="submit" value="Save" name="btntype" class="btn btn-primary pull-right" id="SaveFeeTerm" onclick="return UnAllocatedValidation();" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<script src="~/Scripts/Fee/Fee.js"></script>
+
