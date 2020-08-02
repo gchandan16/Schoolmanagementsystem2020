@@ -30,6 +30,7 @@ namespace WEB.Controllers
     public class AccountController : Controller
     {
         //Commented By Manish
+        //comment again
         // Comment by chandan 02082020
         //Initial Check process for test
         //ChannelFactory<ICommonSrv> CF = new ChannelFactory<ICommonSrv>("COMMON");
