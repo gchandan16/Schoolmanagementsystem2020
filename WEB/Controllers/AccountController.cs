@@ -32,7 +32,11 @@ namespace WEB.Controllers
         //Commented By Manish
         //comment again
         // Comment by chandan 02082020
+        //kkkkk
         //Initial Check process for test
+        /// <summary>
+        /// //jhg kgkjg k
+        /// </summary>
         //hhhhh
         //ChannelFactory<ICommonSrv> CF = new ChannelFactory<ICommonSrv>("COMMON");
         //ICommonSrv CSvc;
