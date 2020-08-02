@@ -20,6 +20,7 @@ namespace WEB.Controllers
     [PageActionFilter]
     public class HomeController : Controller
     {
+        // comment by ck
         string ConStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         BALCommon CSvc;
         int _Financialyearid = 0;

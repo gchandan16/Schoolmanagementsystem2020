@@ -29,20 +29,7 @@ namespace WEB.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
-        //Commented By Manish
-        //comment again
-        // Comment by chandan 02082020
-        //kkkkk
-        //Initial Check process for test
-//<<<<<<< HEAD
-        //hhhhh
-//=======
-        /// <summary>
-        /// //jhg kgkjg k
-        /// </summary>
-//>>>>>>> a74a842675908a525771b2ece3b9661252a69e8d
-        //ChannelFactory<ICommonSrv> CF = new ChannelFactory<ICommonSrv>("COMMON");
-        //ICommonSrv CSvc;
+      
         string ConStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public AccountController()
         {
