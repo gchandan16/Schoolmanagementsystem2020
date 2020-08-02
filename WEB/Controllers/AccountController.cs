@@ -33,6 +33,7 @@ namespace WEB.Controllers
         //comment again
         // Comment by chandan 02082020
         //kkkkk
+        //Initial Check process for test
         //ChannelFactory<ICommonSrv> CF = new ChannelFactory<ICommonSrv>("COMMON");
         //ICommonSrv CSvc;
         string ConStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
