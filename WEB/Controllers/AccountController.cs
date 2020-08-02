@@ -34,10 +34,13 @@ namespace WEB.Controllers
         // Comment by chandan 02082020
         //kkkkk
         //Initial Check process for test
+//<<<<<<< HEAD
+        //hhhhh
+//=======
         /// <summary>
         /// //jhg kgkjg k
         /// </summary>
-        //hhhhh
+//>>>>>>> a74a842675908a525771b2ece3b9661252a69e8d
         //ChannelFactory<ICommonSrv> CF = new ChannelFactory<ICommonSrv>("COMMON");
         //ICommonSrv CSvc;
         string ConStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
