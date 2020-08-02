@@ -30,6 +30,7 @@ namespace WEB.Controllers
     public class AccountController : Controller
     {
         //Commented By Manish
+        //comment again
         //ChannelFactory<ICommonSrv> CF = new ChannelFactory<ICommonSrv>("COMMON");
         //ICommonSrv CSvc;
         string ConStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
