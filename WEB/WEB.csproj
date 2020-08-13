@@ -58,7 +58,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetOpenAuth.AspNet">
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\DotNetOpenAuth.AspNet.dll</HintPath>
+      <HintPath>..\AllDLLs\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.Core">
       <HintPath>C:\Users\Chandan\Downloads\WebAppSMS-master\WebAppSMS-master\AllDLLs\DotNetOpenAuth.Core.dll</HintPath>
@@ -70,17 +70,17 @@
       <HintPath>C:\Users\Chandan\Downloads\WebAppSMS-master\WebAppSMS-master\AllDLLs\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OpenId">
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\DotNetOpenAuth.OpenId.dll</HintPath>
+      <HintPath>..\AllDLLs\DotNetOpenAuth.OpenId.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OpenId.RelyingParty">
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+      <HintPath>..\AllDLLs\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
     </Reference>
     <Reference Include="ExcelNumberFormat, Version=1.0.10.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelNumberFormat.1.0.10\lib\net20\ExcelNumberFormat.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ionic.Zip">
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\Ionic.Zip.dll</HintPath>
+      <HintPath>..\AllDLLs\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.7.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -120,10 +120,10 @@
     </Reference>
     <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+      <HintPath>..\AllDLLs\Microsoft.Web.WebPages.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="Navitaire.NPS.HTTPCompresssionServices">
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\Navitaire.NPS.HTTPCompresssionServices.dll</HintPath>
+      <HintPath>..\AllDLLs\Navitaire.NPS.HTTPCompresssionServices.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -160,14 +160,14 @@
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\System.Web.Http.WebHost.dll</HintPath>
+      <HintPath>..\AllDLLs\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\AllDLLs\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Optimization">
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\System.Web.Optimization.dll</HintPath>
+      <HintPath>..\AllDLLs\System.Web.Optimization.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -224,19 +224,19 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\WebGrease.dll</HintPath>
+      <HintPath>..\AllDLLs\WebGrease.dll</HintPath>
     </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\WebMatrix.Data.dll</HintPath>
+      <HintPath>..\AllDLLs\WebMatrix.Data.dll</HintPath>
     </Reference>
     <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\WebMatrix.WebData.dll</HintPath>
+      <HintPath>..\AllDLLs\WebMatrix.WebData.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="XDFBAL">
-      <HintPath>..\..\WebAppSMS-MySQL\AllDLLs\XDFBAL.dll</HintPath>
+      <HintPath>..\AllDLLs\XDFBAL.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -759,93 +759,6 @@
     <Content Include="Content\tblPrintPdfexceljscss\jszip.min.js" />
     <Content Include="Content\tblPrintPdfexceljscss\pdfmake.min.js" />
     <Content Include="Content\tblPrintPdfexceljscss\vfs_fonts.js" />
-    <Content Include="ExceptionLogger\01-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\01-07-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\02-05-2020\DALCommon%28GetFeegroupList%29.txt" />
-    <Content Include="ExceptionLogger\02-05-2020\DALCommon%28GetGendarList%29.txt" />
-    <Content Include="ExceptionLogger\02-05-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\02-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\02-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\02-07-2020\DALCommon%28GetByUserId%29.txt" />
-    <Content Include="ExceptionLogger\02-07-2020\DALCommon%28GetClassList%29.txt" />
-    <Content Include="ExceptionLogger\02-07-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\02-07-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\02-07-2020\DALFee%28SaveFeeTerm%29.txt" />
-    <Content Include="ExceptionLogger\03-05-2020\DALCommon%28GetDashboardDetails%29.txt" />
-    <Content Include="ExceptionLogger\03-05-2020\DALCommon%28GetDashboardDetails_TBL2%29.txt" />
-    <Content Include="ExceptionLogger\03-05-2020\DALCommon%28GetFeegroupList%29.txt" />
-    <Content Include="ExceptionLogger\03-05-2020\DALCommon%28GetGendarList%29.txt" />
-    <Content Include="ExceptionLogger\03-05-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\03-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\03-07-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\03-07-2020\DALFee%28FeeDeposit%29.txt" />
-    <Content Include="ExceptionLogger\03-07-2020\DALFee%28SaveFeeTerm%29.txt" />
-    <Content Include="ExceptionLogger\04-05-2020\DALCommon%28AddAdmissionEnquiry%29.txt" />
-    <Content Include="ExceptionLogger\04-05-2020\DALCommon%28GetAdmissionEnquiry%29.txt" />
-    <Content Include="ExceptionLogger\04-05-2020\DALCommon%28GetAdmissionEnquiryTblList%29.txt" />
-    <Content Include="ExceptionLogger\04-05-2020\DALCommon%28GetFeegroupList%29.txt" />
-    <Content Include="ExceptionLogger\04-05-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\04-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\04-05-2020\DALCommon%28UPDAdmissionEnquiry%29.txt" />
-    <Content Include="ExceptionLogger\04-07-2020\DALCommon%28GetIndisciplineList%29.txt" />
-    <Content Include="ExceptionLogger\04-07-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\04-07-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\05-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\05-07-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\10-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\11-06-2020\DALCommon%28GetFeegroupList%29.txt" />
-    <Content Include="ExceptionLogger\11-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\15-05-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\15-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\15-05-2020\DALFee%28AssignFeeConcession%29.txt" />
-    <Content Include="ExceptionLogger\15-05-2020\DALFee%28GetAssignFeeConcession%29.txt" />
-    <Content Include="ExceptionLogger\15-05-2020\DALFee%28SaveFeeTerm%29.txt" />
-    <Content Include="ExceptionLogger\16-05-2020\DALCommon%28GetFeegroupList%29.txt" />
-    <Content Include="ExceptionLogger\16-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\17-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\17-05-2020\DALFee%28SaveFeeTerm%29.txt" />
-    <Content Include="ExceptionLogger\18-05-2020\DALCommon%28GetFeegroupList%29.txt" />
-    <Content Include="ExceptionLogger\18-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\20-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\21-05-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\21-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\23-05-2020\DALCommon%28GetStudentList%29.txt" />
-    <Content Include="ExceptionLogger\23-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\24-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\24-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\25-05-2020\Account%28UserLogin%29.txt" />
-    <Content Include="ExceptionLogger\25-05-2020\Account%28UserLoginPost%29.txt" />
-    <Content Include="ExceptionLogger\25-05-2020\DALCommon%28Applicationfprmano%29.txt" />
-    <Content Include="ExceptionLogger\25-05-2020\DALCommon%28GetByUserId%29.txt" />
-    <Content Include="ExceptionLogger\25-05-2020\DALCommon%28GetFeegroupList%29.txt" />
-    <Content Include="ExceptionLogger\25-05-2020\DALCommon%28GetStudentList%29.txt" />
-    <Content Include="ExceptionLogger\25-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\25-06-2020\DALCommon%28GetClassList%29.txt" />
-    <Content Include="ExceptionLogger\25-06-2020\DALCommon%28GetLeaveReport%29.txt" />
-    <Content Include="ExceptionLogger\25-06-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\25-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\25-06-2020\DALCommon%28PromoteStudent%29.txt" />
-    <Content Include="ExceptionLogger\26-05-2020\Account%28UserLogin%29.txt" />
-    <Content Include="ExceptionLogger\26-05-2020\Account%28UserLoginPost%29.txt" />
-    <Content Include="ExceptionLogger\26-05-2020\DALCommon%28GetLeaveReport%29.txt" />
-    <Content Include="ExceptionLogger\26-05-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\26-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\26-05-2020\DALCommon%28UpdateStudentDetails%29.txt" />
-    <Content Include="ExceptionLogger\26-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\26-06-2020\DALFee%28SaveFeeTerm%29.txt" />
-    <Content Include="ExceptionLogger\28-05-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\28-06-2020\Account%28UserLogin%29.txt" />
-    <Content Include="ExceptionLogger\28-06-2020\Account%28UserLoginPost%29.txt" />
-    <Content Include="ExceptionLogger\28-06-2020\DALCommon%28GetAllMenuListByUserId%29.txt" />
-    <Content Include="ExceptionLogger\28-06-2020\DALCommon%28GetByUserId%29.txt" />
-    <Content Include="ExceptionLogger\28-06-2020\DALCommon%28GetSessionDetails%29.txt" />
-    <Content Include="ExceptionLogger\28-06-2020\DALCommon%28GetStudentList%29.txt" />
-    <Content Include="ExceptionLogger\28-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\28-06-2020\DALCommon%28GetUserInfoByuserId%292.txt" />
-    <Content Include="ExceptionLogger\29-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\29-06-2020\DALFee%28SaveFeeTerm%29.txt" />
-    <Content Include="ExceptionLogger\30-06-2020\DALCommon%28GetUserInfoByuserId%29.txt" />
-    <Content Include="ExceptionLogger\30-06-2020\DALFee%28SaveFeeTerm%29.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -2974,6 +2887,7 @@
     <Content Include="Views\Admin\Studentdetailpreview.cshtml" />
     <Content Include="Views\Admin\TDSSetting.cshtml" />
     <Content Include="Views\Fee\DueFeesMonthWise.cshtml" />
+    <Content Include="Views\Fee\FineConcessionReport.cshtml" />
     <None Include="Views\Scripts\_references.js" />
     <Content Include="Views\Scripts\additional-methods.js" />
     <Content Include="Views\Scripts\aes.js" />
@@ -3170,6 +3084,7 @@
     <Folder Include="EmployeeSalary\School_4\02-May-2020\12-11-18\" />
     <Folder Include="EmployeeSalary\School_4\02-May-2020\12-11-50\" />
     <Folder Include="EmployeeSalary\School_4\02-May-2020\13-06-16\" />
+    <Folder Include="ExceptionLogger\" />
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="obj\Release\ProfileTransformWebConfig\transformed\Views\" />
     <Folder Include="obj\Release\TempPE\" />

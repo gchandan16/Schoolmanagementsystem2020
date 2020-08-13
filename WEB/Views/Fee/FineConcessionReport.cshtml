@@ -1,0 +1,214 @@
+﻿@model SHARED.FineConcession
+@using WEB.AppCode
+@using SHARED
+@using System.Data
+@{
+    ViewBag.Title = "Fee/Concession Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h4>
+        Fee / Concession Report
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="">Fee / Concession Report</li>
+    </ol>
+</section>
+@using (Html.BeginForm("FineConcessionReport", "Fee", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <!-- Main content -->
+                    <section class="content">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="col-md-6">
+                                    <!-- general form elements -->
+                                    <!-- form start -->
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Fine / Concession   </label>
+                                                @Html.DropDownListFor(m => m.Search, new SelectList(Model.searchType, "searchID", "searchName"), "-- Select--", new { @class = "form-control mandate", @msg = "Please select." })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.box-body -->
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- general form elements -->
+                                    <!-- form start -->
+
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1"> Session  </label>
+                                                @Html.DropDownListFor(m => m.FinancialYear, new SelectList(Model.SessionList, "FID", "FYear"), "-- Select--", new { @class = "form-control mandate", @msg = "Please financial year." })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.box-body -->
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="col-md-6">
+                                    <!-- general form elements -->
+                                    <!-- form start -->
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1"> From Date  </label>
+                                                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control datepicker mandate", @placeholder = "From Date", @msg = "Please select start date.", @autocomplete = "off" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.box-body -->
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- general form elements -->
+                                    <!-- form start -->
+
+                                    <div class="box-body">
+                                        <div class="form-group">
+
+
+
+
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">To Date   </label>
+                                                @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control datepicker mandate", @placeholder = "To Date", @msg = "Please select to date.", @autocomplete = "off" })
+
+                                            </div>
+
+                                        </div>
+
+
+
+
+                                    </div><!-- /.box-body -->
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pull-right">
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-primary" onclick="return inputValidation();">Search</button>
+                            </div>
+                        </div>
+                    </section><!-- /.content -->
+                </div><!-- /.box -->
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-lg-12 box box-body">
+                    <div class="box-body">
+                        @if (Model.Report != null)
+                        {
+                            <table id="studenttbl" class="display table table-striped table-bordered  nowrap" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        @foreach (var column in @Model.Report.Columns)
+                                        {
+                                            if (@Model.Search == "1" && (@column.ToString().ToUpper() != "Concession".ToUpper()))
+                                            {
+                                                <th style="text-align: center">
+                                                    @column
+                                                </th>
+                                            }
+                                            else if (@Model.Search == "2" && (@column.ToString().ToUpper() != "Fine".ToUpper() && @column.ToString().ToUpper() != "WaiveOff".ToUpper()))
+                                            {
+                                                <th style="text-align: center">
+                                                    @column
+                                                </th>
+                                            }
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 0;}
+                                    @foreach (DataRow rows in @Model.Report.Rows)
+                                    {
+                                        <tr>
+                                            @{i++; }
+                                            <td>@i</td>
+                                            @foreach (DataColumn column in @Model.Report.Columns)
+                                            {
+                                                if (@Model.Search == "1" && @column.ToString().ToUpper() != "Concession".ToUpper())
+                                                {
+                                                    <td style="text-align: center">
+                                                        @rows[@column]
+                                                    </td>
+                                                }
+                                                else if (@Model.Search == "2" && (@column.ToString().ToUpper() != "Fine".ToUpper() && @column.ToString().ToUpper() != "WaiveOff".ToUpper()))
+                                                {
+                                                    <td style="text-align: center">
+                                                        @rows[@column]
+                                                    </td>
+                                                }
+
+
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+ }
+
+<script src="~/Scripts/Fee/Fee.js"></script>
+
+@section JS {
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/jszip.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/pdfmake.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/vfs_fonts.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="~/Content/tblPrintPdfexceljscss/buttons.print.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/tblPrintPdfexceljscss/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/tblPrintPdfexceljscss/buttons.dataTables.min.css">
+
+    <script type="text/javascript">
+
+
+        var _lecturetitle = 'Promote Sheet';
+        $(document).ready(function () {
+            $('#studenttbl').DataTable({
+                "scrollX": true,
+                dom: 'Bfrtip',
+                buttons: [
+
+                    {
+                        extend: 'excel',
+                        title: function () {
+                            return 'Promote Sheet';
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Excel</i>',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        }
+                    },
+
+                ]
+
+            });
+        });
+    </script>
+}

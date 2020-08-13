@@ -366,7 +366,7 @@ namespace DAL
             }
             return obj;
         }
-        public List<FeeHeadList> GetFeeHeadListForFeeGroup(string FeeGroupName, int SchoolID, string AdmissionNo,int FinancialYear)
+        public List<FeeHeadList> GetFeeHeadListForFeeGroup(string FeeGroupName, int SchoolID, string AdmissionNo, int FinancialYear)
         {
             List<FeeHeadList> obj = new List<FeeHeadList>();
             try
@@ -1298,5 +1298,30 @@ namespace DAL
             return obj;
         }
 
+        #region FineConcessionReport
+        public DataTable GetFineConcessionList(FineConcession fineConcession)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                cmd = new SqlCommand("GetFineConcessionList");
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ToDate", fineConcession.ToDate);
+                cmd.Parameters.AddWithValue("@FromDate", fineConcession.FromDate);
+                cmd.Parameters.AddWithValue("@FinancialYear", fineConcession.FinancialYear);
+                cmd.Parameters.AddWithValue("@SchoolId", fineConcession.SchoolID);
+                ds = DBHelper.ExecuteDataSet(cmd);
+            }
+            catch (Exception ex)
+            {
+                ExecptionLogger.FileHandling("DALFee(SaveFeeTerm)", "Error_014", ex, "DALFee");
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+            return ds.Tables[0];
+        }
+        #endregion FineConcessionReport
     }
 }

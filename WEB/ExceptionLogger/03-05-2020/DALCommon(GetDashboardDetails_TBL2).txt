@@ -1,4 +1,0 @@
-Message:Column 'Month' does not belong to table Table1.
-Line NO:3913
-Message:String was not recognized as a valid DateTime.
-Line NO:3920

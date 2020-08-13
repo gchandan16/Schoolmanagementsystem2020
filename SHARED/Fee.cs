@@ -506,4 +506,25 @@ namespace SHARED
 
     }
     #endregion DueFeeList
+
+
+
+    #region DueFeeListMonthWise
+    public class SearchType
+    {
+        public string searchID { get; set; }
+        public string searchName { get; set; }
+    }
+    public class FineConcession : BaseModel
+    {
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public List<SearchType> searchType{ get; set; }
+        public string Search { get; set; }
+        public List<FinancialYear> SessionList { get; set; }
+        public int FinancialYear { get; set; }
+        public int SchoolID { get; set; }
+        public DataTable Report { get; set; }
+    }
+    #endregion DueFeeList
 }

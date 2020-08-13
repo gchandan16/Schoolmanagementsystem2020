@@ -1696,6 +1696,81 @@ namespace WEB.Controllers
         }
 
         #endregion DueFeeListMonthWise
+
+
+        #region FineConcessionReport
+        [HttpGet]
+        public ActionResult FineConcessionReport()
+        {
+            BALCommon CSvc = new BALCommon(ConStr);
+            FineConcession obj = new FineConcession();
+            List<SearchType> _searchType = new List<SearchType>();
+            try
+            {
+                _searchType.Add(new SearchType
+                {
+                    searchID = "1",
+                    searchName = "Fine"
+                });
+                _searchType.Add(new SearchType
+                {
+                    searchID = "2",
+                    searchName = "Concession"
+                });
+                obj.SessionList = CSvc.GetFinancialYearList();
+                obj.searchType = _searchType;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(obj);
+        }
+        [HttpPost]
+        public ActionResult FineConcessionReport(FineConcession obj)
+        {
+            BALFee ObjFee = new BALFee(ConStr);
+            List<SearchType> _searchType = new List<SearchType>();
+            try
+            {
+                obj.SchoolID = _OrgnisationID;
+               
+
+              
+                _searchType.Add(new SearchType
+                {
+                    searchID = "1",
+                    searchName = "Fine"
+                });
+                _searchType.Add(new SearchType
+                {
+                    searchID = "2",
+                    searchName = "Concession"
+                });
+                obj.SessionList = CSvc.GetFinancialYearList();
+                obj.searchType = _searchType;
+                DataTable dt = new DataTable();
+                if (obj.Search == "1")
+                {
+                    dt = ObjFee.GetFineConcessionList(obj).Select("Fine<>0", "").CopyToDataTable();
+                }
+                else if(obj.Search == "2")
+                {
+                    dt = ObjFee.GetFineConcessionList(obj).Select("Concession<>0", "").CopyToDataTable();
+                }
+                if(dt.Rows.Count > 0)
+                {
+                    obj.Report = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(obj);
+        }
+
+        #endregion FineConcessionReport
     }
 
 }

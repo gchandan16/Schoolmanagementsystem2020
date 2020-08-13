@@ -1,8 +1,0 @@
-Message:Timeout expired.  The timeout period elapsed prior to obtaining a connection from the pool.  This may have occurred because all pooled connections were in use and max pool size was reached.
-Line NO:2675
-Message:A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: SSL Provider, error: 0 - The wait operation timed out.)
-Line NO:2675
-Message:A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: SSL Provider, error: 0 - The wait operation timed out.)
-Line NO:2675
-Message:A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - The network path was not found.)
-Line NO:2675

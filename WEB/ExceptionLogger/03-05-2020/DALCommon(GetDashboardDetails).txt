@@ -1,2 +1,0 @@
-Message:Column 'StudnetImage' does not belong to table Table1.
-Line NO:3891

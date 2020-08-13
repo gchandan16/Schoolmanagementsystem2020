@@ -494,5 +494,13 @@ namespace BAL
             DALFee dal = new DALFee(ConStr);
             return dal.GetIndisciplineFeeDepositByReceiptNo(FeeDepositDetails);
         }
+
+        #region FineConcessionReport
+        public DataTable GetFineConcessionList(FineConcession fineConcession)
+        {
+            DALFee dal = new DALFee(ConStr);
+            return dal.GetFineConcessionList(fineConcession);
+        }
+        #endregion FineConcessionReport
     }
 }
