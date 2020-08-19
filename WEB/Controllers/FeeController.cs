@@ -18,6 +18,7 @@ using System.Web.Helpers;
 using System.Data;
 using System.IO;
 using ClosedXML.Excel;
+using Newtonsoft;
 
 namespace WEB.Controllers
 {
@@ -1727,6 +1728,7 @@ namespace WEB.Controllers
             return View(obj);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult FineConcessionReport(FineConcession obj)
         {
             BALFee ObjFee = new BALFee(ConStr);
@@ -1734,9 +1736,9 @@ namespace WEB.Controllers
             try
             {
                 obj.SchoolID = _OrgnisationID;
-               
 
-              
+
+
                 _searchType.Add(new SearchType
                 {
                     searchID = "1",
@@ -1754,11 +1756,11 @@ namespace WEB.Controllers
                 {
                     dt = ObjFee.GetFineConcessionList(obj).Select("Fine<>0", "").CopyToDataTable();
                 }
-                else if(obj.Search == "2")
+                else if (obj.Search == "2")
                 {
                     dt = ObjFee.GetFineConcessionList(obj).Select("Concession<>0", "").CopyToDataTable();
                 }
-                if(dt.Rows.Count > 0)
+                if (dt.Rows.Count > 0)
                 {
                     obj.Report = dt;
                 }
@@ -1771,6 +1773,64 @@ namespace WEB.Controllers
         }
 
         #endregion FineConcessionReport
+
+
+        #region FeeRefund
+        public JsonResult GetFeeRefundHistory(string AdmissionNo)
+        {
+            BALFee ObjFee = new BALFee(ConStr);
+            FeeRefund Obj = new SHARED.FeeRefund();
+            {
+                StudentMaster SM = new SHARED.StudentMaster();
+                SM.Adminssionno = AdmissionNo;
+                Obj.Student = SM;
+                Obj.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd");
+                Obj.SchoolID = _OrgnisationID;
+                Obj.FinancialYear = _Financialyearid;
+                Obj.Report = ObjFee.GetFeeRefundList(Obj);
+            }
+
+            return Json(Newtonsoft.Json.JsonConvert.SerializeObject(Obj.Report), JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult FeeRefund()
+        {
+            BALFee ObjFee = new BALFee(ConStr);
+            FeeRefund Obj = new SHARED.FeeRefund();
+            {
+                StudentMaster SM = new SHARED.StudentMaster();
+                SM.Adminssionno = "";
+                Obj.Student = SM;
+                Obj.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd");
+                Obj.SchoolID = _OrgnisationID;
+                Obj.FinancialYear = _Financialyearid;
+                Obj.Report = ObjFee.GetFeeRefundList(Obj);
+            }
+            return View(Obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FeeRefund(FeeRefund Obj)
+        {
+            BALFee CSFee = new BALFee(ConStr);
+            try
+            {
+                Obj.SchoolID = _OrgnisationID;
+                Obj.FinancialYear = _Financialyearid;
+                Obj.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                string resposne = CSFee.SaveFeeRefund(Obj);
+                if (Convert.ToInt32(resposne) > 0)
+                    TempData[Constants.MessageInfo.SUCCESS] = "Inserted successfully.";
+                else
+                    TempData[Constants.MessageInfo.ERROR] = "Some error occure. Please try again.";
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("FeeRefund");
+        }
+        #endregion FeeRefund
     }
 
 }

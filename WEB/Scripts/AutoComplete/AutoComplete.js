@@ -11,6 +11,7 @@ var SearchHelper = function () {
     this.studentDetails = $(".StudentNameAdmissionNo");
     this.studentDetailsIndiscipline = $(".StudentNameIndiscipline");
     this.studentDetailsExtraFee = $(".StudentNameExtraFee");
+    this.StudentNameAdmissionNoRefund = $(".StudentNameAdmissionNoRefund");
 }
 
 SearchHelper.prototype.BindEvents = function () {
@@ -95,6 +96,33 @@ SearchHelper.prototype.BindEvents = function () {
             minLength: 1,
             select: function (event, ui) {
                 setStudentDetailsExtraFee(ui);
+            }
+        });
+    }
+    if (h.StudentNameAdmissionNoRefund.length != 0) {
+        setStudentDetailsRefund();
+        var URL = UrlBase + "/AutoComplete/GetStudentList"
+        h.StudentNameAdmissionNoRefund.autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: URL,
+                    data: "{ 'src': '" + request.term + "', maxResults: 10 }",
+                    dataType: "json", type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            var result = item.Firstname + " (" + item.Adminssionno + ")";
+                            return { label: result, value: result, id: item.Smid, Photo: item.studentimage, FirstName: item.Firstname, FatherName: item.Bd_fathername, AdmissionNo: item.Adminssionno, ClassName: item.ClassName, SectionName: item.SectionName, FeeGroup: item.FeeGroup, TPCost: item.TransportCost }
+                        }))
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    }
+                })
+            },
+            autoFocus: true,
+            minLength: 1,
+            select: function (event, ui) {
+                setStudentDetailsRefund(ui);
             }
         });
     }

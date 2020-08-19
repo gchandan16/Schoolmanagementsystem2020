@@ -1875,3 +1875,217 @@ function DisplayTotalDueFeeStudentList(record) {
     }
     $.unblockUI();
 }
+
+
+function setStudentDetailsRefund(ui) {
+    if (ui == undefined) {
+        $("#studentPhoto").attr("src", "../Content/Student/dummystudent.png");
+        $(".StudentID").val("");
+        $(".FirstNameSpan").html("");
+        $(".FirstName").val("");
+        $(".FatherNameSpan").html("");
+        $(".FatherName").val("");
+        $(".AdmissionNoSpan").html("");
+        $(".AdmissionNo").val("");
+        $(".ClassNameSpan").html("");
+        $(".ClassName").val("");
+        $(".SectionNameSpan").html("");
+        $(".SectionName").val("");
+        $(".FeeGroupSpan").html("");
+        $(".FeeGroup").val("");
+    }
+    else {
+        // BlockUI();
+        $("#studentPhoto").attr("src", ui.item.Photo.replace('~', '..'));
+        $(".StudentID").val(ui.item.id);
+        $(".FirstNameSpan").html(ui.item.FirstName);
+        $(".FirstName").val(ui.item.FirstName);
+        $(".FatherNameSpan").html(ui.item.FatherName);
+        $(".FatherName").val(ui.item.FatherName);
+        $(".AdmissionNoSpan").html(ui.item.AdmissionNo);
+        $(".AdmissionNo").val(ui.item.AdmissionNo);
+        $(".ClassNameSpan").html(ui.item.ClassName);
+        $(".ClassName").val(ui.item.ClassName);
+        $(".SectionNameSpan").html(ui.item.SectionName);
+        $(".SectionName").val(ui.item.SectionName);
+        $(".FeeGroupSpan").html(ui.item.FeeGroup);
+        $(".FeeGroup").val(ui.item.FeeGroup);
+        getStudentFeeDataRefund();
+        getStudentFeeRefundList();
+    }
+}
+function getStudentFeeDataRefund() {
+    BlockUI();
+    var Dict = {};
+    var html = "";
+    $.ajax({
+        type: "POST",
+        url: UrlBase + '/Fee/GetFeeDepositHistory',
+        data: '{"StudentID":"' + $(".StudentID").val() + '","AdmissionNo":"' + $(".AdmissionNo").val() + '"}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: false,
+        success: function (res) {
+            if (res.length > 0) {
+                for (var i = 0; i < res.length; i++) {
+                    //TotalFeesBreakUp:   Jun:Transport#500.00_Yogesh Computr#500.00
+                    //Apr:Computer Fee#200.00;May:Computer Fee#200.00
+                    for (var j = 0; j < res[i].TotalFeesBreakUp.split(';').length ; j++) {
+                        var FeeBreakup = res[i].TotalFeesBreakUp.split(';')[j].split(':')[1];
+                        for (var k = 0; k < FeeBreakup.split('_').length; k++) {
+                            var FeeType = FeeBreakup.split('_')[k].split('#')[0];
+                            var FeeAmount = FeeBreakup.split('_')[k].split('#')[1];
+                            if (Dict.hasOwnProperty(FeeType)) {
+                                Dict[FeeType] = parseFloat(Dict[FeeType]) + parseFloat(FeeAmount);
+                            }
+                            else {
+                                Dict[FeeType] = FeeAmount;
+                            }
+                        }
+                    }
+                }
+                html += '<table class="table table-bordered table-hover">';
+                html += '<tbody>';
+                html += '<tr>';
+                html += '<td>S.No</td>';
+                html += '<td>Fee Head</td>';
+                html += '<td>Amount Paid</td>';
+                html += '</tr>';
+                var SNo = 0, TotalPaidAmount = 0;
+                for (var key in Dict) {
+                    SNo += 1;
+                    html += '<tr>';
+                    html += '<td>' + SNo + '</td>';
+                    html += '<td>' + key + '</td>';
+                    html += '<td>' + Dict[key] + '</td>';
+                    html += '</tr>';
+                    TotalPaidAmount += parseFloat(Dict[key]);
+                }
+                html += '<tr>';
+                html += '<td>' + (SNo + 1) + '</td>';
+                html += '<td>Total</td>';
+                html += '<td>' + TotalPaidAmount + '</td>';
+                html += '</tr>';
+            }
+            else {
+                html += 'No Payment History found for this student.';
+            }
+            $("#FeeHistory").empty();
+            $("#FeeHistory").html(html);
+            $.unblockUI();
+
+        },
+        failure: function (response) {
+            $.unblockUI();
+        },
+        error: function (response) {
+            $.unblockUI();
+        }
+    });
+}
+function getStudentFeeRefundList() {
+    var html = "";
+    $.ajax({
+        type: "POST",
+        url: UrlBase + '/Fee/GetFeeRefundHistory',
+        data: '{"AdmissionNo":"' + $(".AdmissionNo").val() + '"}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: false,
+        success: function (res) {
+            var resultDT = JSON.parse(res);
+            if (resultDT.length > 0) {
+                html += '<table id="studenttbl" class="display table table-striped table-bordered  nowrap" style="width: 100%">';
+                html += '<tbody>';
+                html += '<tr>';
+                html += '<th>S.No</th>';
+                html += '<th>AdmissionNo</th>';
+                html += '<th>RefundAmount</th>';
+                html += '<th>ModeOfPayment</th>';
+                html += '<th>Remarks</th>';
+                html += '<th>BankName</th>';
+                html += '<th>ChequeDate</th>';
+                html += '<th>ChequeNo</th>';
+                html += '<th>CreatedDate</th>';
+                html += '</tr>';
+                for (var i = 0; i < resultDT.length; i++) {
+                    html += '<tr>';
+                    html += '<td>' + (i+1) + '</td>';
+                    html += '<td>' + resultDT[i].AdmissionNo + '</td>';
+                    html += '<td>' + resultDT[i].RefundAmount + '</td>';
+                    html += '<td>' + resultDT[i].ModeOfPayment + '</td>';
+                    html += '<td>' + resultDT[i].Remarks + '</td>';
+                    html += '<td>' + resultDT[i].BankName + '</td>';
+                    html += '<td>' + resultDT[i].ChequeDate + '</td>';
+                    html += '<td>' + resultDT[i].ChequeNo + '</td>';
+                    html += '<td>' + resultDT[i].CreatedDate + '</td>';
+                    html += '</tr>';
+                }
+                html += '</table>';
+            }
+           
+            $(".RefundHistory").empty();
+            $(".RefundHistory").html(html);
+            $('#studenttbl').DataTable({
+                "scrollX": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        title: function () {
+                            return 'Due Fee List';
+                        },
+                        text: '<i class="fa fa-file-pdf-o"> Excel</i>',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        }
+                    },
+                ]
+            });
+            $.unblockUI();
+
+        },
+        failure: function (response) {
+            $.unblockUI();
+        },
+        error: function (response) {
+            $.unblockUI();
+        }
+    });
+}
+function FeeRefundValidation() {
+    if ($(".AdmissionNo").val() == "") {
+        alert("Please select student.");
+        $("#StudentNameAdmissionNoRefund").focus();
+        return false;
+    }
+    else if ($.trim($("#RefundAmount").val()) == "" || $.trim($("#RefundAmount").val()) == 0) {
+        alert("Please enter refund amount.");
+        $("#RefundAmount").focus();
+        return false;
+    }
+    else if ($.trim($("#Remarks").val()) == "") {
+        alert("Please enter Remarks.");
+        $("#Remarks").focus();
+        return false;
+    }
+    else if ($.trim($("#ModeOfPayment").val()) == "Cheque") {
+        if ($.trim($("#BankName").val()) == "") {
+            alert("Please enter BankName.");
+            $("#BankName").focus();
+            return false;
+        }
+        else if ($.trim($("#ChequeDate").val()) == "") {
+            alert("Please enter ChequeDate.");
+            $("#ChequeDate").focus();
+            return false;
+        }
+        else if ($.trim($("#ChequeNo").val()) == "") {
+            alert("Please enter ChequeNo.");
+            $("#ChequeNo").focus();
+            return false;
+        }
+    }
+    return true;
+}

@@ -502,5 +502,18 @@ namespace BAL
             return dal.GetFineConcessionList(fineConcession);
         }
         #endregion FineConcessionReport
+
+        #region FeeRefund
+        public string SaveFeeRefund(FeeRefund Obj)
+        {
+            DALFee dal = new DALFee(ConStr);
+            return dal.SaveFeeRefund(Obj);
+        }
+        public DataTable GetFeeRefundList(FeeRefund Obj)
+        {
+            DALFee dal = new DALFee(ConStr);
+            return dal.GetFeeRefundList(Obj);
+        }
+        #endregion FeeRefund
     }
 }

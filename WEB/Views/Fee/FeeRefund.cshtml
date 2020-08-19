@@ -1,0 +1,183 @@
+﻿@model SHARED.FeeRefund
+@using SHARED
+@using System.Data
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h4>
+        Fee Refund
+
+    </h4>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Fee Collection</li>
+    </ol>
+</section>
+@using (Html.BeginForm("FeeRefund", "Fee", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">Student Details</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1"> Search By </label>
+                                                <input type="Text" class="form-control StudentNameAdmissionNoRefund" id="StudentNameAdmissionNoRefund" placeholder="Search By Student Name or Admission No.">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <table id="example2" class="table table-bordered table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <td rowspan="2"> <img id="studentPhoto" src="../Content/Student/dummystudent.png" style="width:100px;height:100px;">@Html.HiddenFor(m => m.Student.Smid, new { @class = "StudentID" })</td>
+                                                        <td>Name: <span class="FirstNameSpan"></span> @Html.HiddenFor(m => m.Student.Firstname, new { @class = "FirstName" }) </td>
+                                                        <td>Father Name: <span class="FatherNameSpan"></span> @Html.HiddenFor(m => m.Student.Bd_fathername, new { @class = "FatherName" })</td>
+                                                        <td>Admission No : <span class="AdmissionNoSpan"></span> @Html.HiddenFor(m => m.Student.Adminssionno, new { @class = "AdmissionNo" })</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Class:  <span class="ClassNameSpan"></span> @Html.HiddenFor(m => m.Student.ClassName, new { @class = "ClassName" })</td>
+                                                        <td>Section: <span class="SectionNameSpan"></span> @Html.HiddenFor(m => m.Student.SectionName, new { @class = "SectionName" })</td>
+                                                        <td>Fee Group:<span class="FeeGroupSpan"></span> @Html.HiddenFor(m => m.Student.FeeGroup, new { @class = "FeeGroup" })</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+
+
+
+                            </div><!-- /.box -->
+                            <!-- Form Element sizes -->
+                            
+
+
+
+                        </div><!--/.col (left) -->
+                        <!-- right column -->
+                        <div class="col-md-6">
+                            <!-- general form elements disabled -->
+                            <div class="box box-success">
+                                <div class="box-header">
+                                    <h3 class="box-title">Payment History</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="form-group" id="FeeHistory">
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div><!-- /.box -->
+                        </div> <!-- /.box-body -->
+
+
+                        <div class="col-md-12">
+                            <!-- general form elements disabled -->
+                            <div class="box box-warning" >
+                                <div class="box-body">
+                                    <form role="form">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1"> Refund Amount </label>
+                                           @Html.TextBoxFor(m => m.RefundAmount, new { @class = "form-control ", @Value = "0", @msg = "Please enter amount.", @pat = "^[0-9]*$" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1"> Mode </label>
+                                            @Html.DropDownListFor(m => m.ModeOfPayment, new List<SelectListItem>() { new SelectListItem { Text = "Cash", Value = "Cash" }, new SelectListItem { Text = "Cheque", Value = "Cheque" } }, new { @class = "form-control chosen-select ", @onchange = "return showHideMOPRmk(this);" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1"> Remarks </label>
+                                            @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control " })
+                                        </div>
+                                        <div class="form-group ClsCheque" style="display:none;">
+                                            <label for="exampleInputPassword1"> Bank Name </label>
+                                           @Html.TextBoxFor(m => m.BankName, new { @class = "form-control " })
+                                        </div>
+                                        <div class="form-group ClsCheque" style="display:none;">
+                                            <label for="exampleInputPassword1"> Cheque Date </label>
+                                           @Html.TextBoxFor(m => m.ChequeDate, new { @class = "form-control " })
+                                        </div>
+                                        <div class="form-group ClsCheque" style="display:none;">
+                                            <label for="exampleInputPassword1"> Cheque No </label>
+                                           @Html.TextBoxFor(m => m.ChequeNo, new { @class = "form-control "})
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group RefundHistory">
+                           @if (Model.Report != null)
+                           {
+                            <table id="studenttbl" class="display table table-striped table-bordered  nowrap" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        @foreach (var column in @Model.Report.Columns)
+                                        {
+                                            <th style="text-align: center">
+                                                @column
+                                            </th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 0;}
+                                    @foreach (DataRow rows in @Model.Report.Rows)
+                                    {
+                                        <tr>
+                                            @{i++; }
+                                            <td>@i</td>
+                                            @foreach (DataColumn column in @Model.Report.Columns)
+                                            {
+                                                <td style="text-align: center">
+                                                    @rows[@column]
+                                                </td>
+                                            }
+                                        </tr>
+                                                }
+                                </tbody>
+                            </table>
+                                                }
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">  </label>
+                            <input type="submit" value="Refund" name="btntype" id="BtnRefund" class="btn btn-primary pull-right" onclick="return FeeRefundValidation();" />
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<div id="popupDiv" style="display: none; position: fixed; top: 0px; z-index: 1005; background: rgb(1, 1, 1);">
+    <div id="FeeReceipt"></div>
+</div>
+
+@*<script src="~/Scripts/AutoComplete/AutoComplete.js"></script>*@
+<script src="~/Scripts/Fee/Fee.js"></script>
+<script>
+    function showHideMOPRmk(h) {
+        if (h.value == "Cash") {
+            $(".ClsCheque").hide();
+        }
+        else {
+            $(".ClsCheque").show();
+        }
+    }
+</script>

@@ -1323,5 +1323,62 @@ namespace DAL
             return ds.Tables[0];
         }
         #endregion FineConcessionReport
+
+        #region FeeRefund
+        public string SaveFeeRefund(FeeRefund Obj)
+        {
+            string result = "";
+            try
+            {
+                cmd = new SqlCommand("USP_FEEREFUND");
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AdmissionNo", Obj.Student.Adminssionno);
+                cmd.Parameters.AddWithValue("@RefundAmount", Obj.RefundAmount);
+                cmd.Parameters.AddWithValue("@ModeOfPayment", Obj.ModeOfPayment);
+                cmd.Parameters.AddWithValue("@Remarks", Obj.Remarks);
+                cmd.Parameters.AddWithValue("@BankName", Obj.BankName);
+                cmd.Parameters.AddWithValue("@ChequeDate", Obj.ChequeDate);
+                cmd.Parameters.AddWithValue("@ChequeNo", Obj.ChequeNo);
+                cmd.Parameters.AddWithValue("@SchoolID", Obj.SchoolID);
+                cmd.Parameters.AddWithValue("@FinancialYear", Obj.FinancialYear);
+                cmd.Parameters.AddWithValue("@CreatedDate", Obj.CreatedDate);
+                cmd.Parameters.AddWithValue("@Action", "INS");
+                result = Convert.ToString(DBHelper.ExecuteScalar(cmd));
+            }
+            catch (Exception ex)
+            {
+                ExecptionLogger.FileHandling("DALFee(SaveFeeRefund)", "Error_014", ex, "DALFee");
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+            return result;
+        }
+        public DataTable GetFeeRefundList(FeeRefund Obj)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                cmd = new SqlCommand("USP_FEEREFUND");
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AdmissionNo", Obj.Student.Adminssionno);
+                cmd.Parameters.AddWithValue("@CreatedDate", Obj.CreatedDate);
+                cmd.Parameters.AddWithValue("@FinancialYear", Obj.FinancialYear);
+                cmd.Parameters.AddWithValue("@SchoolId", Obj.SchoolID);
+                cmd.Parameters.AddWithValue("@Action", "GET");
+                ds = DBHelper.ExecuteDataSet(cmd);
+            }
+            catch (Exception ex)
+            {
+                ExecptionLogger.FileHandling("DALFee(SaveFeeTerm)", "Error_014", ex, "DALFee");
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+            return ds.Tables[0];
+        }
+        #endregion FeeRefund
     }
 }

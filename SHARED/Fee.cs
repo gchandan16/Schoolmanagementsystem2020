@@ -305,7 +305,7 @@ namespace SHARED
         public double EmployerPFAmount { get; set; }
         public double EmployeeTDS { get; set; }
     }
-   
+
     public class AttendanceDetails
     {
         public List<string> TotalWorkingDaysList { get; set; }
@@ -519,7 +519,7 @@ namespace SHARED
     {
         public string FromDate { get; set; }
         public string ToDate { get; set; }
-        public List<SearchType> searchType{ get; set; }
+        public List<SearchType> searchType { get; set; }
         public string Search { get; set; }
         public List<FinancialYear> SessionList { get; set; }
         public int FinancialYear { get; set; }
@@ -527,4 +527,19 @@ namespace SHARED
         public DataTable Report { get; set; }
     }
     #endregion DueFeeList
+
+    public class FeeRefund : BaseModel
+    {
+        public StudentMaster Student { get; set; }
+        public string RefundAmount { get; set; }
+        public string ModeOfPayment { get; set; }
+        public string Remarks { get; set; }
+        public string BankName { get; set; }
+        public string ChequeDate { get; set; }
+        public string ChequeNo { get; set; }
+        public int FinancialYear { get; set; }
+        public string CreatedDate { get; set; }
+        public int SchoolID { get; set; }
+        public DataTable Report { get; set; }
+    }
 }

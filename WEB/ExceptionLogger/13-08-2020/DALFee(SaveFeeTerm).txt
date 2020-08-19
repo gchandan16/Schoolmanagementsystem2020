@@ -1,9 +1,0 @@
-Message:Incorrect syntax near 'No'.
-Select FD.DepositDate, S.Adminssionno As Admission No, S.Firstname AS Name, Cls.ClassName AS Class, Sec.SectionName AS Section, FD.Fine, FD.Concession, FD.WaiveOff from MST_Student S LEFT join MST_Class Cls ON S.CMid = Cls.CMid LEFT join MST_Section Sec ON S.Secmid = Sec.Secmid join T_FeeDeposit FD ON S.Adminssionno = FD.AdmissionNo WHERE S.SchoolID = 4 AND S.FinancialYear = 1 AND FD.DepositDate >= '2020-01-01' AND FD.DepositDate <= '2020-08-30 23:59:59'
-Line NO:1313
-Message:Incorrect syntax near 'No'.
-Select FD.DepositDate, S.Adminssionno As Admission No, S.Firstname AS Name, Cls.ClassName AS Class, Sec.SectionName AS Section, FD.Fine, FD.Concession, FD.WaiveOff from MST_Student S LEFT join MST_Class Cls ON S.CMid = Cls.CMid LEFT join MST_Section Sec ON S.Secmid = Sec.Secmid join T_FeeDeposit FD ON S.Adminssionno = FD.AdmissionNo WHERE S.SchoolID = 4 AND S.FinancialYear = 1 AND FD.DepositDate >= '2020-02-02' AND FD.DepositDate <= '2020-08-31 23:59:59'
-Line NO:1313
-Message:Incorrect syntax near 'No'.
-Select FD.DepositDate, S.Adminssionno As Admission No, S.Firstname AS Name, Cls.ClassName AS Class, Sec.SectionName AS Section, FD.Fine, FD.Concession, FD.WaiveOff from MST_Student S LEFT join MST_Class Cls ON S.CMid = Cls.CMid LEFT join MST_Section Sec ON S.Secmid = Sec.Secmid join T_FeeDeposit FD ON S.Adminssionno = FD.AdmissionNo WHERE S.SchoolID = 4 AND S.FinancialYear = 1 AND FD.DepositDate >= '2020-02-02' AND FD.DepositDate <= '2020-08-31 23:59:59'
-Line NO:1313
